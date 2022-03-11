@@ -1,37 +1,48 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <link rel="stylesheet" href="styles.css"/>
-  <link rel="icon" href="images/Icon.png"/>
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="icon" href="images/Icon.png" />
   <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.min.css">
   <title>FoodBook</title>
 </head>
+
 <body>
-  <section> 
-    <figure>
+  <section id="containerPageOne">
+
+    <figure id="containerLogo">
       <img src="Images/Icon.png" id="foodBookIcon">
       <figcaption>FoodBook</figcaption>
     </figure>
-    <div>
-      <input type="text"></input>
-      <div>
-        <input type="password"></input>
-        <i class="fa fa-eye"></i>
-        <i class="fa fa-eye-slash"></i>
+
+    <div id="containerLogIn">
+      <input type="text" id="text">
+      <div id="passwordContainer">
+        <input type="password" id="password">
+        <i class="fa fa-eye" id="eyeIcon"></i>
+        <i class="fa fa-eye-slash" id="eyeSlashIcon" style="display: none;"></i>
       </div>
       <a>Olvidaste tu contraseña?</a>
     </div>
-    <button>Iniciar Sesion</button>
-    <div>
+
+    <button id="logIn">Iniciar Sesion</button>
+
+    <div id="containerRegister">
       <p>Continuar con:</p>
-      <i class="fa fa-google-plus-square"></i>
-      <i class="fa fa-facebook"></i>
-      <p>No tienes cuenta? <a> Registrate</a></p>      
-    </div>    
+      <div id="registerIcons">
+        <img src="Images/google.png" id="googleLogo">
+        <img src="Images/facebook.png" id="facebookLogo">
+      </div>
+      <a>No tienes cuenta? Registrate</a>
+    </div>
+
   </section>
+
   <script type="module" src="main.js"></script>
 </body>
+
 </html>
