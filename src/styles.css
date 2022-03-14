@@ -93,3 +93,43 @@ button:hover{
     width: calc(2rem + 0.5vw);
     height: calc(2rem + 0.5vh);
 }
+@media only screen and (min-width: 768px){
+    body{
+        background-image: url(Images/Bg2.jpg);
+        background-position: center center;
+        background-size: cover;
+    }
+    #containerPageOne>div{
+        margin: 2%;
+        font-size:1.1rem;
+    }
+    figure{
+        margin-top: 3%;
+    }
+    #foodBookIcon{
+        width: 12%;
+        height: 12%;
+    }
+    input{
+        margin-bottom: 0.5%;
+    }
+    #text{
+        width: 30%;
+    }
+    #passwordContainer{
+        width: 30%;
+        margin-bottom: 1%;
+    }
+    button{
+        width: 25%;
+        height: 35px;
+    }
+    #registerIcons{
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        width: 10%;
+        height: 40px;
+        margin: 2%;
+    }
+}
