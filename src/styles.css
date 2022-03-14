@@ -19,6 +19,11 @@ body{
     color: #fff;
     width: 100%;
 }
+#containerPageTwo>div{
+    margin: 2%;
+    color: #fff;
+    width: 100%;
+}
 [id^="container"]{
     display: flex;
     flex-direction: column;
@@ -29,7 +34,14 @@ body{
 figure{
     margin-top: 20%;
 }
-#foodBookIcon{
+.containerLogo{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width:100%
+}
+.foodBookIcon{
     width: 35%;
     height: 35%;
 }
@@ -41,28 +53,34 @@ figcaption{
 }
 input{
     margin-bottom: 2%;
+    font-size: large;
 }
-#text{
+#text, #newUser{
     width: 70%;
     height: 30px;
     border: none;
     border-bottom: 2px solid #fff;
     background: none;
+    color: #fff;
+    padding-left: 0.5%;
 }
-#passwordContainer{
+#passwordContainer, #newPasswordContainer{
     width: 70%;
     height: 30px;
     position: relative;
     margin-bottom: 2%;
 }
-#password{
+
+#password, #newUserPassword{
     width: 100%;
     height: 100%;
     border: none;
     border-bottom: 2px solid #fff;
     background: none;
+    color: #fff;
+    padding-left: 2%;
 }
-#eyeIcon, #eyeSlashIcon{
+.fa{
     position: absolute;
     right: 1.5%;
     top: 20%;
@@ -81,7 +99,7 @@ button:hover{
     font-weight: bold
 }
 
-#registerIcons{
+#registerIcons, #registerIconsNewUser{
     display: flex;
     justify-content: space-around;
     align-items: center;
@@ -89,9 +107,26 @@ button:hover{
     height: 40px;
     margin: 2%;
 }
-#facebookLogo, #googleLogo {
+/*input[type="password"]{
+  -webkit-text-security: square;
+}*/
+.facebookLogo, .googleLogo {
     width: calc(2rem + 0.5vw);
     height: calc(2rem + 0.5vh);
+}
+#register{
+    color:#fff;
+    text-decoration: none;
+}
+#register:hover{
+    text-decoration: underline;
+    color: rgb(37, 235, 225);
+}
+.show{
+    display: block;
+}
+.hide{
+    display: none;
 }
 @media only screen and (min-width: 768px){
     body{
@@ -106,17 +141,17 @@ button:hover{
     figure{
         margin-top: 3%;
     }
-    #foodBookIcon{
+    .foodBookIcon{
         width: 12%;
         height: 12%;
     }
     input{
         margin-bottom: 0.5%;
     }
-    #text{
+    #text, #newUser{
         width: 30%;
     }
-    #passwordContainer{
+    #passwordContainer, #newPasswordContainer{
         width: 30%;
         margin-bottom: 1%;
     }
@@ -124,7 +159,7 @@ button:hover{
         width: 25%;
         height: 35px;
     }
-    #registerIcons{
+    #registerIcons, #registerIconsNewUser{
         display: flex;
         justify-content: space-around;
         align-items: center;
