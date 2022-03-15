@@ -55,7 +55,7 @@ input{
     margin-bottom: 2%;
     font-size: large;
 }
-#text, #newUser{
+#user, #newUser{
     width: 70%;
     height: 30px;
     border: none;
@@ -148,7 +148,7 @@ button:hover{
     input{
         margin-bottom: 0.5%;
     }
-    #text, #newUser{
+    #user, #newUser{
         width: 30%;
     }
     #passwordContainer, #newPasswordContainer{
