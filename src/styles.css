@@ -84,6 +84,10 @@ input{
     position: absolute;
     right: 1.5%;
     top: 20%;
+    pointer-events: auto;
+}
+.fa-eye-slash{
+    display: none;
 }
 button{
     width: 50%;
