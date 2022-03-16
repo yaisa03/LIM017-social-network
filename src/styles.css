@@ -13,6 +13,9 @@ body{
     background-repeat: repeat;
     background-position: center center;
 }
+h1{
+    color:white;
+}
 /*pagina 1*/
 #containerPageOne>div{
     margin: 4%;
@@ -55,7 +58,11 @@ input{
     margin-bottom: 2%;
     font-size: large;
 }
-#text, #newUser{
+input::placeholder {
+    color: white;
+    font-size: small;
+  }
+#user, #newUser{
     width: 70%;
     height: 30px;
     border: none;
@@ -118,11 +125,15 @@ button:hover{
     width: calc(2rem + 0.5vw);
     height: calc(2rem + 0.5vh);
 }
-#register{
+a{
     color:#fff;
     text-decoration: none;
 }
-#register:hover{
+a:hover {
+    color: rgb(0, 0, 0);
+    font-weight: bold
+}
+#register:hover, #forgotPassword:hover {
     text-decoration: underline;
     color: rgb(37, 235, 225);
 }
@@ -152,7 +163,7 @@ button:hover{
     input{
         margin-bottom: 0.5%;
     }
-    #text, #newUser{
+    #user, #newUser{
         width: 30%;
     }
     #passwordContainer, #newPasswordContainer{

@@ -1,18 +1,52 @@
-// Este es el punto de entrada de tu aplicacion
+/* eslint-disable camelcase */
+import { logIn, register } from './lib/Firestore.js';
 
-import { myFunction } from './lib/index.js';
+// Declaracion de variables de botones
+const logInButton = document.getElementById('logIn');
 
-myFunction();
+// Declaracion de variables de ventanas
+const pageTwo = document.getElementById('containerPageTwo');
+const pageOne = document.getElementById('containerPageOne');
+const pageThree = document.getElementById('containerPageThree');
 
-const register = document.getElementById('register');
-register.addEventListener('click', () => {
-  const pageTwo = document.getElementById('containerPageTwo');
-  const pageOne = document.getElementById('containerPageOne');
-  pageOne.style.display = 'none';
-  pageTwo.style.display = '';
+// Funcion que controla ventanas
+function navigation(hash) {
+  switch (hash) {
+    case '#registro':
+      pageOne.style.display = 'none';
+      pageTwo.style.display = '';
+      break;
+    case '#logIn':
+      pageOne.style.display = 'none';
+      pageThree.style.display = '';
+      break;
+    default:
+      break;
+  }
+}
+// Funcion que indica que cuando camabie el hash hara algo, en este caso cambiar de ventana
+window.addEventListener('hashchange', () => {
+  navigation(window.location.hash);
 });
 
-// eslint-disable-next-line camelcase
+logInButton.addEventListener('click', () => {
+  const email = document.getElementById('user').value;
+  const password = document.getElementById('password').value;
+  logIn(email, password);
+});
+/*
+const registerLink = document.getElementById('register');
+registerLink.addEventListener('click', () => {
+  navigation(2);
+}); */
+
+const registerButton = document.getElementById('registerButton');
+registerButton.addEventListener('click', () => {
+  const email = document.getElementById('newUser').value;
+  const password = document.getElementById('newUserPassword').value;
+  register(email, password);
+});
+// Funcion que permite mostrar contraseña al presionar el icono
 function show_password(id1, id2, id3) {
   const eye = document.getElementById(id1);
   const eyeSlash = document.getElementById(id2);
@@ -23,7 +57,7 @@ function show_password(id1, id2, id3) {
     password.setAttribute('type', 'text');
   });
 }
-// eslint-disable-next-line camelcase
+// Funcion que permite ocultar contraseña al presionar el icono
 function hide_password(id1, id2, id3) {
   const eye = document.getElementById(id1);
   const eyeSlash = document.getElementById(id2);
