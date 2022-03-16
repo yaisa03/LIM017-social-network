@@ -1,53 +1,27 @@
-/* eslint-disable camelcase */
+import { LogIn } from './components/LogIn.js';
+import { Register } from './components/Register.js';
 import { logIn, register } from './lib/Firestore.js';
-
-// Declaracion de variables de botones
-const logInButton = document.getElementById('logIn');
+/* eslint-disable camelcase */
 
 // Declaracion de variables de ventanas
-const pageTwo = document.getElementById('containerPageTwo');
 const pageOne = document.getElementById('containerPageOne');
-const pageThree = document.getElementById('containerPageThree');
 
-// Funcion que controla ventanas
-function navigation(hash) {
-  switch (hash) {
-    case '#registro':
-      pageOne.style.display = 'none';
-      pageTwo.style.display = '';
-      break;
-    case '#logIn':
-      pageOne.style.display = 'none';
-      pageThree.style.display = '';
-      break;
-    default:
-      break;
-  }
-}
-// Funcion que indica que cuando camabie el hash hara algo, en este caso cambiar de ventana
-window.addEventListener('hashchange', () => {
-  navigation(window.location.hash);
-});
+const routes = {
+  '/': LogIn,
+  '/register': Register,
+};
 
-logInButton.addEventListener('click', () => {
-  const email = document.getElementById('user').value;
-  const password = document.getElementById('password').value;
-  logIn(email, password);
-});
-/*
-const registerLink = document.getElementById('register');
-registerLink.addEventListener('click', () => {
-  navigation(2);
-}); */
+export const onNavigate = (pathname) => {
+  window.history.pushState(
+    {},
+    pathname,
+    window.location.origin + pathname,
+  );
+  pageOne.innerHTML = routes[pathname]();
+};
 
-const registerButton = document.getElementById('registerButton');
-registerButton.addEventListener('click', () => {
-  const email = document.getElementById('newUser').value;
-  const password = document.getElementById('newUserPassword').value;
-  register(email, password);
-});
 // Funcion que permite mostrar contraseña al presionar el icono
-function show_password(id1, id2, id3) {
+export function show_password(id1, id2, id3) {
   const eye = document.getElementById(id1);
   const eyeSlash = document.getElementById(id2);
   const password = document.getElementById(id3);
@@ -58,7 +32,7 @@ function show_password(id1, id2, id3) {
   });
 }
 // Funcion que permite ocultar contraseña al presionar el icono
-function hide_password(id1, id2, id3) {
+export function hide_password(id1, id2, id3) {
   const eye = document.getElementById(id1);
   const eyeSlash = document.getElementById(id2);
   const password = document.getElementById(id3);
@@ -68,7 +42,35 @@ function hide_password(id1, id2, id3) {
     password.setAttribute('type', 'password');
   });
 }
-show_password('eyeLogo1', 'eyeSlashLogo1', 'password');
-hide_password('eyeLogo1', 'eyeSlashLogo1', 'password');
-show_password('eyeLogo2', 'eyeSlashLogo2', 'newUserPassword');
-hide_password('eyeLogo2', 'eyeSlashLogo2', 'newUserPassword');
+// funcion queda funcionalidad a la pag Register
+function showRegister() {
+  const registerButton = document.getElementById('registerButton');
+  show_password('eyeLogo2', 'eyeSlashLogo2', 'newUserPassword');
+  hide_password('eyeLogo2', 'eyeSlashLogo2', 'newUserPassword');
+  registerButton.addEventListener('click', () => {
+    const email = document.getElementById('newUser').value;
+    const password = document.getElementById('newUserPassword').value;
+    register(email, password);
+  });
+}
+// funcion que da funcionalida a LogIn
+function showLogIn() {
+  show_password('eyeLogo1', 'eyeSlashLogo1', 'password');
+  hide_password('eyeLogo1', 'eyeSlashLogo1', 'password');
+  const logInBtn = document.getElementById('logIn');
+  logInBtn.addEventListener('click', () => {
+    const email = document.getElementById('user').value;
+    const password = document.getElementById('password').value;
+    logIn(email, password);
+  });
+  const newRegistry = document.getElementById('register');
+  newRegistry.addEventListener('click', () => {
+    onNavigate('/register');
+    showRegister();
+  });
+}
+// mostrar el logIn cuando carga la pagina
+window.addEventListener('load', () => {
+  onNavigate('/');
+  showLogIn();
+});

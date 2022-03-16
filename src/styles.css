@@ -22,11 +22,6 @@ h1{
     color: #fff;
     width: 100%;
 }
-#containerPageTwo>div{
-    margin: 2%;
-    color: #fff;
-    width: 100%;
-}
 [id^="container"]{
     display: flex;
     flex-direction: column;
@@ -109,7 +104,6 @@ button:hover{
     background-color: rgb(172, 172, 172);
     font-weight: bold
 }
-
 #registerIcons, #registerIconsNewUser{
     display: flex;
     justify-content: space-around;
