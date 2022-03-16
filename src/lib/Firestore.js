@@ -14,7 +14,6 @@ function register(email, password) {
     const user = userCredential.user;
     // user.sendEmailVerification();
     console.log('Usuario registrado!');
-    console.log(user);
   })
     .catch((error) => {
       // const errorCode = error.code;
