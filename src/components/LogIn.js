@@ -1,9 +1,5 @@
-// eslint-disable-next-line camelcase
-// import { onNavigate } from '../main.js';
-// import { onNavigate, show_password, hide_password } from '../main.js';
-// import { logIn } from '../lib/Firestore.js';
-
 export const LogIn = () => {
+  const errorMessage = '<p id="message"></p>';
   const containerLogo = `<figure class="containerLogo">
                           <img src="Images/Icon.png" class="foodBookIcon">
                           <figcaption>FoodBook</figcaption>
@@ -26,6 +22,6 @@ export const LogIn = () => {
                               </div>
                               <a id="register">No tienes cuenta? Registrate</a>
                               </div>`;
-  const LogInDivs = containerLogo + containerLogIn + logInButton + containerRegister;
+  const LogInDivs = errorMessage + containerLogo + containerLogIn + logInButton + containerRegister;
   return LogInDivs;
 };

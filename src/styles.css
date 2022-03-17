@@ -13,21 +13,25 @@ body{
     background-repeat: repeat;
     background-position: center center;
 }
-h1{
+h1, p{
     color:white;
 }
-/*pagina 1*/
-#containerPageOne>div{
-    margin: 4%;
-    color: #fff;
-    width: 100%;
+#message {
+    justify-self: flex-start;
+    margin-top: -15%;
 }
+/*pagina 1*/
 [id^="container"]{
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     width:100%
+}
+#containerPageOne>div{
+    margin: 4%;
+    color: #fff;
+    width: 100%;
 }
 figure{
     margin-top: 20%;
@@ -57,7 +61,7 @@ input::placeholder {
     color: white;
     font-size: small;
   }
-#user, #newUser{
+#user, #newUser, #emailReset{
     width: 70%;
     height: 30px;
     border: none;
@@ -104,7 +108,7 @@ button:hover{
     background-color: rgb(172, 172, 172);
     font-weight: bold
 }
-#registerIcons, #registerIconsNewUser{
+#registerIcons{
     display: flex;
     justify-content: space-around;
     align-items: center;
@@ -168,7 +172,7 @@ a:hover {
         width: 25%;
         height: 35px;
     }
-    #registerIcons, #registerIconsNewUser{
+    #registerIcons{
         display: flex;
         justify-content: space-around;
         align-items: center;

@@ -1,17 +1,16 @@
 import { LogIn } from './components/LogIn.js';
 import { Register } from './components/Register.js';
-import { logIn, register } from './lib/Firestore.js';
+import { ResetPassword } from './components/ResetPassword.js';
+import { logIn, register, logInGoogle, emailResetPassword } from './lib/Firestore.js';
 /* eslint-disable camelcase */
-
-// Declaracion de variables de ventanas
+// Declaracion de variables
 const pageOne = document.getElementById('containerPageOne');
-
 const routes = {
   '/': LogIn,
   '/register': Register,
+  '/resetpassword': ResetPassword,
 };
-
-export const onNavigate = (pathname) => {
+const onNavigate = (pathname) => {
   window.history.pushState(
     {},
     pathname,
@@ -21,7 +20,7 @@ export const onNavigate = (pathname) => {
 };
 
 // Funcion que permite mostrar contraseña al presionar el icono
-export function show_password(id1, id2, id3) {
+function show_password(id1, id2, id3) {
   const eye = document.getElementById(id1);
   const eyeSlash = document.getElementById(id2);
   const password = document.getElementById(id3);
@@ -32,7 +31,7 @@ export function show_password(id1, id2, id3) {
   });
 }
 // Funcion que permite ocultar contraseña al presionar el icono
-export function hide_password(id1, id2, id3) {
+function hide_password(id1, id2, id3) {
   const eye = document.getElementById(id1);
   const eyeSlash = document.getElementById(id2);
   const password = document.getElementById(id3);
@@ -53,21 +52,46 @@ function showRegister() {
     register(email, password);
   });
 }
-// funcion que da funcionalida a LogIn
+// funcion para enviar correo para reestablecer contraseña
+function resetPassword() {
+  const resetPasswordButton = document.getElementById('resetPasswordButton');
+  resetPasswordButton.addEventListener('click', () => {
+    const emailReset = document.getElementById('emailReset').value;
+    emailResetPassword(emailReset);
+  });
+}
+// funcion que permite hacer el inicio de sesion con google
+function showLogInGoogle() {
+  const googleLogo = document.querySelector('.googleLogo');
+  googleLogo.addEventListener('click', () => {
+    logInGoogle();
+  });
+}
+// funcion que da funcionalida a la pagina LogIn
 function showLogIn() {
   show_password('eyeLogo1', 'eyeSlashLogo1', 'password');
   hide_password('eyeLogo1', 'eyeSlashLogo1', 'password');
+  // boton que permite iniciar sesion
   const logInBtn = document.getElementById('logIn');
   logInBtn.addEventListener('click', () => {
     const email = document.getElementById('user').value;
     const password = document.getElementById('password').value;
     logIn(email, password);
   });
+  // link que lleva a vista que permite reestablecer contraseña
+  const forgotPasswordLink = document.getElementById('forgotPassword');
+  forgotPasswordLink.addEventListener('click', () => {
+    onNavigate('/resetpassword');
+    resetPassword();
+  });
+  // link que permite crear nuevo usuario con email
   const newRegistry = document.getElementById('register');
   newRegistry.addEventListener('click', () => {
     onNavigate('/register');
     showRegister();
   });
+  // funcion que permite iniciar sesion con google
+  showLogInGoogle();
 }
 // mostrar el logIn cuando carga la pagina
 window.addEventListener('load', () => {

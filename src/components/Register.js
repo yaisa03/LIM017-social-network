@@ -4,21 +4,14 @@ export const Register = () => {
                          <figcaption>FoodBook</figcaption>
                          </figure>`;
   const containerNewRegister = `<div id="containerNewRegister">
-                                 <input type="text" id="newUser">
+                                 <input type="text" id="newUser" placeholder="Ingresa tu correo">
                                  <div id="newPasswordContainer">
-                                   <input type="password" id="newUserPassword">
+                                   <input type="password" id="newUserPassword" placeholder="Ingresa tu nueva constraseña">
                                    <i class="fa fa-eye" id="eyeLogo2"></i>
                                    <i class="fa fa-eye-slash" id="eyeSlashLogo2" style="display: none;"></i>
                                  </div>
                                 </div>`;
   const registerButton = '<button id="registerButton">Registrate</button>';
-  const containerNewReg = `<div id="containerNewReg">
-                            <p>Registrate con:</p>
-                            <div id="registerIconsNewUser">
-                              <img src="Images/google.png" class="googleLogo">
-                              <img src="Images/facebook.png" class="facebookLogo">
-                            </div>
-                           </div>`;
-  const registerDivs = containerLogo + containerNewRegister + registerButton + containerNewReg;
+  const registerDivs = containerLogo + containerNewRegister + registerButton;
   return registerDivs;
 };
