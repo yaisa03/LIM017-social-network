@@ -1,4 +1,5 @@
 export const Register = () => {
+  const errorMessage = '<p id="message"></p>';
   const containerLogo = `<figure class="containerLogo">
                          <img src="Images/Icon.png" class="foodBookIcon">
                          <figcaption>FoodBook</figcaption>
@@ -12,6 +13,6 @@ export const Register = () => {
                                  </div>
                                 </div>`;
   const registerButton = '<button id="registerButton">Registrate</button>';
-  const registerDivs = containerLogo + containerNewRegister + registerButton;
+  const registerDivs = errorMessage + containerLogo + containerNewRegister + registerButton;
   return registerDivs;
 };

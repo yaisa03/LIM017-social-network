@@ -2,9 +2,11 @@ import { LogIn } from './components/LogIn.js';
 import { Register } from './components/Register.js';
 import { ResetPassword } from './components/ResetPassword.js';
 import { Posts } from './components/Posts.js';
+// eslint-disable-next-line object-curly-newline
 import { logIn, register, logInGoogle, emailResetPassword } from './lib/Firestore.js';
 /* eslint-disable camelcase */
 // Declaracion de variables
+
 const pageOne = document.getElementById('containerPageOne');
 const routes = {
   '/': LogIn,
@@ -43,17 +45,6 @@ function hide_password(id1, id2, id3) {
     password.setAttribute('type', 'password');
   });
 }
-// funcion queda funcionalidad a la pag Register
-function showRegister() {
-  const registerButton = document.getElementById('registerButton');
-  show_password('eyeLogo2', 'eyeSlashLogo2', 'newUserPassword');
-  hide_password('eyeLogo2', 'eyeSlashLogo2', 'newUserPassword');
-  registerButton.addEventListener('click', () => {
-    const email = document.getElementById('newUser').value;
-    const password = document.getElementById('newUserPassword').value;
-    register(email, password);
-  });
-}
 // funcion para enviar correo para reestablecer contraseña
 function resetPassword() {
   const resetPasswordButton = document.getElementById('resetPasswordButton');
@@ -79,8 +70,23 @@ function showLogIn() {
     const email = document.getElementById('user').value;
     const password = document.getElementById('password').value;
     logIn(email, password);
-    onNavigate('/posts');
+    // onNavigate('/posts');
   });
+  /* function goToLogIn() {
+    onNavigate('/');
+    showLogIn();
+  } */
+  // funcion queda funcionalidad a la pag Register
+  function showRegister() {
+    const registerButton = document.getElementById('registerButton');
+    show_password('eyeLogo2', 'eyeSlashLogo2', 'newUserPassword');
+    hide_password('eyeLogo2', 'eyeSlashLogo2', 'newUserPassword');
+    registerButton.addEventListener('click', () => {
+      const email = document.getElementById('newUser').value;
+      const password = document.getElementById('newUserPassword').value;
+      register(email, password);
+    });
+  }
   // link que lleva a vista que permite reestablecer contraseña
   const forgotPasswordLink = document.getElementById('forgotPassword');
   forgotPasswordLink.addEventListener('click', () => {
