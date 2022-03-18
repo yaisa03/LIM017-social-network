@@ -28,18 +28,20 @@ export function register(email, password) {
 
 export function logIn(email, password) {
   const auth = getAuth();
+  const errorMessageText = document.querySelector('#message');
   signInWithEmailAndPassword(auth, email, password)
     .then((userCredential) => {
       // Signed in
       const user = userCredential.user;
+      errorMessageText.classList.remove('showMessageError');
+      errorMessageText.innerText = ' ';
       console.log('Se inicio sesion correctamente');
-      console.log(user);
       // ...
     })
     .catch((error) => {
       const errorCode = error.code;
       const errorMessage = error.message;
-      const errorMessageText = document.querySelector('#message');
+      errorMessageText.classList.add('showMessageError');
       switch (errorMessage) {
         case 'Firebase: Error (auth/user-not-found).':
           errorMessageText.innerText = 'usuario no encontrado';
@@ -69,7 +71,6 @@ export function logInGoogle() {
       // This gives you a Google Access Token. You can use it to access Google APIs.
       const credential = GoogleAuthProvider.credentialFromResult(result);
       const token = credential.accessToken;
-
       // The signed-in user info.
       const user = result.user;
     }).catch((error) => {
@@ -97,7 +98,7 @@ export function emailResetPassword(email) {
   const auth = getAuth();
   sendPasswordResetEmail(auth, email)
     .then(() => {
-      console.log('Password reset email sent!')
+      console.log('Password reset email sent!');
     })
     .catch((error) => {
       const errorCode = error.code;

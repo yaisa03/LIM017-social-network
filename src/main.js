@@ -1,6 +1,7 @@
 import { LogIn } from './components/LogIn.js';
 import { Register } from './components/Register.js';
 import { ResetPassword } from './components/ResetPassword.js';
+import { Posts } from './components/Posts.js';
 import { logIn, register, logInGoogle, emailResetPassword } from './lib/Firestore.js';
 /* eslint-disable camelcase */
 // Declaracion de variables
@@ -9,6 +10,7 @@ const routes = {
   '/': LogIn,
   '/register': Register,
   '/resetpassword': ResetPassword,
+  '/posts': Posts,
 };
 const onNavigate = (pathname) => {
   window.history.pushState(
@@ -77,6 +79,7 @@ function showLogIn() {
     const email = document.getElementById('user').value;
     const password = document.getElementById('password').value;
     logIn(email, password);
+    onNavigate('/posts');
   });
   // link que lleva a vista que permite reestablecer contraseña
   const forgotPasswordLink = document.getElementById('forgotPassword');
