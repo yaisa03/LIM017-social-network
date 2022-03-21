@@ -2,11 +2,11 @@ export const Posts = () => {
   const containerPosts = `<header>
                            <nav>
                             <ul>
-                             <li>Home</li>
-                             <li>Perfil</li>
-                             <li>Notificaciones</li>
+                             <li><i id="Homeicon" class="fa fa-home"> </i></li>
+                             <li><i id="Usericon" class="fa fa-user" > </i></li>
+                             <li><i id="Bellicon" class="fa fa-bell" > </i></li>
                             </ul>
-                            <nav>
+                           </nav>
                           </header>
                           <div id="containerSearch">
                           <input id="searchPost" type="text" placeholder="Buscar">
