@@ -3,11 +3,13 @@ import { Register } from './components/Register.js';
 import { ResetPassword } from './components/ResetPassword.js';
 import { Posts } from './components/Posts.js';
 // eslint-disable-next-line object-curly-newline
+// eslint-disable-next-line import/no-cycle
 import { logIn, register, logInGoogle, emailResetPassword } from './lib/Firestore.js';
 /* eslint-disable camelcase */
 // Declaracion de variables
 
 const pageOne = document.getElementById('containerPageOne');
+const root = document.getElementById('root');
 const routes = {
   '/': LogIn,
   '/register': Register,
@@ -60,6 +62,17 @@ function showLogInGoogle() {
     logInGoogle();
   });
 }
+// funcion queda funcionalidad a la pag Register
+function showRegister() {
+  const registerButton = document.getElementById('registerButton');
+  show_password('eyeLogo2', 'eyeSlashLogo2', 'newUserPassword');
+  hide_password('eyeLogo2', 'eyeSlashLogo2', 'newUserPassword');
+  registerButton.addEventListener('click', () => {
+    const email = document.getElementById('newUser').value;
+    const password = document.getElementById('newUserPassword').value;
+    register(email, password);
+  });
+}
 // funcion que da funcionalida a la pagina LogIn
 function showLogIn() {
   show_password('eyeLogo1', 'eyeSlashLogo1', 'password');
@@ -72,21 +85,6 @@ function showLogIn() {
     logIn(email, password);
     // onNavigate('/posts');
   });
-  /* function goToLogIn() {
-    onNavigate('/');
-    showLogIn();
-  } */
-  // funcion queda funcionalidad a la pag Register
-  function showRegister() {
-    const registerButton = document.getElementById('registerButton');
-    show_password('eyeLogo2', 'eyeSlashLogo2', 'newUserPassword');
-    hide_password('eyeLogo2', 'eyeSlashLogo2', 'newUserPassword');
-    registerButton.addEventListener('click', () => {
-      const email = document.getElementById('newUser').value;
-      const password = document.getElementById('newUserPassword').value;
-      register(email, password);
-    });
-  }
   // link que lleva a vista que permite reestablecer contraseña
   const forgotPasswordLink = document.getElementById('forgotPassword');
   forgotPasswordLink.addEventListener('click', () => {
@@ -101,6 +99,14 @@ function showLogIn() {
   });
   // funcion que permite iniciar sesion con google
   showLogInGoogle();
+}
+export function goToLogIn() {
+  onNavigate('/');
+  showLogIn();
+}
+export function showPosts() {
+  onNavigate('/posts');
+  root.classList.add('hideBackground');
 }
 // mostrar el logIn cuando carga la pagina
 window.addEventListener('load', () => {

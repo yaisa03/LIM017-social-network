@@ -7,6 +7,8 @@ import { GoogleAuthProvider, signInWithRedirect, getRedirectResult, sendEmailVer
 // eslint-disable-next-line import/no-unresolved
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.6.6/firebase-app.js';
 import { firebaseConfig } from './FirebaseInit.js';
+// eslint-disable-next-line import/no-cycle
+import { goToLogIn, showPosts } from '../main.js';
 
 // Initialize Firebase
 export const app = initializeApp(firebaseConfig);
@@ -18,6 +20,7 @@ function emailVerification() {
     .then(() => {
       errorMessageText.classList.add('showMessage');
       errorMessageText.innerText = 'Email verification sent!';
+      setTimeout(goToLogIn, 2000);
     });
 }
 
@@ -66,6 +69,7 @@ export function logIn(email, password) {
           console.log('Se inicio sesion correctamente');
           console.log(user);
           console.log(user.uid);
+          showPosts();
           break;
         case false:
           errorMessageText.classList.add('showMessageError');
