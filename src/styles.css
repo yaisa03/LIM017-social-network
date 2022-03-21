@@ -96,7 +96,7 @@ input::placeholder {
     color: #fff;
     padding-left: 2%;
 }
-.fa{
+[id^="eye"]{
     position: absolute;
     right: 1.5%;
     top: 20%;
@@ -178,36 +178,35 @@ li{
     list-style: none;
 }
 #Homeicon, #Usericon, #Bellicon{
-    position: relative;
-    top: 0%;
-    color:#C7461E;    
+    color:#C7461E; 
+    font-size:24px;
 }
 #searchPost::placeholder {
     color: black;
 }
-#containerSearch {
-    margin-top: 2% !important;
+#SearchContainer{
     height: 35px;
     position: relative;
     display: flex;
     flex-direction: row;
+    width: 70% !important;
 }
 #searchPost {
     height: 100%;
-    width: 70%;
+    width: 100%;
     border-radius: 10px;
     padding-left: 2%;
-    position: relative;
 }
 .fa-search-minus{
-    position: relative;
     color: black;
-    margin-bottom: 8%;
-    margin-left: 2%;
+    right: 3%;
+    position: absolute;
+    top: 20%;
 }
 
 #postButton {
     background-color: #212431;
+    height: 40px;
 }
 /* .fa-home, .fa-user, .fa-bell {
     width: 10px;
