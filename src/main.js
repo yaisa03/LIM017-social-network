@@ -105,14 +105,35 @@ export function goToLogIn() {
   showLogIn();
 }
 function createNewPost() {
+  const title = document.getElementById('title');
+  const post = document.getElementById('post');
   const postButton = document.getElementById('postButton');
   postButton.addEventListener('click', (e) => {
     e.preventDefault();
-    const title = document.getElementById('title').value;
-    const post = document.getElementById('post').value;
     const createPost = document.getElementById('createPost');
-    uploadPost(title, post);
-    createPost.reset();
+    if (title.value !== '' && post.value !== '') {
+      uploadPost(title.value, post.value);
+      createPost.reset();
+    } else if (title.value === '' && post.value === '') {
+      title.classList.add('inputError');
+      title.value = 'Este campo no puede estar vacio';
+      post.classList.add('inputError');
+      post.innerText = 'Este campo no puede estar vacio';
+    } else if (title.value === '') {
+      title.classList.add('inputError');
+      title.value = 'Este campo no puede estar vacio';
+    } else if (post.value === '') {
+      post.classList.add('inputError');
+      post.innerText = 'Este campo no puede estar vacio';
+    }
+    title.addEventListener('keyup', () => {
+      title.classList.remove('inputError');
+      title.value = '';
+    });
+    post.addEventListener('keyup', () => {
+      post.classList.remove('inputError');
+      post.value = '';
+    });
   });
 }
 function navIcons() {
@@ -125,6 +146,12 @@ function navIcons() {
     findPosts();
     createNewPost();
     navIcons();
+  });
+  const logOut = document.getElementById('logOut');
+  logOut.addEventListener('click', () => {
+    root.classList.remove('hideBackground');
+    onNavigate('/');
+    showLogIn();
   });
 }
 function showProfile() {

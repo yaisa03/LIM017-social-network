@@ -30,6 +30,9 @@ p{
 .showMessage{
     background-color: green;
 }
+.inputError {
+    border-color: red;
+}
 /*pagina 1*/
 [id^="container"]{
     display: flex;
@@ -132,6 +135,10 @@ button:hover{
 .facebookLogo, .googleLogo {
     width: calc(2rem + 0.5vw);
     height: calc(2rem + 0.5vh);
+    transition: transform .2s; 
+}
+.facebookLogo:hover, .googleLogo:hover{
+    transform: scale(1.2);
 }
 a{
     color:#fff;
@@ -180,6 +187,12 @@ li{
 #Homeicon, #Usericon, #Bellicon, #logOut{
     color:#C7461E; 
     font-size:24px;
+    transition: transform .2s; 
+}
+#Homeicon:hover, #Usericon:hover, #Bellicon:hover, #logOut:hover{
+    transform: scale(1.3);
+    background: #FFF1CE;
+    padding: 2px;
 }
 #searchPost::placeholder {
     color: black;
@@ -281,7 +294,7 @@ span {
 }
 @media only screen and (min-width: 768px){
     body{
-        background-image: url(Images/Bg2.jpg);
+        background-image: url(Images/BgDesktop.jpg);
         background-position: center center;
         background-size: cover;
     }
