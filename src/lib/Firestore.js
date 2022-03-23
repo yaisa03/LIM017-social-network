@@ -6,12 +6,25 @@ import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, se
 import { GoogleAuthProvider, signInWithRedirect, getRedirectResult, sendEmailVerification } from 'https://www.gstatic.com/firebasejs/9.6.6/firebase-auth.js';
 // eslint-disable-next-line import/no-unresolved
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.6.6/firebase-app.js';
-import { firebaseConfig } from './FirebaseInit.js';
-// eslint-disable-next-line import/no-cycle
-import { goToLogIn, showPosts } from '../main.js';
+// eslint-disable-next-line import/no-unresolved
+import { getFirestore, collection, addDoc , query, where, getDocs } from 'https://www.gstatic.com/firebasejs/9.6.6/firebase-firestore.js';
 
+// eslint-disable-next-line import/no-cycle
+import { goToLogIn, showPostsPage } from '../main.js';
+
+const firebaseConfig = {
+  apiKey: 'AIzaSyBnTpBzOUriU6ztyOeGumDQE8HHpkjqreU',
+  authDomain: 'foodbook-66988.firebaseapp.com',
+  databaseURL: 'https://foodbook-66988-default-rtdb.firebaseio.com',
+  projectId: 'foodbook-66988',
+  storageBucket: 'foodbook-66988.appspot.com',
+  messagingSenderId: '558953316138',
+  appId: '1:558953316138:web:d5c91f573abe129835e853',
+  measurementId: 'G-YN3T2EDM93',
+};
 // Initialize Firebase
 export const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
 
 function emailVerification() {
   const auth = getAuth();
@@ -69,7 +82,7 @@ export function logIn(email, password) {
           console.log('Se inicio sesion correctamente');
           console.log(user);
           console.log(user.uid);
-          showPosts();
+          showPostsPage();
           break;
         case false:
           errorMessageText.classList.add('showMessageError');
@@ -101,7 +114,7 @@ export function logIn(email, password) {
         default:
           break;
       }
-      console.log(errorMessage);
+      // console.log(errorMessage);
     });
 }
 
@@ -165,4 +178,22 @@ export function setUser(displayName) {
     const uid = user.uid;
     return uid;
   }
+}
+export function uploadPost(title, post) {
+  const auth = getAuth();
+  const user = auth.currentUser;
+  /* const postsRef = collection(db, 'users');
+  const q = query(postsRef, where('Id', '==', user.uid));
+  setDoc(q, { postTitle: title, contain: post }, { merge: true }); */
+  addDoc(collection(db, 'posts'), { UserId: user.uid, postTitle: title, content: post });
+}
+export async function findPost() {
+  const auth = getAuth();
+  const user = auth.currentUser;
+  const postsRef = collection(db, 'posts');
+  const q = query(postsRef, where('UserId', '==', user.uid));
+  const querySnapshot = await getDocs(q);
+  querySnapshot.forEach((doc) => {
+    console.log(doc.id, ' => ', doc.data());
+  });
 }

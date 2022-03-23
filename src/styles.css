@@ -203,17 +203,39 @@ li{
     position: absolute;
     top: 20%;
 }
-
+#postButton:hover {
+    background-color: #C7461E;
+    color: #212431;
+}
 #postButton {
     background-color: #212431;
     height: 40px;
+    color: #C7461E;
+    align-self: center;
 }
-/* .fa-home, .fa-user, .fa-bell {
-    width: 10px;
-    height: 10px;
-    /* color:#C7461E;
-}*/
+#createPost {
+    display: flex;
+    flex-direction: column;
+    width: 80%;
+    border:2px solid #212431;
+    padding: 5%;
+    border-radius: 5px;
+    box-shadow: 2px 2px 10px #C7461E;
+}
+#post {
+    height: 150px;
+    margin-bottom: 2%;
+    border: 1px solid #212431;
+    padding-left: 5px;
+    font-size: large;
+}
+#title::placeholder {
+    color: grey !important;
+    padding-left: 5px;
+    font-size: large;
+    font-family: monospace;
 
+}
 @media only screen and (min-width: 768px){
     body{
         background-image: url(Images/Bg2.jpg);
