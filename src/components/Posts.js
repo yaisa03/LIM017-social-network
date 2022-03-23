@@ -14,10 +14,12 @@ export const Posts = () => {
                           <i class="fa fa-search-minus"></i>
                           </div>
                           <form id="createPost">
+                           <p id="messagePost"></p>
                            <input id="title" placeholder="Titulo">
                            <textarea id="post" placeholder="Descripcion"></textarea>
                            <button id="postButton">Publicar</button>
                           </form>
                           <div id="postsContainer"></div>`;
-  return containerPosts;
+  const postsDivs = containerPosts;
+  return postsDivs;
 };

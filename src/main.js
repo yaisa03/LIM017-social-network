@@ -104,36 +104,38 @@ export function goToLogIn() {
   onNavigate('/');
   showLogIn();
 }
-function createNewPost() {
+function createNewPost(id) {
+  const errorMessage = document.getElementById('messagePost');
   const title = document.getElementById('title');
   const post = document.getElementById('post');
   const postButton = document.getElementById('postButton');
+  errorMessage.classList.remove('showMessageError');
+  errorMessage.innerHTML = '';
   postButton.addEventListener('click', (e) => {
     e.preventDefault();
+    title.classList.remove('inputError');
+    post.classList.remove('inputError');
     const createPost = document.getElementById('createPost');
-    if (title.value !== '' && post.value !== '') {
-      uploadPost(title.value, post.value);
-      createPost.reset();
-    } else if (title.value === '' && post.value === '') {
+    if (title.value === '' && post.value === '') {
       title.classList.add('inputError');
-      title.value = 'Este campo no puede estar vacio';
       post.classList.add('inputError');
-      post.innerText = 'Este campo no puede estar vacio';
+      errorMessage.classList.add('showMessageError');
+      errorMessage.innerHTML = 'Los campos no pueden estar vacios';
     } else if (title.value === '') {
       title.classList.add('inputError');
-      title.value = 'Este campo no puede estar vacio';
+      errorMessage.classList.add('showMessageError');
+      errorMessage.innerHTML = 'Debes ingresar un titulo';
     } else if (post.value === '') {
       post.classList.add('inputError');
-      post.innerText = 'Este campo no puede estar vacio';
+      errorMessage.classList.add('showMessageError');
+      errorMessage.innerHTML = 'Debes ingresar contenido al post';
+    } else if (title.value !== '' && post.value !== '') {
+      uploadPost(title.value, post.value);
+      createPost.reset();
+      errorMessage.classList.remove('showMessageError');
+      errorMessage.innerHTML = '';
+      return (id === 'h') ? findPosts() : findPostById();
     }
-    title.addEventListener('keyup', () => {
-      title.classList.remove('inputError');
-      title.value = '';
-    });
-    post.addEventListener('keyup', () => {
-      post.classList.remove('inputError');
-      post.value = '';
-    });
   });
 }
 function navIcons() {
@@ -144,7 +146,7 @@ function navIcons() {
     root.classList.add('hideBackground');
     onNavigate('/home');
     findPosts();
-    createNewPost();
+    createNewPost('h');
     navIcons();
   });
   const logOut = document.getElementById('logOut');
@@ -157,7 +159,7 @@ function navIcons() {
 function showProfile() {
   onNavigate('/profile');
   findPostById();
-  createNewPost();
+  createNewPost('p');
   navIcons();
 }
 export function showHome() {
