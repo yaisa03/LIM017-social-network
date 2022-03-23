@@ -2,12 +2,13 @@ import { LogIn } from './components/LogIn.js';
 import { Register } from './components/Register.js';
 import { ResetPassword } from './components/ResetPassword.js';
 import { Posts } from './components/Posts.js';
+// import { ShowPosts } from './components/ShowPosts.js';
 // eslint-disable-next-line object-curly-newline
 // eslint-disable-next-line import/no-cycle
-import { logIn, register, logInGoogle, emailResetPassword } from './lib/Firestore.js';
+import { logIn, register, logInGoogle, emailResetPassword, uploadPost, findPost } from './lib/Firestore.js';
 /* eslint-disable camelcase */
-// Declaracion de variables
 
+// Declaracion de variables
 const pageOne = document.getElementById('containerPageOne');
 const root = document.getElementById('root');
 const routes = {
@@ -83,7 +84,6 @@ function showLogIn() {
     const email = document.getElementById('user').value;
     const password = document.getElementById('password').value;
     logIn(email, password);
-    // onNavigate('/posts');
   });
   // link que lleva a vista que permite reestablecer contraseña
   const forgotPasswordLink = document.getElementById('forgotPassword');
@@ -104,9 +104,20 @@ export function goToLogIn() {
   onNavigate('/');
   showLogIn();
 }
-export function showPosts() {
-  onNavigate('/posts');
+
+export function showPostsPage() {
   root.classList.add('hideBackground');
+  onNavigate('/posts');
+  findPost();
+  const postButton = document.getElementById('postButton');
+  postButton.addEventListener('click', (e) => {
+    e.preventDefault();
+    const title = document.getElementById('title').value;
+    const post = document.getElementById('post').value;
+    const createPost = document.getElementById('createPost');
+    uploadPost(title, post);
+    createPost.reset();
+  });
 }
 // mostrar el logIn cuando carga la pagina
 window.addEventListener('load', () => {
