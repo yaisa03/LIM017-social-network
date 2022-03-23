@@ -1,17 +1,19 @@
 export const ShowPosts = (e) => {
-  const containerPosts = `<div class="post">
-                              <p class="title">${e.postTittle}</p>
-                              <p class="description">${e.content}</p>
-                              <button id="editButton">Editar</button>
-                              <button id="deleteButton">Borrar</button>
-                              <button id="likeButton">Me Gusta</button>
+  const containerPosts = `<div class="postDiv">
+                              <textarea class="title" readonly>${e.postTitle}</textarea>
+                              <textarea class="description" readonly>${e.content}</textarea>
+                              <span><i id="likeButton" class="fa fa-heart"></i>0</span>
                             </div>`;
   return containerPosts;
 };
-function showPostInPage() {
-    const postDataById = findPost();
-    const containerPosts = document.getElementById('containerPosts');
-    postDataById.forEach((e) => {
-      containerPosts.innerHTML += ShowPosts(e);
-    });
-  }
+export const ShowPostsById = (e) => {
+  const containerPosts = `<div class="postDiv">
+                              <textarea class="title" readonly>${e.postTitle}</textarea>
+                              <textarea class="description" readonly>${e.content}</textarea>
+                              <div>
+                              <button class="editButton">Editar</button>
+                              <button class="deleteButton">Borrar</button>
+                              </div>
+                            </div>`;
+  return containerPosts;
+};

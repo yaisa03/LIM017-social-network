@@ -2,10 +2,10 @@ import { LogIn } from './components/LogIn.js';
 import { Register } from './components/Register.js';
 import { ResetPassword } from './components/ResetPassword.js';
 import { Posts } from './components/Posts.js';
-// import { ShowPosts } from './components/ShowPosts.js';
+import { Profile } from './components/Profile.js';
 // eslint-disable-next-line object-curly-newline
 // eslint-disable-next-line import/no-cycle
-import { logIn, register, logInGoogle, emailResetPassword, uploadPost, findPost } from './lib/Firestore.js';
+import { logIn, register, logInGoogle, emailResetPassword, uploadPost, findPostById, findPosts } from './lib/Firestore.js';
 /* eslint-disable camelcase */
 
 // Declaracion de variables
@@ -15,7 +15,8 @@ const routes = {
   '/': LogIn,
   '/register': Register,
   '/resetpassword': ResetPassword,
-  '/posts': Posts,
+  '/home': Posts,
+  '/profile': Profile,
 };
 const onNavigate = (pathname) => {
   window.history.pushState(
@@ -25,7 +26,6 @@ const onNavigate = (pathname) => {
   );
   pageOne.innerHTML = routes[pathname]();
 };
-
 // Funcion que permite mostrar contraseña al presionar el icono
 function show_password(id1, id2, id3) {
   const eye = document.getElementById(id1);
@@ -104,11 +104,7 @@ export function goToLogIn() {
   onNavigate('/');
   showLogIn();
 }
-
-export function showPostsPage() {
-  root.classList.add('hideBackground');
-  onNavigate('/posts');
-  findPost();
+function createNewPost() {
   const postButton = document.getElementById('postButton');
   postButton.addEventListener('click', (e) => {
     e.preventDefault();
@@ -118,6 +114,31 @@ export function showPostsPage() {
     uploadPost(title, post);
     createPost.reset();
   });
+}
+function navIcons() {
+  const Usericon = document.getElementById('Usericon');
+  Usericon.addEventListener('click', showProfile);
+  const Homeicon = document.getElementById('Homeicon');
+  Homeicon.addEventListener('click', () => {
+    root.classList.add('hideBackground');
+    onNavigate('/home');
+    findPosts();
+    createNewPost();
+    navIcons();
+  });
+}
+function showProfile() {
+  onNavigate('/profile');
+  findPostById();
+  createNewPost();
+  navIcons();
+}
+export function showHome() {
+  root.classList.add('hideBackground');
+  onNavigate('/home');
+  findPosts();
+  createNewPost();
+  navIcons();
 }
 // mostrar el logIn cuando carga la pagina
 window.addEventListener('load', () => {

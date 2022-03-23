@@ -8,9 +8,10 @@ import { GoogleAuthProvider, signInWithRedirect, getRedirectResult, sendEmailVer
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.6.6/firebase-app.js';
 // eslint-disable-next-line import/no-unresolved
 import { getFirestore, collection, addDoc , query, where, getDocs } from 'https://www.gstatic.com/firebasejs/9.6.6/firebase-firestore.js';
-
+// eslint-disable-next-line import/no-unresolved
+import { ShowPosts, ShowPostsById } from '../components/ShowPosts.js';
 // eslint-disable-next-line import/no-cycle
-import { goToLogIn, showPostsPage } from '../main.js';
+import { goToLogIn, showHome } from '../main.js';
 
 const firebaseConfig = {
   apiKey: 'AIzaSyBnTpBzOUriU6ztyOeGumDQE8HHpkjqreU',
@@ -82,7 +83,7 @@ export function logIn(email, password) {
           console.log('Se inicio sesion correctamente');
           console.log(user);
           console.log(user.uid);
-          showPostsPage();
+          showHome();
           break;
         case false:
           errorMessageText.classList.add('showMessageError');
@@ -145,10 +146,15 @@ export function emailResetPassword(email) {
   sendPasswordResetEmail(auth, email)
     .then(() => {
       console.log('Password reset email sent!');
+      errorMessageText.classList.remove('showMessageError');
+      errorMessageText.classList.add('showMessage');
+      errorMessageText.innerText = 'Password reset email sent';
+      setTimeout(goToLogIn, 2000);
     })
     .catch((error) => {
       const errorMessage = error.message;
       console.log(errorMessage);
+      errorMessageText.classList.remove('showMessage');
       errorMessageText.classList.add('showMessageError');
       switch (errorMessage) {
         case 'Firebase: Error (auth/user-not-found).':
@@ -187,13 +193,23 @@ export function uploadPost(title, post) {
   setDoc(q, { postTitle: title, contain: post }, { merge: true }); */
   addDoc(collection(db, 'posts'), { UserId: user.uid, postTitle: title, content: post });
 }
-export async function findPost() {
+export async function findPostById() {
   const auth = getAuth();
   const user = auth.currentUser;
   const postsRef = collection(db, 'posts');
   const q = query(postsRef, where('UserId', '==', user.uid));
   const querySnapshot = await getDocs(q);
   querySnapshot.forEach((doc) => {
-    console.log(doc.id, ' => ', doc.data());
+    const containerPosts = document.getElementById('postsContainer');
+    containerPosts.innerHTML += ShowPostsById(doc.data());
+  });
+}
+export async function findPosts() {
+  const postsRef = collection(db, 'posts');
+  const q = query(postsRef, where('postTitle', '!=', ''));
+  const querySnapshot = await getDocs(q);
+  querySnapshot.forEach((doc) => {
+    const containerPosts = document.getElementById('postsContainer');
+    containerPosts.innerHTML += ShowPosts(doc.data());
   });
 }

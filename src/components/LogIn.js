@@ -11,7 +11,7 @@ export const LogIn = () => {
                           <i class="fa fa-eye" id="eyeLogo1" ></i>
                           <i class="fa fa-eye-slash" id="eyeSlashLogo1" style="display: none;"></i>
                           </div>
-                          <a id="forgotPassword">Olvidaste tu contraseña?</a>
+                          <a id="forgotPassword">¿Olvidaste tu contraseña?</a>
                          </div>`;
   const logInButton = '<button id="logIn">Iniciar Sesion</button>';
   const containerRegister = `<div id="containerRegister">
@@ -20,7 +20,7 @@ export const LogIn = () => {
                                 <img src="Images/google.png" class="googleLogo">
                                 <img src="Images/facebook.png" class="facebookLogo">
                               </div>
-                              <a id="register">No tienes cuenta? Registrate</a>
+                              <a id="register">¿No tienes cuenta? Registrate</a>
                               </div>`;
   const LogInDivs = errorMessage + containerLogo + containerLogIn + logInButton + containerRegister;
   return LogInDivs;
