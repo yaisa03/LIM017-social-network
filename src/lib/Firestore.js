@@ -7,7 +7,7 @@ import { GoogleAuthProvider, signInWithRedirect, getRedirectResult, sendEmailVer
 // eslint-disable-next-line import/no-unresolved
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.6.6/firebase-app.js';
 // eslint-disable-next-line import/no-unresolved
-import { getFirestore, collection, addDoc, query, where, getDocs, onSnapshot } from 'https://www.gstatic.com/firebasejs/9.6.6/firebase-firestore.js';
+import { getFirestore, collection, addDoc, query, where, getDocs, orderBy, deleteDoc, doc } from 'https://www.gstatic.com/firebasejs/9.6.6/firebase-firestore.js';
 // eslint-disable-next-line import/no-unresolved
 import { ShowPosts, ShowPostsById } from '../components/ShowPosts.js';
 // eslint-disable-next-line import/no-cycle
@@ -191,7 +191,7 @@ export function uploadPost(title, post) {
   /* const postsRef = collection(db, 'users');
   const q = query(postsRef, where('Id', '==', user.uid));
   setDoc(q, { postTitle: title, contain: post }, { merge: true }); */
-  addDoc(collection(db, 'posts'), { UserId: user.uid, postTitle: title, content: post });
+  addDoc(collection(db, 'posts'), { UserId: user.uid, postTitle: title, content: post, date: new Date()});
 }
 export async function findPostById() {
   const auth = getAuth();
@@ -199,17 +199,30 @@ export async function findPostById() {
   const postsRef = collection(db, 'posts');
   const q = query(postsRef, where('UserId', '==', user.uid));
   const querySnapshot = await getDocs(q);
-  querySnapshot.forEach((doc) => {
+  querySnapshot.forEach((e) => {
     const containerPosts = document.getElementById('postsContainer');
-    containerPosts.innerHTML += ShowPostsById(doc.data());
+    containerPosts.innerHTML += ShowPostsById(e, e.data());
   });
 }
 export async function findPosts() {
   const postsRef = collection(db, 'posts');
-  const q = query(postsRef, where('postTitle', '!=', ''));
+  const q = query(postsRef, where('date', '!=', ''), orderBy('date', 'desc'));
   const querySnapshot = await getDocs(q);
-  querySnapshot.forEach((doc) => {
+  querySnapshot.forEach((e) => {
     const containerPosts = document.getElementById('postsContainer');
-    containerPosts.innerHTML += ShowPosts(doc.data());
+    containerPosts.innerHTML += ShowPosts(e.data());
   });
 }
+export async function deletePost(id) {
+  const q = await doc(db, 'posts', id);
+  deleteDoc(q);
+}
+
+/* export async function findPosts() {
+  onSnapshot(collection(db, 'posts'), (querySnapshot) => {
+    querySnapshot.forEach((doc) => {
+      const containerPosts = document.getElementById('postsContainer');
+      containerPosts.innerHTML += ShowPosts(doc.data());
+    });
+  });
+} */

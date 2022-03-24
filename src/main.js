@@ -5,7 +5,7 @@ import { Posts } from './components/Posts.js';
 import { Profile } from './components/Profile.js';
 // eslint-disable-next-line object-curly-newline
 // eslint-disable-next-line import/no-cycle
-import { logIn, register, logInGoogle, emailResetPassword, uploadPost, findPostById, findPosts } from './lib/Firestore.js';
+import { logIn, register, logInGoogle, emailResetPassword, uploadPost, findPostById, findPosts, deletePost } from './lib/Firestore.js';
 /* eslint-disable camelcase */
 
 // Declaracion de variables
@@ -134,6 +134,8 @@ function createNewPost(id) {
       createPost.reset();
       errorMessage.classList.remove('showMessageError');
       errorMessage.innerHTML = '';
+      const containerPosts = document.getElementById('postsContainer');
+      containerPosts.innerHTML = '';
       return (id === 'h') ? findPosts() : findPostById();
     }
   });
@@ -161,6 +163,8 @@ function showProfile() {
   findPostById();
   createNewPost('p');
   navIcons();
+  const deleteButtons = document.querySelectorAll('.deleteButton');
+  console.log(deleteButtons);
 }
 export function showHome() {
   root.classList.add('hideBackground');
