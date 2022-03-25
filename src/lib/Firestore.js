@@ -7,7 +7,7 @@ import { GoogleAuthProvider, signInWithRedirect, getRedirectResult, sendEmailVer
 // eslint-disable-next-line import/no-unresolved
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.6.6/firebase-app.js';
 // eslint-disable-next-line import/no-unresolved
-import { getFirestore, collection, addDoc, query, where, getDocs, orderBy, deleteDoc, doc } from 'https://www.gstatic.com/firebasejs/9.6.6/firebase-firestore.js';
+import { getFirestore, collection, addDoc, query, where, getDocs, orderBy, deleteDoc, doc, setDoc } from 'https://www.gstatic.com/firebasejs/9.6.6/firebase-firestore.js';
 // eslint-disable-next-line import/no-unresolved
 import { ShowPosts, ShowPostsById } from '../components/ShowPosts.js';
 // eslint-disable-next-line import/no-cycle
@@ -191,7 +191,7 @@ export function uploadPost(title, post) {
   /* const postsRef = collection(db, 'users');
   const q = query(postsRef, where('Id', '==', user.uid));
   setDoc(q, { postTitle: title, contain: post }, { merge: true }); */
-  addDoc(collection(db, 'posts'), { UserId: user.uid, postTitle: title, content: post, date: new Date()});
+  addDoc(collection(db, 'posts'), { UserId: user.uid, postTitle: title, content: post, date: new Date() });
 }
 export async function findPostById() {
   const auth = getAuth();
@@ -202,7 +202,15 @@ export async function findPostById() {
   querySnapshot.forEach((e) => {
     const containerPosts = document.getElementById('postsContainer');
     containerPosts.innerHTML += ShowPostsById(e, e.data());
+    const button = document.querySelectorAll('.editButton');
+    const text = document.querySelectorAll(`.${button.id}`);
+    text.forEach((el) => {
+      el.readonly = true;
+      console.log(el);
+    });
   });
+  deletePosts();
+  editPosts();
 }
 export async function findPosts() {
   const postsRef = collection(db, 'posts');
@@ -226,3 +234,44 @@ export async function deletePost(id) {
     });
   });
 } */
+
+function deletePosts() {
+  const deleteButton = document.querySelectorAll('.deleteButton');
+  deleteButton.forEach((button) => {
+    button.addEventListener('click', () => {
+      deleteDoc(doc(db, 'posts', button.id));
+      document.getElementById('postsContainer').innerHTML = '';
+      return findPostById();
+    });
+  });
+}
+function editPosts() {
+  const editButton = document.querySelectorAll('.editButton');
+  editButton.forEach((button) => {
+    button.addEventListener('click', () => {
+      const text = document.querySelectorAll(`.${button.id}`);
+      text.forEach((e) => {
+        e.readonly = false;
+        e.style.backgroundColor = 'white';
+        e.style.borderColor = '#C7461E';
+        console.log(e);
+      });
+      button.innerText = 'Publicar';
+      button.addEventListener('click', () => {
+        const title = document.getElementById(`title${button.id}`);
+        const post = document.getElementById(`description${button.id}`);
+        console.log(title, post);
+        updatePost(button.id, title.value, post.value);
+        button.innerText = 'Editar';
+        console.log('updatePost');
+      });
+    });
+  });
+}
+async function updatePost(id, title, post) {
+  const postsRef = collection(db, 'posts');
+  const q = query(postsRef, where(doc.id, '==', id));
+  const querySnapshot = await getDocs(q);
+  setDoc(querySnapshot, { postTitle: title, content: post, date: new Date() }, { merge: true });
+  return findPostById();
+}

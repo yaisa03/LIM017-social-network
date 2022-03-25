@@ -5,7 +5,7 @@ import { Posts } from './components/Posts.js';
 import { Profile } from './components/Profile.js';
 // eslint-disable-next-line object-curly-newline
 // eslint-disable-next-line import/no-cycle
-import { logIn, register, logInGoogle, emailResetPassword, uploadPost, findPostById, findPosts, deletePost } from './lib/Firestore.js';
+import { logIn, register, logInGoogle, emailResetPassword, uploadPost, findPostById, findPosts } from './lib/Firestore.js';
 /* eslint-disable camelcase */
 
 // Declaracion de variables
@@ -18,13 +18,17 @@ const routes = {
   '/home': Posts,
   '/profile': Profile,
 };
+function loadPage() {
+  const path = window.location.pathname;
+  pageOne.innerHTML = routes[path]();
+}
 const onNavigate = (pathname) => {
   window.history.pushState(
     {},
     pathname,
     window.location.origin + pathname,
   );
-  pageOne.innerHTML = routes[pathname]();
+  loadPage();
 };
 // Funcion que permite mostrar contraseña al presionar el icono
 function show_password(id1, id2, id3) {
@@ -163,18 +167,14 @@ function showProfile() {
   findPostById();
   createNewPost('p');
   navIcons();
-  const deleteButtons = document.querySelectorAll('.deleteButton');
-  console.log(deleteButtons);
 }
 export function showHome() {
   root.classList.add('hideBackground');
   onNavigate('/home');
   findPosts();
-  createNewPost();
+  createNewPost('h');
   navIcons();
 }
 // mostrar el logIn cuando carga la pagina
-window.addEventListener('load', () => {
-  onNavigate('/');
-  showLogIn();
-});
+onNavigate('/');
+showLogIn();

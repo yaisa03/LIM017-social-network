@@ -8,10 +8,10 @@ export const ShowPosts = (e) => {
 };
 export const ShowPostsById = (doc, e) => {
   const containerPosts = `<div class="postDiv">
-                              <textarea class="title" readonly>${e.postTitle}</textarea>
-                              <textarea class="description" readonly>${e.content}</textarea>
+                              <textarea id="title${doc.id}" class="title" >${e.postTitle}</textarea>
+                              <textarea id="description${doc.id}" class="description" >${e.content}</textarea>
                               <div>
-                              <button class="editButton">Editar</button>
+                              <button id="${doc.id}" class="editButton">Editar</button>
                               <button id="${doc.id}" class="deleteButton">Borrar</button>
                               </div>
                             </div>`;
