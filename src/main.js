@@ -5,31 +5,47 @@ import { Posts } from './components/Posts.js';
 import { Profile } from './components/Profile.js';
 // eslint-disable-next-line object-curly-newline
 // eslint-disable-next-line import/no-cycle
-import { logIn, register, logInGoogle, emailResetPassword, uploadPost, findPostById, findPosts } from './lib/Firestore.js';
+import {
+  logIn, register, logInGoogle, emailResetPassword, uploadPost, findPostById, findPosts, SignOut,
+} from './lib/Firestore.js';
 /* eslint-disable camelcase */
 
 // Declaracion de variables
 const pageOne = document.getElementById('containerPageOne');
 const root = document.getElementById('root');
+// router
 const routes = {
-  '/': LogIn,
-  '/register': Register,
-  '/resetpassword': ResetPassword,
-  '/home': Posts,
-  '/profile': Profile,
+  '#/': LogIn,
+  '#/register': Register,
+  '#/resetpassword': ResetPassword,
+  '#/home': Posts,
+  '#/profile': Profile,
 };
-function loadPage() {
-  const path = window.location.pathname;
-  pageOne.innerHTML = routes[path]();
-}
+// relacionar rutas con pathnames
 const onNavigate = (pathname) => {
   window.history.pushState(
     {},
     pathname,
     window.location.origin + pathname,
   );
-  loadPage();
+  pageOne.innerHTML = routes[pathname]();
 };
+/* function loadPage() {
+  const path = window.location.hash;
+  pageOne.innerHTML = routes[path]();
+}
+window.onpopstate = loadPage();
+window.onload = () => {
+  let oldHash = window.location.hash;
+  setInterval(() => {
+    const newHash = window.location.hash;
+    if (newHash !== oldHash) {
+      window.location.reload();
+      oldHash = newHash;
+    }
+  }, 100);
+}; */
+
 // Funcion que permite mostrar contraseña al presionar el icono
 function show_password(id1, id2, id3) {
   const eye = document.getElementById(id1);
@@ -92,22 +108,24 @@ function showLogIn() {
   // link que lleva a vista que permite reestablecer contraseña
   const forgotPasswordLink = document.getElementById('forgotPassword');
   forgotPasswordLink.addEventListener('click', () => {
-    onNavigate('/resetpassword');
+    onNavigate('#/resetpassword');
     resetPassword();
   });
   // link que permite crear nuevo usuario con email
   const newRegistry = document.getElementById('register');
   newRegistry.addEventListener('click', () => {
-    onNavigate('/register');
+    onNavigate('#/register');
     showRegister();
   });
   // funcion que permite iniciar sesion con google
   showLogInGoogle();
 }
+// funcion que lleva a la vista de inicio/logIn
 export function goToLogIn() {
-  onNavigate('/');
+  onNavigate('#/');
   showLogIn();
 }
+// funcion que permite crear posts
 function createNewPost(id) {
   const errorMessage = document.getElementById('messagePost');
   const title = document.getElementById('title');
@@ -144,13 +162,14 @@ function createNewPost(id) {
     }
   });
 }
+// funcionalidad de los iconos en el navegador
 function navIcons() {
   const Usericon = document.getElementById('Usericon');
   Usericon.addEventListener('click', showProfile);
   const Homeicon = document.getElementById('Homeicon');
   Homeicon.addEventListener('click', () => {
     root.classList.add('hideBackground');
-    onNavigate('/home');
+    onNavigate('#/home');
     findPosts();
     createNewPost('h');
     navIcons();
@@ -158,23 +177,26 @@ function navIcons() {
   const logOut = document.getElementById('logOut');
   logOut.addEventListener('click', () => {
     root.classList.remove('hideBackground');
-    onNavigate('/');
+    SignOut();
+    onNavigate('#/');
     showLogIn();
   });
 }
+// vista del perfil y post creados por el usuario
 function showProfile() {
-  onNavigate('/profile');
+  onNavigate('#/profile');
   findPostById();
   createNewPost('p');
   navIcons();
 }
+// vista de todos los posts
 export function showHome() {
   root.classList.add('hideBackground');
-  onNavigate('/home');
+  onNavigate('#/home');
   findPosts();
   createNewPost('h');
   navIcons();
 }
 // mostrar el logIn cuando carga la pagina
-onNavigate('/');
+onNavigate('#/');
 showLogIn();

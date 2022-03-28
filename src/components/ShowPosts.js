@@ -2,17 +2,18 @@ export const ShowPosts = (e) => {
   const containerPosts = `<div class="postDiv">
                               <textarea class="title" readonly>${e.postTitle}</textarea>
                               <textarea class="description" readonly>${e.content}</textarea>
-                              <span><i id="likeButton" class="fa fa-heart"></i>0</span>
+                              <span id="likeCount"><i id="likeButton" class="fa fa-heart"></i>0</span>
                             </div>`;
   return containerPosts;
 };
 export const ShowPostsById = (doc, e) => {
   const containerPosts = `<div class="postDiv">
-                              <textarea id="title${doc.id}" class="title" >${e.postTitle}</textarea>
-                              <textarea id="description${doc.id}" class="description" >${e.content}</textarea>
+                              <textarea class="title ${doc.id}" readonly>${e.postTitle}</textarea>
+                              <textarea class="description ${doc.id}" readonly>${e.content}</textarea>
                               <div>
-                              <button id="${doc.id}" class="editButton">Editar</button>
-                              <button id="${doc.id}" class="deleteButton">Borrar</button>
+                              <button id="${doc.id}" class="editButton ${doc.id}">Editar</button>
+                              <button id="${doc.id}" class="publishButton ${doc.id} hide">Publicar</button>
+                              <button id="${doc.id}" class="deleteButton ${doc.id}">Borrar</button>
                               </div>
                             </div>`;
   return containerPosts;

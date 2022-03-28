@@ -3,7 +3,7 @@
 // eslint-disable-next-line import/no-unresolved
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, sendPasswordResetEmail } from 'https://www.gstatic.com/firebasejs/9.6.6/firebase-auth.js';
 // eslint-disable-next-line import/no-unresolved
-import { GoogleAuthProvider, signInWithRedirect, getRedirectResult, sendEmailVerification } from 'https://www.gstatic.com/firebasejs/9.6.6/firebase-auth.js';
+import { GoogleAuthProvider, signInWithPopup, sendEmailVerification, signOut } from 'https://www.gstatic.com/firebasejs/9.6.6/firebase-auth.js';
 // eslint-disable-next-line import/no-unresolved
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.6.6/firebase-app.js';
 // eslint-disable-next-line import/no-unresolved
@@ -44,7 +44,6 @@ export function register(email, password) {
   createUserWithEmailAndPassword(auth, email, password).then((userCredential) => {
     // Signed in
     const user = userCredential.user;
-    // user.sendEmailVerification();
     console.log('Usuario registrado!:');
     console.log(user);
     emailVerification();
@@ -74,7 +73,7 @@ export function logIn(email, password) {
   const errorMessageText = document.querySelector('#message');
   signInWithEmailAndPassword(auth, email, password)
     .then((userCredential) => {
-      // Signed in\
+      // Signed in
       const user = userCredential.user;
       errorMessageText.classList.remove('showMessageError');
       errorMessageText.innerText = ' ';
@@ -115,27 +114,20 @@ export function logIn(email, password) {
         default:
           break;
       }
-      // console.log(errorMessage);
     });
 }
 
 export function logInGoogle() {
   const provider = new GoogleAuthProvider();
   const auth = getAuth();
-  signInWithRedirect(auth, provider);
-  getRedirectResult(auth)
+  signInWithPopup(auth, provider)
     .then((result) => {
-      // This gives you a Google Access Token. You can use it to access Google APIs.
       const credential = GoogleAuthProvider.credentialFromResult(result);
-      // eslint-disable-next-line no-unused-vars
       const token = credential.accessToken;
-      // The signed-in user info.
-      // eslint-disable-next-line no-unused-vars
       const user = result.user;
+      showHome();
     }).catch((error) => {
-      // Handle Errors here.
       const errorMessage = error.message;
-      // ...
       console.log(errorMessage);
     });
 }
@@ -178,21 +170,17 @@ export function setUser(displayName) {
   const user = auth.currentUser;
   if (user !== null) {
     user.displayName = displayName;
-    // const email = user.email;
-    // const photoURL = user.photoURL;
-    // const emailVerified = user.emailVerified;
     const uid = user.uid;
     return uid;
   }
 }
+
 export function uploadPost(title, post) {
   const auth = getAuth();
   const user = auth.currentUser;
-  /* const postsRef = collection(db, 'users');
-  const q = query(postsRef, where('Id', '==', user.uid));
-  setDoc(q, { postTitle: title, contain: post }, { merge: true }); */
-  addDoc(collection(db, 'posts'), { UserId: user.uid, postTitle: title, content: post, date: new Date() });
+  addDoc(collection(db, 'posts'), { UserId: user.uid, postTitle: title, content: post, date: new Date(), likes: 0 });
 }
+
 export async function findPostById() {
   const auth = getAuth();
   const user = auth.currentUser;
@@ -212,6 +200,7 @@ export async function findPostById() {
   deletePosts();
   editPosts();
 }
+
 export async function findPosts() {
   const postsRef = collection(db, 'posts');
   const q = query(postsRef, where('date', '!=', ''), orderBy('date', 'desc'));
@@ -220,58 +209,100 @@ export async function findPosts() {
     const containerPosts = document.getElementById('postsContainer');
     containerPosts.innerHTML += ShowPosts(e.data());
   });
+  // AddLikes();
 }
 export async function deletePost(id) {
   const q = await doc(db, 'posts', id);
   deleteDoc(q);
 }
 
-/* export async function findPosts() {
-  onSnapshot(collection(db, 'posts'), (querySnapshot) => {
-    querySnapshot.forEach((doc) => {
-      const containerPosts = document.getElementById('postsContainer');
-      containerPosts.innerHTML += ShowPosts(doc.data());
-    });
-  });
-} */
-
 function deletePosts() {
   const deleteButton = document.querySelectorAll('.deleteButton');
   deleteButton.forEach((button) => {
     button.addEventListener('click', () => {
-      deleteDoc(doc(db, 'posts', button.id));
-      document.getElementById('postsContainer').innerHTML = '';
-      return findPostById();
+      if (window.confirm('¿Estas seguro de eliminar este post?')) {
+        deleteDoc(doc(db, 'posts', button.id));
+        document.getElementById('postsContainer').innerHTML = '';
+        return findPostById();
+      }
     });
   });
 }
+
 function editPosts() {
   const editButton = document.querySelectorAll('.editButton');
   editButton.forEach((button) => {
     button.addEventListener('click', () => {
       const text = document.querySelectorAll(`.${button.id}`);
       text.forEach((e) => {
-        e.readonly = false;
+        // console.log(e.getAttribute('readonly'));
+        e.removeAttribute('readonly');
         e.style.backgroundColor = 'white';
-        e.style.borderColor = '#C7461E';
-        console.log(e);
+        // e.style.borderColor = '#C7461E';
+        document.querySelector(`.editButton.${button.id}`).classList.add('hide');
+        document.querySelector(`.publishButton.${button.id}`).classList.remove('hide');
       });
-      button.innerText = 'Publicar';
-      button.addEventListener('click', () => {
-        const title = document.getElementById(`title${button.id}`);
-        const post = document.getElementById(`description${button.id}`);
-        console.log(title, post);
+    });
+  });
+  const publishButton = document.querySelectorAll('.publishButton');
+  publishButton.forEach((button) => {
+    button.addEventListener('click', () => {
+      const text = document.querySelectorAll(`.${button.id}`);
+      text.forEach((e) => {
+        e.setAttribute('readonly', true);
+        e.style.backgroundColor = 'none';
+        e.style.borderColor = '#212431';
+        const title = document.querySelector(`.title.${button.id}`);
+        const post = document.querySelector(`.description.${button.id}`);
         updatePost(button.id, title.value, post.value);
-        button.innerText = 'Editar';
-        console.log('updatePost');
+        document.querySelector(`.editButton.${button.id}`).classList.remove('hide');
+        document.querySelector(`.publishButton.${button.id}`).classList.add('hide');
       });
     });
   });
 }
+
 async function updatePost(id, title, post) {
-  const postsRef = collection(db, 'posts');
-  const q = query(postsRef, where(doc.id, '==', id));
-  const querySnapshot = await getDocs(q);
-  setDoc(querySnapshot, { postTitle: title, content: post, date: new Date() }, { merge: true });
+  console.log(id, title, post);
+  setDoc(doc(db, 'posts', id), { postTitle: title, content: post, date: new Date() }, { merge: true });
+  console.log('cambiaron los datos del documento');
   return findPostById();
+}
+
+function postLike(id) {
+  const userRef = collection('posts').doc(id);
+  const increment = firebase.firestore.FieldValue.increment(1);
+  userRef.update('count', increment);
+}
+
+function postDislike(id) {
+  const userRef = collection('posts').doc(id);
+  const decrement = firebase.firestore.FieldValue.increment(-1);
+  userRef.update('count', decrement);
+}
+
+function AddLikes() {
+  let like = true;
+  const likeButton = document.getElementById('likeButton');
+  likeButton.addEventListener('click', () => {
+    if (like) {
+      like = false;
+      postLike(likeButton.id);
+      console.log('like +');
+    } else {
+      like = true;
+      postDislike(likeButton.id);
+      console.log('like -');
+    }
+  });
+}
+
+export function SignOut() {
+  const auth = getAuth();
+  signOut(auth).then(() => {
+    // Sign-out successful.
+    console.log('sesion cerrada satisfactoriamente');
+  }).catch((error) => {
+    // An error happened.
+  });
 }

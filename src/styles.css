@@ -293,11 +293,14 @@ span {
     font-size:24px;
     margin-right: 2%;
 }
-.editButton, .deleteButton {
+.editButton, .deleteButton, .publishButton{
     background-color: #212431;
     height: 40px;
     width: 30%;
     color: #C7461E;
+}
+.showButton{
+    display: flex;
 }
 @media only screen and (min-width: 768px){
     body{
