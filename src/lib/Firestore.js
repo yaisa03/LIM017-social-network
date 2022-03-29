@@ -233,12 +233,10 @@ function editPosts() {
   const editButton = document.querySelectorAll('.editButton');
   editButton.forEach((button) => {
     button.addEventListener('click', () => {
-      const text = document.querySelectorAll(`.${button.id}`);
+      const text = document.querySelectorAll(`.text${button.id}`);
       text.forEach((e) => {
-        // console.log(e.getAttribute('readonly'));
         e.removeAttribute('readonly');
         e.style.backgroundColor = 'white';
-        // e.style.borderColor = '#C7461E';
         document.querySelector(`.editButton.${button.id}`).classList.add('hide');
         document.querySelector(`.publishButton.${button.id}`).classList.remove('hide');
       });
@@ -247,25 +245,24 @@ function editPosts() {
   const publishButton = document.querySelectorAll('.publishButton');
   publishButton.forEach((button) => {
     button.addEventListener('click', () => {
-      const text = document.querySelectorAll(`.${button.id}`);
-      text.forEach((e) => {
-        e.setAttribute('readonly', true);
-        e.style.backgroundColor = 'none';
-        e.style.borderColor = '#212431';
-        const title = document.querySelector(`.title.${button.id}`);
-        const post = document.querySelector(`.description.${button.id}`);
-        updatePost(button.id, title.value, post.value);
-        document.querySelector(`.editButton.${button.id}`).classList.remove('hide');
-        document.querySelector(`.publishButton.${button.id}`).classList.add('hide');
-      });
+      if (window.confirm('¿Estas seguro de guardar tus cambios?')) {
+        const text = document.querySelectorAll(`.text${button.id}`);
+        text.forEach((e) => {
+          e.setAttribute('readonly', true);
+          e.style.backgroundColor = '#FFF1CE';
+          const title = document.querySelector(`.title.text${button.id}`);
+          const post = document.querySelector(`.description.text${button.id}`);
+          updatePost(button.id, title.value, post.value);
+          document.querySelector(`.editButton.${button.id}`).classList.remove('hide');
+          document.querySelector(`.publishButton.${button.id}`).classList.add('hide');
+        });
+      }
     });
   });
 }
 
 async function updatePost(id, title, post) {
-  console.log(id, title, post);
   setDoc(doc(db, 'posts', id), { postTitle: title, content: post, date: new Date() }, { merge: true });
-  console.log('cambiaron los datos del documento');
   return findPostById();
 }
 

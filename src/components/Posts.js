@@ -19,7 +19,7 @@ export const Posts = () => {
                            <textarea id="post" placeholder="Descripcion"></textarea>
                            <button id="postButton">Publicar</button>
                           </form>
-                          <div id="postsContainer"></div>`;
+                          <div id="postsContainer" class="gridContainer"></div>`;
   const postsDivs = containerPosts;
   return postsDivs;
 };

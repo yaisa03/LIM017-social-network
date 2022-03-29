@@ -10,14 +10,24 @@ export const Profile = () => {
                               </ul>
                              </nav>
                             </header>
-                            <div id="profileInfo">PERFIL</div>
+                            <main id="mainContainer">
+                              <div id="profileInfo">
+                                <img src="Images/Icon.png" class="profilePicture">
+                                  <div id="containerUser">
+                                    <p id="userName">Username</p>
+                                    <p id="userEmail">Correo</p>
+                            </div>
+                            </div>
+                            <div id="PageContent">
                             <form id="createPost">
                              <p id="messagePost"></p>
                              <input id="title" placeholder="Titulo">
                              <textarea id="post" placeholder="Descripcion"></textarea>
                              <button id="postButton">Publicar</button>
                             </form>
-                            <div id="postsContainer"></div>`;
+                            <div id="postsContainer"></div>
+                            </div>
+                            </main>`;
   const profileDivs = errorMessage + containerProfile;
   return profileDivs;
 };
