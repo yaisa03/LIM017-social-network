@@ -302,6 +302,32 @@ span {
 .showButton{
     display: flex;
 }
+#profileInfo{
+    display: flex;
+    background-image: url(Images/BgProfile.jpg);
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: cover;
+    border-radius: 10px;
+    height: 100px;
+    padding: 10px;
+    align-items: center;
+    width: 95% !important;
+    margin: 4%;
+}
+#mainContainer, #PageContent {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+.profilePicture{
+    height: 90%;
+    width: 30%;
+    border-radius: 50%;
+    background-color: black;
+}
 @media only screen and (min-width: 768px){
     body{
         background-image: url(Images/BgDesktop.jpg);
@@ -343,5 +369,52 @@ span {
         width: 10%;
         height: 40px;
         margin: 2%;
+    }
+    #mainContainer{
+        display: grid;
+        grid-template-columns: 1fr 2fr;
+        grid-gap: 10px;
+        margin: 2%;
+    }
+    #profileInfo{
+        grid-column: 1 / 2;
+        background-image: url(Images/BgProfileDesktop.jpg);
+        grid-row: 1;
+        height: 100%;
+        flex-direction:column;
+    }
+    .profilePicture{
+        height: 30%;
+        width: 60%;
+        margin: 40px 0px 90px 40px; 
+        /* width: 30%;
+        border-radius: 50%;
+        background-color: black; */
+    }
+    #post{
+        margin-top: 4px;
+    }
+    .gridContainer{
+        display: grid !important; 
+        grid-template-columns: 1fr 1fr 1fr;
+        grid-gap: 5px;
+        margin: 2% !important;
+        justify-items: center;
+    }
+    #createPost {
+        width: 60%;
+        padding: 3%;
+    }
+    #SearchContainer {
+        width: 50% !important;
+    }
+    header {
+        justify-content: flex-end;
+    }
+    nav {
+        width: 40%;
+    }
+    ul {
+        justify-content: space-around;
     }
 }
