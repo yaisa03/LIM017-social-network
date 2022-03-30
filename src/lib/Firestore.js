@@ -7,7 +7,7 @@ import { GoogleAuthProvider, signInWithPopup, sendEmailVerification, signOut } f
 // eslint-disable-next-line import/no-unresolved
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.6.6/firebase-app.js';
 // eslint-disable-next-line import/no-unresolved
-import { getFirestore, collection, addDoc, query, where, getDocs, orderBy, deleteDoc, doc, setDoc } from 'https://www.gstatic.com/firebasejs/9.6.6/firebase-firestore.js';
+import { getFirestore, collection, addDoc, query, where, getDocs, orderBy, deleteDoc, doc, setDoc, onSnapshot } from 'https://www.gstatic.com/firebasejs/9.6.6/firebase-firestore.js';
 // eslint-disable-next-line import/no-unresolved
 import { ShowPosts, ShowPostsById } from '../components/ShowPosts.js';
 // eslint-disable-next-line import/no-cycle
@@ -185,31 +185,32 @@ export async function findPostById() {
   const auth = getAuth();
   const user = auth.currentUser;
   const postsRef = collection(db, 'posts');
-  const q = query(postsRef, where('UserId', '==', user.uid));
-  const querySnapshot = await getDocs(q);
-  querySnapshot.forEach((e) => {
-    const containerPosts = document.getElementById('postsContainer');
-    containerPosts.innerHTML += ShowPostsById(e, e.data());
-    const button = document.querySelectorAll('.editButton');
-    const text = document.querySelectorAll(`.${button.id}`);
-    text.forEach((el) => {
-      el.readonly = true;
-      console.log(el);
+  const q = query(postsRef, where('UserId', '==', user.uid), orderBy('date', 'desc'));
+  onSnapshot(q, (snapshot) => {
+    snapshot.forEach((e) => {
+      const containerPosts = document.getElementById('postsContainer');
+      containerPosts.innerHTML += ShowPostsById(e, e.data());
+      const button = document.querySelectorAll('.editButton');
+      const text = document.querySelectorAll(`.${button.id}`);
+      text.forEach((el) => {
+        el.readonly = true;
+        console.log(el);
+      });
+    });
+    deletePosts();
+    editPosts();
+  });
+}
+// Funcion que busca todos los posts en la app
+export async function findPosts() {
+  const containerPosts = document.getElementById('postsContainer');
+  containerPosts.innerHTML = '';
+  const q = query(collection(db, 'posts'), orderBy('date', 'desc'));
+  onSnapshot(q, (querySnapshot) => {
+    querySnapshot.forEach((d) => {
+      containerPosts.innerHTML += ShowPosts(d.data());
     });
   });
-  deletePosts();
-  editPosts();
-}
-
-export async function findPosts() {
-  const postsRef = collection(db, 'posts');
-  const q = query(postsRef, where('date', '!=', ''), orderBy('date', 'desc'));
-  const querySnapshot = await getDocs(q);
-  querySnapshot.forEach((e) => {
-    const containerPosts = document.getElementById('postsContainer');
-    containerPosts.innerHTML += ShowPosts(e.data());
-  });
-  // AddLikes();
 }
 export async function deletePost(id) {
   const q = await doc(db, 'posts', id);
@@ -222,7 +223,6 @@ function deletePosts() {
     button.addEventListener('click', () => {
       if (window.confirm('¿Estas seguro de eliminar este post?')) {
         deleteDoc(doc(db, 'posts', button.id));
-        document.getElementById('postsContainer').innerHTML = '';
         return findPostById();
       }
     });
@@ -252,6 +252,7 @@ function editPosts() {
           e.style.backgroundColor = '#FFF1CE';
           const title = document.querySelector(`.title.text${button.id}`);
           const post = document.querySelector(`.description.text${button.id}`);
+          // document.getElementById('postsContainer').innerHTML = '';
           updatePost(button.id, title.value, post.value);
           document.querySelector(`.editButton.${button.id}`).classList.remove('hide');
           document.querySelector(`.publishButton.${button.id}`).classList.add('hide');
@@ -262,8 +263,8 @@ function editPosts() {
 }
 
 async function updatePost(id, title, post) {
-  setDoc(doc(db, 'posts', id), { postTitle: title, content: post, date: new Date() }, { merge: true });
-  return findPostById();
+  setDoc(doc(db, 'posts', id), { postTitle: title, content: post, date: new Date() } , { merge: true });
+ // return findPostById();
 }
 
 function postLike(id) {
