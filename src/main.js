@@ -6,7 +6,7 @@ import { Profile } from './components/Profile.js';
 // eslint-disable-next-line object-curly-newline
 // eslint-disable-next-line import/no-cycle
 import {
-  logIn, register, logInGoogle, emailResetPassword, uploadPost, findPostById, findPosts, SignOut,
+  logIn, register, logInGoogle, emailResetPassword, uploadPost, findPostById, findPosts, SignOut, updatePost, postDeleted
 } from './lib/Firestore.js';
 /* eslint-disable camelcase */
 
@@ -21,7 +21,7 @@ const routes = {
   '#/home': Posts,
   '#/profile': Profile,
 };
-// relacionar rutas con pathnames
+// Funcion que relaciona rutas con pathnames
 const onNavigate = (pathname) => {
   window.history.pushState(
     {},
@@ -162,6 +162,52 @@ function createNewPost(id) {
         return findPostById();
       }
     }
+  });
+}
+// Funcion que permite editar los posts
+export function editPosts() {
+  const editButton = document.querySelectorAll('.editButton');
+  editButton.forEach((button) => {
+    button.addEventListener('click', () => {
+      const text = document.querySelectorAll(`.text${button.id}`);
+      text.forEach((e) => {
+        e.removeAttribute('readonly');
+        e.style.backgroundColor = 'white';
+      });
+      document.querySelector(`.editButton.${button.id}`).classList.add('hide');
+      document.querySelector(`.publishButton.${button.id}`).classList.remove('hide');
+    });
+  });
+  const publishButton = document.querySelectorAll('.publishButton');
+  publishButton.forEach((button) => {
+    button.addEventListener('click', () => {
+      if (window.confirm('¿Estas seguro de guardar tus cambios?')) {
+        const text = document.querySelectorAll(`.text${button.id}`);
+        text.forEach((e) => {
+          e.setAttribute('readonly', true);
+          e.style.backgroundColor = '#FFF1CE';
+          const title = document.querySelector(`.title.text${button.id}`);
+          const post = document.querySelector(`.description.text${button.id}`);
+          updatePost(button.id, title.value, post.value);
+          document.querySelector(`.editButton.${button.id}`).classList.remove('hide');
+          document.querySelector(`.publishButton.${button.id}`).classList.add('hide');
+        });
+      }
+    });
+  });
+}
+// Damos funcionalidad a boton para eliminar posts
+export function deletePosts() {
+  const containerPosts = document.getElementById('postsContainer');
+  const deleteButton = document.querySelectorAll('.deleteButton');
+  deleteButton.forEach((button) => {
+    button.addEventListener('click', () => {
+      if (window.confirm('¿Estas seguro de eliminar este post?')) {
+        containerPosts.innerHTML = '';
+        postDeleted(button.id);
+        return findPostById();
+      }
+    });
   });
 }
 // funcionalidad de los iconos en el navegador
