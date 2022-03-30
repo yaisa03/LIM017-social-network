@@ -1,30 +1,14 @@
-/* eslint-disable default-case */
-/* eslint-disable import/no-duplicates */
-// eslint-disable-next-line import/no-unresolved
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, sendPasswordResetEmail } from 'https://www.gstatic.com/firebasejs/9.6.6/firebase-auth.js';
-// eslint-disable-next-line import/no-unresolved
-import { GoogleAuthProvider, signInWithPopup, sendEmailVerification, signOut } from 'https://www.gstatic.com/firebasejs/9.6.6/firebase-auth.js';
-// eslint-disable-next-line import/no-unresolved
-import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.6.6/firebase-app.js';
-// eslint-disable-next-line import/no-unresolved
-import { getFirestore, collection, addDoc, query, where, orderBy, deleteDoc, doc, setDoc, onSnapshot } from 'https://www.gstatic.com/firebasejs/9.6.6/firebase-firestore.js';
-// eslint-disable-next-line import/no-unresolved
+import {
+  getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, sendPasswordResetEmail,
+  GoogleAuthProvider, signInWithPopup, sendEmailVerification, signOut,
+} from 'https://www.gstatic.com/firebasejs/9.6.6/firebase-auth.js';
+import {
+  getFirestore, collection, addDoc, query, where, orderBy, deleteDoc, doc, setDoc, onSnapshot,
+} from 'https://www.gstatic.com/firebasejs/9.6.6/firebase-firestore.js';
+import { app } from './FirebaseInit.js';
 import { ShowPosts, ShowPostsById } from '../components/ShowPosts.js';
-// eslint-disable-next-line import/no-cycle
-import { goToLogIn, showHome } from '../main.js';
+import { goToLogIn, showHome, editPosts, deletePosts } from '../main.js';
 
-const firebaseConfig = {
-  apiKey: 'AIzaSyBnTpBzOUriU6ztyOeGumDQE8HHpkjqreU',
-  authDomain: 'foodbook-66988.firebaseapp.com',
-  databaseURL: 'https://foodbook-66988-default-rtdb.firebaseio.com',
-  projectId: 'foodbook-66988',
-  storageBucket: 'foodbook-66988.appspot.com',
-  messagingSenderId: '558953316138',
-  appId: '1:558953316138:web:d5c91f573abe129835e853',
-  measurementId: 'G-YN3T2EDM93',
-};
-// Initialize Firebase
-export const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
 function emailVerification() {
@@ -37,20 +21,18 @@ function emailVerification() {
       setTimeout(goToLogIn, 2000);
     });
 }
-
+// Funcion que registra un nuevo usuario en Firebase
 export function register(email, password) {
   const auth = getAuth();
   const errorMessageText = document.querySelector('#message');
   createUserWithEmailAndPassword(auth, email, password).then((userCredential) => {
     // Signed in
     const user = userCredential.user;
-    console.log('Usuario registrado!:');
     console.log(user);
     emailVerification();
   })
     .catch((error) => {
       const errorMessage = error.message;
-      console.log(errorMessage);
       errorMessageText.classList.add('showMessageError');
       switch (errorMessage) {
         case 'Firebase: Error (auth/email-already-in-use).':
@@ -67,7 +49,7 @@ export function register(email, password) {
       }
     });
 }
-
+// Funcion que permite a un usuario loggearse con su email y password
 export function logIn(email, password) {
   const auth = getAuth();
   const errorMessageText = document.querySelector('#message');
@@ -79,9 +61,6 @@ export function logIn(email, password) {
       errorMessageText.innerText = ' ';
       switch (user.emailVerified) {
         case true:
-          console.log('Se inicio sesion correctamente');
-          console.log(user);
-          console.log(user.uid);
           showHome();
           break;
         case false:
@@ -116,36 +95,34 @@ export function logIn(email, password) {
       }
     });
 }
-
+// Funcion que permite a un usuario loggearse con su cuenta de Gmail
 export function logInGoogle() {
   const provider = new GoogleAuthProvider();
   const auth = getAuth();
   signInWithPopup(auth, provider)
     .then((result) => {
-      const credential = GoogleAuthProvider.credentialFromResult(result);
-      const token = credential.accessToken;
+      /* const credential = GoogleAuthProvider.credentialFromResult(result);
+      const token = credential.accessToken; */
       const user = result.user;
+      console.log(user);
       showHome();
     }).catch((error) => {
       const errorMessage = error.message;
-      console.log(errorMessage);
     });
 }
-
+// Funcion que permite reestablecer contraseña enviando un correo al usuario
 export function emailResetPassword(email) {
   const auth = getAuth();
   const errorMessageText = document.querySelector('#message');
   sendPasswordResetEmail(auth, email)
     .then(() => {
-      console.log('Password reset email sent!');
       errorMessageText.classList.remove('showMessageError');
       errorMessageText.classList.add('showMessage');
-      errorMessageText.innerText = 'Password reset email sent';
+      errorMessageText.innerText = 'Email de reestablecimiento de contraseña enviado';
       setTimeout(goToLogIn, 2000);
     })
     .catch((error) => {
       const errorMessage = error.message;
-      console.log(errorMessage);
       errorMessageText.classList.remove('showMessage');
       errorMessageText.classList.add('showMessageError');
       switch (errorMessage) {
@@ -165,7 +142,7 @@ export function emailResetPassword(email) {
 }
 
 // eslint-disable-next-line consistent-return
-export function setUser(displayName) {
+export function setUser(displayName) { // PHOTOURL
   const auth = getAuth();
   const user = auth.currentUser;
   if (user !== null) {
@@ -174,13 +151,13 @@ export function setUser(displayName) {
     return uid;
   }
 }
-
+// Funcion que guarda post en firebase
 export function uploadPost(title, post) {
   const auth = getAuth();
   const user = auth.currentUser;
   addDoc(collection(db, 'posts'), { UserId: user.uid, postTitle: title, content: post, date: new Date(), likes: 0 });
 }
-
+// Funcion que muestra los posts del usuario dueno del perfil
 export async function findPostById() {
   const auth = getAuth();
   const user = auth.currentUser;
@@ -194,7 +171,6 @@ export async function findPostById() {
       const text = document.querySelectorAll(`.${button.id}`);
       text.forEach((el) => {
         el.readonly = true;
-        console.log(el);
       });
     });
     deletePosts();
@@ -212,59 +188,13 @@ export async function findPosts() {
     });
   });
 }
-export async function deletePost(id) {
-  const q = await doc(db, 'posts', id);
-  deleteDoc(q);
+// Funcion que elimina los posts de la base de datos de firebase
+export function postDeleted(id) {
+  deleteDoc(doc(db, 'posts', id));
 }
-
-function deletePosts() {
-  const containerPosts = document.getElementById('postsContainer');
-  const deleteButton = document.querySelectorAll('.deleteButton');
-  deleteButton.forEach((button) => {
-    button.addEventListener('click', () => {
-      if (window.confirm('¿Estas seguro de eliminar este post?')) {
-        containerPosts.innerHTML = '';
-        deleteDoc(doc(db, 'posts', button.id));
-        return findPostById();
-      }
-    });
-  });
-}
-
-function editPosts() {
-  const editButton = document.querySelectorAll('.editButton');
-  editButton.forEach((button) => {
-    button.addEventListener('click', () => {
-      const text = document.querySelectorAll(`.text${button.id}`);
-      text.forEach((e) => {
-        e.removeAttribute('readonly');
-        e.style.backgroundColor = 'white';
-        document.querySelector(`.editButton.${button.id}`).classList.add('hide');
-        document.querySelector(`.publishButton.${button.id}`).classList.remove('hide');
-      });
-    });
-  });
-  const publishButton = document.querySelectorAll('.publishButton');
-  publishButton.forEach((button) => {
-    button.addEventListener('click', () => {
-      if (window.confirm('¿Estas seguro de guardar tus cambios?')) {
-        const text = document.querySelectorAll(`.text${button.id}`);
-        text.forEach((e) => {
-          e.setAttribute('readonly', true);
-          e.style.backgroundColor = '#FFF1CE';
-          const title = document.querySelector(`.title.text${button.id}`);
-          const post = document.querySelector(`.description.text${button.id}`);
-          updatePost(button.id, title.value, post.value);
-          document.querySelector(`.editButton.${button.id}`).classList.remove('hide');
-          document.querySelector(`.publishButton.${button.id}`).classList.add('hide');
-        });
-      }
-    });
-  });
-}
-
-async function updatePost(id, title, post) {
-  setDoc(doc(db, 'posts', id), { postTitle: title, content: post, date: new Date() } , { merge: true });
+// Funcion que actualiza la informacion de un post cuando se lo edita en la base de datos
+export async function updatePost(id, title, post) {
+  setDoc(doc(db, 'posts', id), { postTitle: title, content: post, date: new Date() }, { merge: true });
 }
 
 function postLike(id) {
@@ -294,12 +224,12 @@ function AddLikes() {
     }
   });
 }
-
+// Funcion que permite cerrar sesion de un usuario
 export function SignOut() {
   const auth = getAuth();
   signOut(auth).then(() => {
     // Sign-out successful.
-    console.log('sesion cerrada satisfactoriamente');
+    console.log('Sesion cerrada satisfactoriamente');
   }).catch((error) => {
     // An error happened.
   });
