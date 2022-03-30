@@ -7,7 +7,7 @@ import { GoogleAuthProvider, signInWithPopup, sendEmailVerification, signOut } f
 // eslint-disable-next-line import/no-unresolved
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.6.6/firebase-app.js';
 // eslint-disable-next-line import/no-unresolved
-import { getFirestore, collection, addDoc, query, where, getDocs, orderBy, deleteDoc, doc, setDoc, onSnapshot } from 'https://www.gstatic.com/firebasejs/9.6.6/firebase-firestore.js';
+import { getFirestore, collection, addDoc, query, where, orderBy, deleteDoc, doc, setDoc, onSnapshot } from 'https://www.gstatic.com/firebasejs/9.6.6/firebase-firestore.js';
 // eslint-disable-next-line import/no-unresolved
 import { ShowPosts, ShowPostsById } from '../components/ShowPosts.js';
 // eslint-disable-next-line import/no-cycle
@@ -218,10 +218,12 @@ export async function deletePost(id) {
 }
 
 function deletePosts() {
+  const containerPosts = document.getElementById('postsContainer');
   const deleteButton = document.querySelectorAll('.deleteButton');
   deleteButton.forEach((button) => {
     button.addEventListener('click', () => {
       if (window.confirm('¿Estas seguro de eliminar este post?')) {
+        containerPosts.innerHTML = '';
         deleteDoc(doc(db, 'posts', button.id));
         return findPostById();
       }
@@ -252,7 +254,6 @@ function editPosts() {
           e.style.backgroundColor = '#FFF1CE';
           const title = document.querySelector(`.title.text${button.id}`);
           const post = document.querySelector(`.description.text${button.id}`);
-          // document.getElementById('postsContainer').innerHTML = '';
           updatePost(button.id, title.value, post.value);
           document.querySelector(`.editButton.${button.id}`).classList.remove('hide');
           document.querySelector(`.publishButton.${button.id}`).classList.add('hide');
@@ -264,7 +265,6 @@ function editPosts() {
 
 async function updatePost(id, title, post) {
   setDoc(doc(db, 'posts', id), { postTitle: title, content: post, date: new Date() } , { merge: true });
- // return findPostById();
 }
 
 function postLike(id) {
