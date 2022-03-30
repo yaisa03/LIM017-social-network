@@ -158,7 +158,9 @@ function createNewPost(id) {
       errorMessage.innerHTML = '';
       const containerPosts = document.getElementById('postsContainer');
       containerPosts.innerHTML = '';
-      return (id === 'h') ? findPosts() : findPostById();
+      if (id === 'p') {
+        return findPostById();
+      }
     }
   });
 }
