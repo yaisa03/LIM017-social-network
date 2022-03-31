@@ -202,6 +202,17 @@ export async function findPosts() {
     });
     containerPosts.innerHTML = createdPosts;
     AddLikes();
+    search(createdPosts);
+  });
+}
+function filterPost(arrayPosts, condition) {
+  console.log(JSON.parse(arrayPosts).filter((post) => (post.postTitle).includes(condition)));
+  // return;
+}
+function search(createdPost) {
+  const searchPost = document.getElementById('searchPost');
+  searchPost.addEventListener('keyup', () => {
+    filterPost(createdPost, searchPost.value);
   });
 }
 // Funcion que elimina los posts de la base de datos de firebase
