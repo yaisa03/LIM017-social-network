@@ -1,3 +1,6 @@
+/* eslint-disable no-alert */
+/* eslint-disable consistent-return */
+/* eslint-disable no-use-before-define */
 import { LogIn } from './components/LogIn.js';
 import { Register } from './components/Register.js';
 import { ResetPassword } from './components/ResetPassword.js';
@@ -6,7 +9,8 @@ import { Profile } from './components/Profile.js';
 // eslint-disable-next-line object-curly-newline
 // eslint-disable-next-line import/no-cycle
 import {
-  logIn, register, logInGoogle, emailResetPassword, uploadPost, findPostById, findPosts, SignOut, updatePost, postDeleted
+  logIn, register, logInGoogle, emailResetPassword, uploadPost,
+  findPostById, findPosts, SignOut, updatePost, postDeleted,
 } from './lib/Firestore.js';
 /* eslint-disable camelcase */
 
