@@ -1,8 +1,8 @@
-export const ShowPosts = (e) => {
+export const ShowPosts = (doc, e) => {
   const containerPosts = `<div class="postDiv">
                               <textarea class="title" readonly>${e.postTitle}</textarea>
                               <textarea class="description" readonly>${e.content}</textarea>
-                              <span id="likeCount"><i id="likeButton" class="fa fa-heart"></i>0</span>
+                              <span id="likeCount"><i id="${doc.id}" class="fa fa-heart likeButton"></i>${e.likes.length}</span>
                             </div>`;
   return containerPosts;
 };

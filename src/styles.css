@@ -67,7 +67,7 @@ p{
 }
 figcaption{
     font-size: calc(2rem + 0.5vw);
-    font-family: ink free;
+    font-family: ink free,  Times, serif;
     color: #fff;
     text-shadow: rgb(0, 5, 0) 10px 6px 4px;
 }
@@ -221,15 +221,15 @@ li{
     position: absolute;
     top: 20%;
 }
-#postButton:hover {
-    background-color: #C7461E;
-    color: #212431;
-}
 #postButton {
     background-color: #212431;
     height: 40px;
     color: #C7461E;
     align-self: center;
+}
+#postButton:hover {
+    background-color: #C7461E;
+    color: #212431;
 }
 #createPost {
     display: flex;
@@ -288,7 +288,7 @@ span {
     color:#212431; 
     font-size: 20px;
 }
-#likeButton {
+.likeButton {
     color: #212431; 
     font-size:24px;
     margin-right: 2%;

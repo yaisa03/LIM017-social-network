@@ -1,17 +1,28 @@
+/* eslint-disable prefer-template */
+/* eslint-disable prefer-const */
+/* eslint-disable no-plusplus */
+/* eslint-disable no-use-before-define */
+/* eslint-disable no-param-reassign */
+/* eslint-disable no-console */
+/* eslint-disable import/no-cycle */
+/* eslint-disable import/no-unresolved */
 import {
   getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, sendPasswordResetEmail,
   GoogleAuthProvider, signInWithPopup, sendEmailVerification, signOut,
 } from 'https://www.gstatic.com/firebasejs/9.6.6/firebase-auth.js';
 import {
-  getFirestore, collection, addDoc, query, where, orderBy, deleteDoc, doc, setDoc, onSnapshot,
+  getFirestore, collection, addDoc, query, where, orderBy,
+  deleteDoc, doc, setDoc, onSnapshot, getDoc,
 } from 'https://www.gstatic.com/firebasejs/9.6.6/firebase-firestore.js';
 import { app } from './FirebaseInit.js';
 import { ShowPosts, ShowPostsById } from '../components/ShowPosts.js';
-import { goToLogIn, showHome, editPosts, deletePosts } from '../main.js';
+import {
+  goToLogIn, showHome, editPosts, deletePosts,
+} from '../main.js';
 
 const db = getFirestore(app);
 
-function emailVerification() {
+export function emailVerification() {
   const auth = getAuth();
   const errorMessageText = document.querySelector('#message');
   sendEmailVerification(auth.currentUser)
@@ -106,8 +117,8 @@ export function logInGoogle() {
       const user = result.user;
       console.log(user);
       showHome();
-    }).catch((error) => {
-      const errorMessage = error.message;
+    }).catch((/* error */) => {
+      // const errorMessage = error.message;
     });
 }
 // Funcion que permite reestablecer contraseña enviando un correo al usuario
@@ -155,7 +166,9 @@ export function setUser(displayName) { // PHOTOURL
 export function uploadPost(title, post) {
   const auth = getAuth();
   const user = auth.currentUser;
-  addDoc(collection(db, 'posts'), { UserId: user.uid, postTitle: title, content: post, date: new Date(), likes: 0 });
+  addDoc(collection(db, 'posts'), {
+    UserId: user.uid, postTitle: title, content: post, date: new Date(), likes: [],
+  });
 }
 // Funcion que muestra los posts del usuario dueno del perfil
 export async function findPostById() {
@@ -181,11 +194,14 @@ export async function findPostById() {
 export async function findPosts() {
   const containerPosts = document.getElementById('postsContainer');
   containerPosts.innerHTML = '';
+  let createdPosts = '';
   const q = query(collection(db, 'posts'), orderBy('date', 'desc'));
   onSnapshot(q, (querySnapshot) => {
     querySnapshot.forEach((d) => {
-      containerPosts.innerHTML += ShowPosts(d.data());
+      createdPosts += ShowPosts(d, d.data());
     });
+    containerPosts.innerHTML = createdPosts;
+    AddLikes();
   });
 }
 // Funcion que elimina los posts de la base de datos de firebase
@@ -196,32 +212,49 @@ export function postDeleted(id) {
 export async function updatePost(id, title, post) {
   setDoc(doc(db, 'posts', id), { postTitle: title, content: post, date: new Date() }, { merge: true });
 }
-
-function postLike(id) {
-  const userRef = collection('posts').doc(id);
-  const increment = firebase.firestore.FieldValue.increment(1);
-  userRef.update('count', increment);
+function postLike(id, newArray) {
+  setDoc(doc(db, 'posts', id), { likes: newArray }, { merge: true });
 }
-
-function postDislike(id) {
-  const userRef = collection('posts').doc(id);
-  const decrement = firebase.firestore.FieldValue.increment(-1);
-  userRef.update('count', decrement);
+async function getArrayLikes(e) {
+  const docSnap = await getDoc(doc(db, 'posts', e));
+  let array = docSnap.data().likes;
+  console.log(array);
+  return array;
 }
-
-function AddLikes() {
-  let like = true;
-  const likeButton = document.getElementById('likeButton');
-  likeButton.addEventListener('click', () => {
-    if (like) {
-      like = false;
-      postLike(likeButton.id);
-      console.log('like +');
-    } else {
-      like = true;
-      postDislike(likeButton.id);
-      console.log('like -');
-    }
+export function AddLikes() {
+  const containerPosts = document.getElementById('postsContainer');
+  const auth = getAuth();
+  const user = auth.currentUser;
+  const likeButton = document.querySelectorAll('.likeButton');
+  likeButton.forEach((e) => {
+    e.addEventListener('click', async () => {
+      let arrayLikes = await getArrayLikes(e.id);
+      console.log(arrayLikes);
+      console.log(user.uid);
+      if (arrayLikes.length === 0) {
+        arrayLikes.push(user.uid);
+        containerPosts.innerHTML = '';
+        postLike(e.id, arrayLikes);
+        findPosts();
+        console.log(arrayLikes.length + 'empezo con vacio');
+      } else {
+        for (let i = 0; i < arrayLikes.length; i++) {
+          if (arrayLikes[i] === user.uid) {
+            arrayLikes.splice(i, 1);
+            containerPosts.innerHTML = '';
+            postLike(e.id, arrayLikes);
+            findPosts();
+            console.log(arrayLikes.length + 'eliminar');
+          } else {
+            arrayLikes.push(user.uid);
+            containerPosts.innerHTML = '';
+            postLike(e.id, arrayLikes);
+            findPosts();
+            console.log(arrayLikes.length + 'agreagar');
+          }
+        }
+      }
+    });
   });
 }
 // Funcion que permite cerrar sesion de un usuario
@@ -230,7 +263,7 @@ export function SignOut() {
   signOut(auth).then(() => {
     // Sign-out successful.
     console.log('Sesion cerrada satisfactoriamente');
-  }).catch((error) => {
+  }).catch((/* error */) => {
     // An error happened.
   });
 }
