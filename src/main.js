@@ -5,6 +5,7 @@ import { LogIn } from './components/LogIn.js';
 import { Register } from './components/Register.js';
 import { ResetPassword } from './components/ResetPassword.js';
 import { Posts } from './components/Posts.js';
+// eslint-disable-next-line import/no-cycle
 import { Profile } from './components/Profile.js';
 // eslint-disable-next-line object-curly-newline
 // eslint-disable-next-line import/no-cycle
@@ -80,6 +81,12 @@ function resetPassword() {
     emailResetPassword(emailReset);
   });
 }
+function BackToLogIn() {
+  const backToLogIn = document.querySelector('.backToLogIn');
+  backToLogIn.addEventListener('click', () => {
+    goToLogIn();
+  });
+}
 // funcion que permite hacer el inicio de sesion con google
 function showLogInGoogle() {
   const googleLogo = document.querySelector('.googleLogo');
@@ -95,7 +102,8 @@ function showRegister() {
   registerButton.addEventListener('click', () => {
     const email = document.getElementById('newUser').value;
     const password = document.getElementById('newUserPassword').value;
-    register(email, password);
+    const displayName = document.getElementById('newUserDisplayName').value;
+    register(email, password, displayName);
   });
 }
 // funcion que da funcionalida a la pagina LogIn
@@ -114,12 +122,14 @@ function showLogIn() {
   forgotPasswordLink.addEventListener('click', () => {
     onNavigate('#/resetpassword');
     resetPassword();
+    BackToLogIn();
   });
   // link que permite crear nuevo usuario con email
   const newRegistry = document.getElementById('register');
   newRegistry.addEventListener('click', () => {
     onNavigate('#/register');
     showRegister();
+    BackToLogIn();
   });
   // funcion que permite iniciar sesion con google
   showLogInGoogle();
@@ -162,9 +172,7 @@ function createNewPost(id) {
       errorMessage.innerHTML = '';
       const containerPosts = document.getElementById('postsContainer');
       containerPosts.innerHTML = '';
-      if (id === 'p') {
-        return findPostById();
-      }
+      return (id === 'p') ? findPostById() : findPosts();
     }
   });
 }

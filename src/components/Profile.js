@@ -1,4 +1,8 @@
+// eslint-disable-next-line import/no-cycle
+import { getUser } from '../lib/Firestore.js';
+
 export const Profile = () => {
+  const user = getUser();
   const errorMessage = '<p id="message"></p>';
   const containerProfile = `<header>
                              <nav>
@@ -12,10 +16,11 @@ export const Profile = () => {
                             </header>
                             <main id="mainContainer">
                               <div id="profileInfo">
-                                <img src="Images/Icon.png" class="profilePicture">
+                                <img src="Images/userImage.jpeg" class="profilePicture">
                                   <div id="containerUser">
-                                    <p id="userName">Username</p>
-                                    <p id="userEmail">Correo</p>
+                                    <p id="userName">${user.displayName}</p>
+                                    <p id="userEmail">${user.email}</p>
+                                    <button id="editProfileButton">Editar</button>
                             </div>
                             </div>
                             <div id="PageContent">

@@ -1,3 +1,4 @@
+/* eslint-disable consistent-return */
 /* eslint-disable prefer-template */
 /* eslint-disable prefer-const */
 /* eslint-disable no-plusplus */
@@ -8,7 +9,7 @@
 /* eslint-disable import/no-unresolved */
 import {
   getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, sendPasswordResetEmail,
-  GoogleAuthProvider, signInWithPopup, sendEmailVerification, signOut,
+  GoogleAuthProvider, signInWithPopup, sendEmailVerification, signOut, updateProfile,
 } from 'https://www.gstatic.com/firebasejs/9.6.6/firebase-auth.js';
 import {
   getFirestore, collection, addDoc, query, where, orderBy,
@@ -33,13 +34,22 @@ export function emailVerification() {
     });
 }
 // Funcion que registra un nuevo usuario en Firebase
-export function register(email, password) {
+export function register(email, password, displayname) {
   const auth = getAuth();
   const errorMessageText = document.querySelector('#message');
   createUserWithEmailAndPassword(auth, email, password).then((userCredential) => {
     // Signed in
     const user = userCredential.user;
     console.log(user);
+    updateProfile(auth.currentUser, {
+      displayName: displayname,
+    }).then(() => {
+      // Profile updated!
+      // ...
+    }).catch((/* error */) => {
+      // An error occurred
+      // ...
+    });
     emailVerification();
   })
     .catch((error) => {
@@ -72,6 +82,7 @@ export function logIn(email, password) {
       errorMessageText.innerText = ' ';
       switch (user.emailVerified) {
         case true:
+          console.log(user);
           showHome();
           break;
         case false:
@@ -153,14 +164,21 @@ export function emailResetPassword(email) {
 }
 
 // eslint-disable-next-line consistent-return
-export function setUser(displayName) { // PHOTOURL
+export function setUser(displayName, photoURL) { // PHOTOURL
   const auth = getAuth();
   const user = auth.currentUser;
   if (user !== null) {
     user.displayName = displayName;
+    user.photoURL = photoURL;
     const uid = user.uid;
     return uid;
   }
+}
+
+export function getUser() {
+  const auth = getAuth();
+  const user = auth.currentUser;
+  return user;
 }
 // Funcion que guarda post en firebase
 export function uploadPost(title, post) {
@@ -204,6 +222,25 @@ export async function findPosts() {
     AddLikes();
     search(createdPosts);
   });
+  /* db.collection('cities').orderBy('date', 'desc')
+    .onSnapshot((querySnapshot) => {
+      querySnapshot.docChanges().forEach((change) => {
+        if (change.type === 'added') {
+          querySnapshot.forEach((d) => {
+            createdPosts += ShowPosts(d, d.data());
+          });
+          containerPosts.innerHTML = createdPosts;
+          AddLikes();
+          search(createdPosts);
+        }
+        if (change.type === 'modified') {
+          console.log('');
+        }
+        if (change.type === 'removed') {
+          console.log('');
+        }
+      });
+    }); */
 }
 function filterPost(arrayPosts, condition) {
   console.log(JSON.parse(arrayPosts).filter((post) => (post.postTitle).includes(condition)));
@@ -229,7 +266,6 @@ function postLike(id, newArray) {
 async function getArrayLikes(e) {
   const docSnap = await getDoc(doc(db, 'posts', e));
   let array = docSnap.data().likes;
-  console.log(array);
   return array;
 }
 export function AddLikes() {
@@ -240,30 +276,25 @@ export function AddLikes() {
   likeButton.forEach((e) => {
     e.addEventListener('click', async () => {
       let arrayLikes = await getArrayLikes(e.id);
-      console.log(arrayLikes);
-      console.log(user.uid);
-      if (arrayLikes.length === 0) {
+      let count = 0;
+      const arrayCounter = arrayLikes.length;
+      for (let i = 0; i < arrayLikes.length; i++) {
+        if (arrayLikes[i] === user.uid) {
+          arrayLikes.splice(i, 1);
+          containerPosts.innerHTML = '';
+          postLike(e.id, arrayLikes);
+          findPosts();
+          break;
+        } else {
+          // eslint-disable-next-line no-unused-vars
+          count++;
+        }
+      }
+      if (count === arrayCounter) {
         arrayLikes.push(user.uid);
         containerPosts.innerHTML = '';
         postLike(e.id, arrayLikes);
         findPosts();
-        console.log(arrayLikes.length + 'empezo con vacio');
-      } else {
-        for (let i = 0; i < arrayLikes.length; i++) {
-          if (arrayLikes[i] === user.uid) {
-            arrayLikes.splice(i, 1);
-            containerPosts.innerHTML = '';
-            postLike(e.id, arrayLikes);
-            findPosts();
-            console.log(arrayLikes.length + 'eliminar');
-          } else {
-            arrayLikes.push(user.uid);
-            containerPosts.innerHTML = '';
-            postLike(e.id, arrayLikes);
-            findPosts();
-            console.log(arrayLikes.length + 'agreagar');
-          }
-        }
       }
     });
   });
