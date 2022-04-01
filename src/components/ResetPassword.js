@@ -7,6 +7,7 @@ export const ResetPassword = () => {
                             <div id="containerResetPassword">
                                    <input type="text" id="emailReset" placeholder="Ingresa tu correo">
                                   </div>
-                                <button id="resetPasswordButton">Reestablecer contraseña</button>`;
+                                <button id="resetPasswordButton">Reestablecer contraseña</button>
+                                <button class="backToLogIn">Volver a Login</button>`;
   return containerResetPassword;
 };
