@@ -195,8 +195,9 @@ export async function findPostById() {
   const postsRef = collection(db, 'posts');
   const q = query(postsRef, where('UserId', '==', user.uid), orderBy('date', 'desc'));
   onSnapshot(q, (snapshot) => {
+    const containerPosts = document.getElementById('postsContainer');
+    containerPosts.innerHTML = '';
     snapshot.forEach((e) => {
-      const containerPosts = document.getElementById('postsContainer');
       containerPosts.innerHTML += ShowPostsById(e, e.data());
       const button = document.querySelectorAll('.editButton');
       const text = document.querySelectorAll(`.${button.id}`);
@@ -211,14 +212,15 @@ export async function findPostById() {
 // Funcion que busca todos los posts en la app
 export async function findPosts() {
   const containerPosts = document.getElementById('postsContainer');
-  containerPosts.innerHTML = '';
-  let createdPosts = '';
   const q = query(collection(db, 'posts'), orderBy('date', 'desc'));
   onSnapshot(q, (querySnapshot) => {
+    containerPosts.innerHTML = '';
+    let createdPosts = '';
     querySnapshot.forEach((d) => {
       createdPosts += ShowPosts(d, d.data());
+      containerPosts.innerHTML = createdPosts;
+      console.log(d.data());
     });
-    containerPosts.innerHTML = createdPosts;
     AddLikes();
     search(createdPosts);
   });
@@ -269,7 +271,7 @@ async function getArrayLikes(e) {
   return array;
 }
 export function AddLikes() {
-  const containerPosts = document.getElementById('postsContainer');
+  // const containerPosts = document.getElementById('postsContainer');
   const auth = getAuth();
   const user = auth.currentUser;
   const likeButton = document.querySelectorAll('.likeButton');
@@ -278,12 +280,13 @@ export function AddLikes() {
       let arrayLikes = await getArrayLikes(e.id);
       let count = 0;
       const arrayCounter = arrayLikes.length;
+      // containerPosts.innerHTML = '';
       for (let i = 0; i < arrayLikes.length; i++) {
         if (arrayLikes[i] === user.uid) {
           arrayLikes.splice(i, 1);
-          containerPosts.innerHTML = '';
+          // containerPosts.innerHTML = '';
           postLike(e.id, arrayLikes);
-          findPosts();
+          // findPosts();
           break;
         } else {
           // eslint-disable-next-line no-unused-vars
@@ -292,9 +295,9 @@ export function AddLikes() {
       }
       if (count === arrayCounter) {
         arrayLikes.push(user.uid);
-        containerPosts.innerHTML = '';
+        // containerPosts.innerHTML = '';
         postLike(e.id, arrayLikes);
-        findPosts();
+        // findPosts();
       }
     });
   });
