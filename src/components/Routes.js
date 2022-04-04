@@ -49,3 +49,19 @@ export const changeView = (route) => {
   }
   // console.log(route)
 };
+
+/* function loadPage() {
+  const path = window.location.hash;
+  pageOne.innerHTML = routes[path]();
+}
+window.onpopstate = loadPage();
+window.onload = () => {
+  let oldHash = window.location.hash;
+  setInterval(() => {
+    const newHash = window.location.hash;
+    if (newHash !== oldHash) {
+      window.location.reload();
+      oldHash = newHash;
+    }
+  }, 100);
+}; */
