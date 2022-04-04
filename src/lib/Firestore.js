@@ -204,9 +204,9 @@ export async function findPostById() {
       text.forEach((el) => {
         el.readonly = true;
       });
+      editPosts();
+      deletePosts();
     });
-    deletePosts();
-    editPosts();
   });
 }
 // Funcion que busca todos los posts en la app
@@ -222,33 +222,14 @@ export async function findPosts() {
       console.log(d.data());
     });
     AddLikes();
-    search(createdPosts);
+    // search(createdPosts);
   });
-  /* db.collection('cities').orderBy('date', 'desc')
-    .onSnapshot((querySnapshot) => {
-      querySnapshot.docChanges().forEach((change) => {
-        if (change.type === 'added') {
-          querySnapshot.forEach((d) => {
-            createdPosts += ShowPosts(d, d.data());
-          });
-          containerPosts.innerHTML = createdPosts;
-          AddLikes();
-          search(createdPosts);
-        }
-        if (change.type === 'modified') {
-          console.log('');
-        }
-        if (change.type === 'removed') {
-          console.log('');
-        }
-      });
-    }); */
 }
 function filterPost(arrayPosts, condition) {
   console.log(JSON.parse(arrayPosts).filter((post) => (post.postTitle).includes(condition)));
   // return;
 }
-function search(createdPost) {
+export function search(createdPost) {
   const searchPost = document.getElementById('searchPost');
   searchPost.addEventListener('keyup', () => {
     filterPost(createdPost, searchPost.value);
@@ -260,7 +241,9 @@ export function postDeleted(id) {
 }
 // Funcion que actualiza la informacion de un post cuando se lo edita en la base de datos
 export async function updatePost(id, title, post) {
-  setDoc(doc(db, 'posts', id), { postTitle: title, content: post, date: new Date() }, { merge: true });
+  setDoc(doc(db, 'posts', id), { postTitle: title }, { merge: true });
+  setDoc(doc(db, 'posts', id), { content: post }, { merge: true });
+  setDoc(doc(db, 'posts', id), { date: new Date() }, { merge: true });
 }
 function postLike(id, newArray) {
   setDoc(doc(db, 'posts', id), { likes: newArray }, { merge: true });
@@ -271,7 +254,6 @@ async function getArrayLikes(e) {
   return array;
 }
 export function AddLikes() {
-  // const containerPosts = document.getElementById('postsContainer');
   const auth = getAuth();
   const user = auth.currentUser;
   const likeButton = document.querySelectorAll('.likeButton');
@@ -280,13 +262,10 @@ export function AddLikes() {
       let arrayLikes = await getArrayLikes(e.id);
       let count = 0;
       const arrayCounter = arrayLikes.length;
-      // containerPosts.innerHTML = '';
       for (let i = 0; i < arrayLikes.length; i++) {
         if (arrayLikes[i] === user.uid) {
           arrayLikes.splice(i, 1);
-          // containerPosts.innerHTML = '';
           postLike(e.id, arrayLikes);
-          // findPosts();
           break;
         } else {
           // eslint-disable-next-line no-unused-vars
@@ -295,9 +274,7 @@ export function AddLikes() {
       }
       if (count === arrayCounter) {
         arrayLikes.push(user.uid);
-        // containerPosts.innerHTML = '';
         postLike(e.id, arrayLikes);
-        // findPosts();
       }
     });
   });

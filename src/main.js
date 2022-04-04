@@ -18,7 +18,6 @@ import {
 // Declaracion de variables
 const pageOne = document.getElementById('containerPageOne');
 const root = document.getElementById('root');
-// const containerPosts = document.getElementById('postsContainer');
 // router
 const routes = {
   '#/': LogIn,
@@ -36,21 +35,6 @@ const onNavigate = (pathname) => {
   );
   pageOne.innerHTML = routes[pathname]();
 };
-/* function loadPage() {
-  const path = window.location.hash;
-  pageOne.innerHTML = routes[path]();
-}
-window.onpopstate = loadPage();
-window.onload = () => {
-  let oldHash = window.location.hash;
-  setInterval(() => {
-    const newHash = window.location.hash;
-    if (newHash !== oldHash) {
-      window.location.reload();
-      oldHash = newHash;
-    }
-  }, 100);
-}; */
 
 // Funcion que permite mostrar contraseña al presionar el icono
 function show_password(id1, id2, id3) {
@@ -171,9 +155,9 @@ function createNewPost() {
       createPost.reset();
       errorMessage.classList.remove('showMessageError');
       errorMessage.innerHTML = '';
-      // const containerPosts = document.getElementById('postsContainer');
-      /* containerPosts.innerHTML = '';
-      return (id === 'p') ? findPostById() : findPosts(); */
+      if (window.location.hash === '#/profile') {
+        return findPostById();
+      }
     }
   });
 }
@@ -211,14 +195,12 @@ export function editPosts() {
 }
 // Damos funcionalidad a boton para eliminar posts
 export function deletePosts() {
-  /// const containerPosts = document.getElementById('postsContainer');
   const deleteButton = document.querySelectorAll('.deleteButton');
   deleteButton.forEach((button) => {
     button.addEventListener('click', () => {
       if (window.confirm('¿Estas seguro de eliminar este post?')) {
-        // containerPosts.innerHTML = '';
         postDeleted(button.id);
-        // return findPostById();
+        return findPostById();
       }
     });
   });
