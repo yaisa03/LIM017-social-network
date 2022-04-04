@@ -18,6 +18,7 @@ import {
 // Declaracion de variables
 const pageOne = document.getElementById('containerPageOne');
 const root = document.getElementById('root');
+// const containerPosts = document.getElementById('postsContainer');
 // router
 const routes = {
   '#/': LogIn,
@@ -140,7 +141,7 @@ export function goToLogIn() {
   showLogIn();
 }
 // funcion que permite crear posts
-function createNewPost(id) {
+function createNewPost() {
   const errorMessage = document.getElementById('messagePost');
   const title = document.getElementById('title');
   const post = document.getElementById('post');
@@ -170,9 +171,9 @@ function createNewPost(id) {
       createPost.reset();
       errorMessage.classList.remove('showMessageError');
       errorMessage.innerHTML = '';
-      const containerPosts = document.getElementById('postsContainer');
-      containerPosts.innerHTML = '';
-      return (id === 'p') ? findPostById() : findPosts();
+      // const containerPosts = document.getElementById('postsContainer');
+      /* containerPosts.innerHTML = '';
+      return (id === 'p') ? findPostById() : findPosts(); */
     }
   });
 }
@@ -210,14 +211,14 @@ export function editPosts() {
 }
 // Damos funcionalidad a boton para eliminar posts
 export function deletePosts() {
-  const containerPosts = document.getElementById('postsContainer');
+  /// const containerPosts = document.getElementById('postsContainer');
   const deleteButton = document.querySelectorAll('.deleteButton');
   deleteButton.forEach((button) => {
     button.addEventListener('click', () => {
       if (window.confirm('¿Estas seguro de eliminar este post?')) {
-        containerPosts.innerHTML = '';
+        // containerPosts.innerHTML = '';
         postDeleted(button.id);
-        return findPostById();
+        // return findPostById();
       }
     });
   });
@@ -231,7 +232,7 @@ function navIcons() {
     root.classList.add('hideBackground');
     onNavigate('#/home');
     findPosts();
-    createNewPost('h');
+    createNewPost();
     navIcons();
   });
   const logOut = document.getElementById('logOut');
@@ -246,7 +247,7 @@ function navIcons() {
 function showProfile() {
   onNavigate('#/profile');
   findPostById();
-  createNewPost('p');
+  createNewPost();
   navIcons();
 }
 // vista de todos los posts
@@ -254,7 +255,7 @@ export function showHome() {
   root.classList.add('hideBackground');
   onNavigate('#/home');
   findPosts();
-  createNewPost('h');
+  createNewPost();
   navIcons();
 }
 // mostrar el logIn cuando carga la pagina
