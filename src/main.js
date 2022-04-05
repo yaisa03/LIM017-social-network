@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 /* eslint-disable no-alert */
 /* eslint-disable consistent-return */
 /* eslint-disable no-use-before-define */
@@ -11,7 +12,7 @@ import { Profile } from './components/Profile.js';
 // eslint-disable-next-line import/no-cycle
 import {
   logIn, register, logInGoogle, emailResetPassword, uploadPost,
-  findPostById, findPosts, SignOut, updatePost, postDeleted,
+  findPostById, findPosts, SignOut, updatePost, postDeleted, setUserPhoto,
 } from './lib/Firestore.js';
 /* eslint-disable camelcase */
 
@@ -225,13 +226,38 @@ export function navIcons() {
     showLogIn();
   });
 }
+export function editProfilePhoto() {
+  const btn = document.getElementById('EditPhoto');
+  const modal = document.getElementById('cont');
+  const uploadImage = document.getElementById('uploadImage');
+  btn.addEventListener('click', () => {
+    modal.classList.add('showContainer');
+  });
+  uploadImage.addEventListener('click', () => {
+    getURL();
+    modal.classList.remove('showContainer');
+  });
+}
+function getURL() {
+  // Recuperar datos
+  const file = document.getElementById('chooseFile').files[0];
+  const reader = new FileReader();
+  reader.addEventListener('load', (event) => {
+    document.getElementById('profilePhoto').src = event.target.result;
+    setUserPhoto(event.target.result);
+    console.log(document.getElementById('profilePhoto').src);
+  });
+  reader.readAsDataURL(file);
+}
 // vista del perfil y post creados por el usuario
 export function showProfile() {
   onNavigate('#/profile');
   findPostById();
   createNewPost();
   navIcons();
+  editProfilePhoto();
 }
+
 // vista de todos los posts
 export function showHome() {
   root.classList.add('hideBackground');

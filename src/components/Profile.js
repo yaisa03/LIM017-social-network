@@ -16,8 +16,24 @@ export const Profile = () => {
                             </header>
                             <main id="mainContainer">
                               <div id="profileInfo">
-                                <img src="Images/userImage.jpeg" class="profilePicture">
-                                  <div id="containerUser">
+                                <img id="profilePhoto" src="Images/userImage.jpeg" class="profilePicture">
+                                <button id="EditPhoto"> Editar Imagen </button>
+                                <div class="container" id="cont">
+      <div class="modal">
+        <h2>elige la imagen</h2>
+        <label for="chooseFile" class="chooseImage"> Click para elegir</label>
+        <input
+          id="chooseFile"
+          type="file"
+          accept=".png, .jpg, .jpeg"
+          class="choose"
+          style="display: none;"
+        />
+        <div id="info"></div>
+        <button id="uploadImage">Subir</button>
+      </div>
+    </div>  
+                                <div id="containerUser">
                                     <p id="userName">${user.displayName}</p>
                                     <p id="userEmail">${user.email}</p>
                                     <button id="editProfileButton">Editar</button>
