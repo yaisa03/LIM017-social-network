@@ -169,6 +169,19 @@ export function setUser(displayName, photoURL) { // PHOTOURL
     return uid;
   }
 }
+// eslint-disable-next-line consistent-return
+export function setUserPhoto(photoUserURL) {
+  const auth = getAuth();
+  updateProfile(auth.currentUser, {
+    photoURL: photoUserURL,
+  }).then(() => {
+    // Profile updated!
+    console.log('se cargo la imagen');
+  }).catch((/* error */) => {
+    // An error occurred
+    // ...
+  });
+}
 
 export function getUser() {
   const auth = getAuth();

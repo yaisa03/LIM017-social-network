@@ -341,6 +341,49 @@ span {
     border-radius: 50%;
     background-color: black;
 }
+.container {
+    background: rgba(48, 48, 48, 0.473);
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    visibility: hidden;
+  }
+  .showContainer {
+    visibility: visible;
+  }
+  .modal {
+    background-color: white;
+    width: 500px;
+    height: 200px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border-radius: 10px;
+  }
+  .choose {
+    border-radius: 10px;
+  }
+  .chooseImage {
+    padding: 5px 10px;
+    background: #f55d3e;
+    color: #fff;
+    border: 0px solid #fff;
+    margin-top: 10px;
+  }
+  
+  .chooseImage:hover {
+    color: #fff;
+    background: #f7cb15;
+  }
+  #uploadImage {
+    margin-top: 10px;
+  }
 @media only screen and (min-width: 768px){
     body{
         background-image: url(Images/BgDesktop.jpg);
