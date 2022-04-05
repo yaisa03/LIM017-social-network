@@ -6,6 +6,8 @@ import {
   showLogIn, goToLogIn, createNewPost, editPosts, deletePosts, navIcons, showProfile, showHome,
 } from '../src/main.js';
 
+// jest.mock('../src/lib/FirebaseImport.js');
+
 // function show_password(id1, id2, id3)
 describe('show_password', () => {
   it('debería ser una función', () => {

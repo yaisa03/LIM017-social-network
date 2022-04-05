@@ -1,20 +1,15 @@
-/* eslint-disable consistent-return */
-/* eslint-disable prefer-template */
-/* eslint-disable prefer-const */
-/* eslint-disable no-plusplus */
 /* eslint-disable no-use-before-define */
 /* eslint-disable no-param-reassign */
-/* eslint-disable no-console */
 /* eslint-disable import/no-cycle */
-/* eslint-disable import/no-unresolved */
+/* eslint-disable prefer-const */
+/* eslint-disable no-plusplus */
+/* eslint-disable no-console */
 import {
   getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, sendPasswordResetEmail,
   GoogleAuthProvider, signInWithPopup, sendEmailVerification, signOut, updateProfile,
-} from 'https://www.gstatic.com/firebasejs/9.6.6/firebase-auth.js';
-import {
   getFirestore, collection, addDoc, query, where, orderBy,
   deleteDoc, doc, setDoc, onSnapshot, getDoc,
-} from 'https://www.gstatic.com/firebasejs/9.6.6/firebase-firestore.js';
+} from './FirebaseImport.js';
 import { app } from './FirebaseInit.js';
 import { ShowPosts, ShowPostsById } from '../components/ShowPosts.js';
 import {
@@ -219,7 +214,7 @@ export async function findPosts() {
     querySnapshot.forEach((d) => {
       createdPosts += ShowPosts(d, d.data());
       containerPosts.innerHTML = createdPosts;
-      console.log(d.data());
+      // console.log(d.data());
     });
     AddLikes();
     // search(createdPosts);
