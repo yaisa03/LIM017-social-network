@@ -37,7 +37,7 @@ const onNavigate = (pathname) => {
 };
 
 // Funcion que permite mostrar contraseña al presionar el icono
-function show_password(id1, id2, id3) {
+export function show_password(id1, id2, id3) {
   const eye = document.getElementById(id1);
   const eyeSlash = document.getElementById(id2);
   const password = document.getElementById(id3);
@@ -48,7 +48,7 @@ function show_password(id1, id2, id3) {
   });
 }
 // Funcion que permite ocultar contraseña al presionar el icono
-function hide_password(id1, id2, id3) {
+export function hide_password(id1, id2, id3) {
   const eye = document.getElementById(id1);
   const eyeSlash = document.getElementById(id2);
   const password = document.getElementById(id3);
@@ -59,28 +59,28 @@ function hide_password(id1, id2, id3) {
   });
 }
 // funcion para enviar correo para reestablecer contraseña
-function resetPassword() {
+export function resetPassword() {
   const resetPasswordButton = document.getElementById('resetPasswordButton');
   resetPasswordButton.addEventListener('click', () => {
     const emailReset = document.getElementById('emailReset').value;
     emailResetPassword(emailReset);
   });
 }
-function BackToLogIn() {
+export function BackToLogIn() {
   const backToLogIn = document.querySelector('.backToLogIn');
   backToLogIn.addEventListener('click', () => {
     goToLogIn();
   });
 }
 // funcion que permite hacer el inicio de sesion con google
-function showLogInGoogle() {
+export function showLogInGoogle() {
   const googleLogo = document.querySelector('.googleLogo');
   googleLogo.addEventListener('click', () => {
     logInGoogle();
   });
 }
 // funcion queda funcionalidad a la pag Register
-function showRegister() {
+export function showRegister() {
   const registerButton = document.getElementById('registerButton');
   show_password('eyeLogo2', 'eyeSlashLogo2', 'newUserPassword');
   hide_password('eyeLogo2', 'eyeSlashLogo2', 'newUserPassword');
@@ -92,7 +92,7 @@ function showRegister() {
   });
 }
 // funcion que da funcionalida a la pagina LogIn
-function showLogIn() {
+export function showLogIn() {
   show_password('eyeLogo1', 'eyeSlashLogo1', 'password');
   hide_password('eyeLogo1', 'eyeSlashLogo1', 'password');
   // boton que permite iniciar sesion
@@ -125,7 +125,7 @@ export function goToLogIn() {
   showLogIn();
 }
 // funcion que permite crear posts
-function createNewPost() {
+export function createNewPost() {
   const errorMessage = document.getElementById('messagePost');
   const title = document.getElementById('title');
   const post = document.getElementById('post');
@@ -206,7 +206,7 @@ export function deletePosts() {
   });
 }
 // funcionalidad de los iconos en el navegador
-function navIcons() {
+export function navIcons() {
   const Usericon = document.getElementById('Usericon');
   Usericon.addEventListener('click', showProfile);
   const Homeicon = document.getElementById('Homeicon');
@@ -226,7 +226,7 @@ function navIcons() {
   });
 }
 // vista del perfil y post creados por el usuario
-function showProfile() {
+export function showProfile() {
   onNavigate('#/profile');
   findPostById();
   createNewPost();

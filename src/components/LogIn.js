@@ -18,10 +18,10 @@ export const LogIn = () => {
                               <p>Continuar con:</p>
                               <div id="registerIcons">
                                 <img src="Images/google.png" class="googleLogo">
-                                <img src="Images/facebook.png" class="facebookLogo">
                               </div>
                               <a id="register">¿No tienes cuenta? Registrate</a>
                               </div>`;
   const LogInDivs = errorMessage + containerLogo + containerLogIn + logInButton + containerRegister;
   return LogInDivs;
 };
+/* <img src="Images/facebook.png" class="facebookLogo"> */
