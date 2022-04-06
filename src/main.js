@@ -12,7 +12,7 @@ import { Profile } from './components/Profile.js';
 // eslint-disable-next-line import/no-cycle
 import {
   logIn, register, logInGoogle, emailResetPassword, uploadPost,
-  findPostById, findPosts, SignOut, updatePost, postDeleted, getURLProfilePhoto,
+  findPostById, findPosts, SignOut, updatePost, postDeleted, getURLProfilePhoto, getURLPostPhoto,
 } from './lib/Firestore.js';
 /* eslint-disable camelcase */
 
@@ -170,14 +170,21 @@ export function createNewPost() {
   });
   addPostPicture();
 }
+// funcion que permite insertar imagenes en los posts
 export function addPostPicture() {
   const addPhotoIcon = document.getElementById('addPhotoIcon');
-  const modal = document.getElementById('cont4');
-  const closeModal = document.getElementById('closeModalPhotoPost');
+  const modal = document.getElementById('cont3');
+  const closeModal = document.querySelector('#closeModalPhotoPost');
+  const uploadImage = document.getElementById('uploadImagePost');
   addPhotoIcon.addEventListener('click', () => {
-  // mostrar el modal y funcionalidad a los botones del modal
+    // mostrar el modal y funcionalidad a los botones del modal
     modal.classList.add('showContainer');
     closeModal.addEventListener('click', () => {
+      modal.classList.remove('showContainer');
+    });
+    uploadImage.addEventListener('click', (e) => {
+      e.preventDefault();
+      getURLPostPhoto();
       modal.classList.remove('showContainer');
     });
   });
