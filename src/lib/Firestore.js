@@ -1,9 +1,13 @@
+/* eslint-disable import/no-unresolved */
 /* eslint-disable no-use-before-define */
 /* eslint-disable no-param-reassign */
 /* eslint-disable import/no-cycle */
 /* eslint-disable prefer-const */
 /* eslint-disable no-plusplus */
 /* eslint-disable no-console */
+import {
+  getStorage, ref, uploadBytes, getDownloadURL,
+} from 'https://www.gstatic.com/firebasejs/9.6.6/firebase-storage.js';
 import {
   getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, sendPasswordResetEmail,
   GoogleAuthProvider, signInWithPopup, sendEmailVerification, signOut, updateProfile,
@@ -179,10 +183,43 @@ export function setUserPhoto(photoUserURL) {
     console.log('se cargo la imagen');
   }).catch((/* error */) => {
     // An error occurred
-    // ...
+    console.log('NO se cargo la imagen');
   });
 }
-
+export async function getURL() {
+  // Recuperar datos
+  const filechoosen = document.getElementById('chooseFile').files[0];
+  const storage = getStorage();
+  // eslint-disable-next-line prefer-template
+  // let namephoto = new Date() + '-' + filechoosen.name;
+  console.log(filechoosen);
+  const storageRef = ref(storage, filechoosen.name);
+  // 'file' comes from the Blob or File API
+  await uploadBytes(storageRef, filechoosen).then((snapshot) => {
+    console.log(snapshot);
+  });
+  // eslint-disable-next-line prefer-template
+  getDownloadURL(ref(storage, filechoosen.name))
+    .then((url) => {
+      // `url` is the download URL for 'images/stars.jpg'
+      const img = document.getElementById('profilePhoto');
+      img.setAttribute('src', url);
+      setUserPhoto(url);
+    })
+    .catch((error) => {
+      // Handle any errors
+      console.log(error);
+    });
+  /* reader.addEventListener('load', (event) => {
+    document.getElementById('profilePhoto').src = event.target.result;
+    setUserPhoto(event.target.result);
+  });
+  reader.readAsDataURL(file); */
+  /* const metadata = {
+    content type : file.type,
+  }
+   const task = storageRef.child(namephoto).put(file, metadata); */
+}
 export function getUser() {
   const auth = getAuth();
   const user = auth.currentUser;

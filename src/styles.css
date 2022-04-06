@@ -150,8 +150,10 @@ button:hover{
     transform: scale(1.2);
 }
 a{
-    color:#fff;
+    color: white;
     text-decoration: none;
+    font-weight: bolder;
+    text-shadow: -3px 1px 2px black, 0 0 1em black, 0 0 0.2em black;
 }
 a:hover {
     color: rgb(0, 0, 0);
@@ -320,13 +322,19 @@ span {
     margin: 4%;
     font-size: 15px;
 }
-#profileInfo p{
+#userName{
     font-size: 18px;
+}
+#userEmail{
+    font-size: 15px;
 }
 #editProfileButton{
     margin-top: 8px;
-    width: 30%;
-    height: 35px;
+    width: 50%;
+    height: 25px;
+    background-color: coral;
+    font-size: small;
+    font-weight: bolder
 }
 #mainContainer, #PageContent {
     width: 100%;
@@ -340,6 +348,8 @@ span {
     width: 30%;
     border-radius: 50%;
     background-color: black;
+    margin-left: 18px;
+    margin-bottom: 27px;
 }
 .container {
     background: rgba(48, 48, 48, 0.473);
@@ -369,6 +379,16 @@ span {
   .choose {
     border-radius: 10px;
   }
+  #EditPhoto{
+    top: 180px;
+    left: 50px;
+    font-size: small;
+    font-weight: bold;
+    background-color: coral;
+    width: 20%;
+    height: 20px;
+    position: absolute;
+  }
   .chooseImage {
     padding: 5px 10px;
     background: #f55d3e;
@@ -376,13 +396,14 @@ span {
     border: 0px solid #fff;
     margin-top: 10px;
   }
-  
   .chooseImage:hover {
     color: #fff;
     background: #f7cb15;
   }
   #uploadImage {
     margin-top: 10px;
+    color: black;
+    border-color: orange;
   }
 @media only screen and (min-width: 768px){
     body{
@@ -438,7 +459,7 @@ span {
         grid-column: 1 / 2;
         background-image: url(Images/BgProfileDesktop.jpg);
         grid-row: 1;
-        height: 400px;
+        height: 500px;
         width: 80% !important;
         flex-direction: column;
         align-content: center;
@@ -454,9 +475,7 @@ span {
         height: 30%;
         width: 50%;
         margin-top: 60px; 
-        /* width: 30%;
-        border-radius: 50%;
-        background-color: black; */
+        margin-left: 0px;
     }
     #post{
         margin-top: 4px;
@@ -483,5 +502,11 @@ span {
     }
     ul {
         justify-content: space-around;
+    }
+    #EditPhoto{
+        width: 10%;
+        top: 380px;
+        left: 125px;
+        height: 30px;        
     }
 }

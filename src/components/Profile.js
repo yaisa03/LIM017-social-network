@@ -3,6 +3,12 @@ import { getUser } from '../lib/Firestore.js';
 
 export const Profile = () => {
   const user = getUser();
+  let url = '';
+  if (user.photoURL === null) {
+    url = 'Images/userImage.jpeg';
+  } else {
+    url = user.photoURL;
+  }
   const errorMessage = '<p id="message"></p>';
   const containerProfile = `<header>
                              <nav>
@@ -16,11 +22,11 @@ export const Profile = () => {
                             </header>
                             <main id="mainContainer">
                               <div id="profileInfo">
-                                <img id="profilePhoto" src="Images/userImage.jpeg" class="profilePicture">
-                                <button id="EditPhoto"> Editar Imagen </button>
+                                <img id="profilePhoto" src= ${url} class="profilePicture">
+                                <button id="EditPhoto"> Editar Foto </button>
                                 <div class="container" id="cont">
       <div class="modal">
-        <h2>elige la imagen</h2>
+        <h3>Elige la imagen</h3>
         <label for="chooseFile" class="chooseImage"> Click para elegir</label>
         <input
           id="chooseFile"
@@ -36,7 +42,7 @@ export const Profile = () => {
                                 <div id="containerUser">
                                     <p id="userName">${user.displayName}</p>
                                     <p id="userEmail">${user.email}</p>
-                                    <button id="editProfileButton">Editar</button>
+                                    <button id="editProfileButton">Editar Perfil</button>
                             </div>
                             </div>
                             <div id="PageContent">

@@ -12,7 +12,7 @@ import { Profile } from './components/Profile.js';
 // eslint-disable-next-line import/no-cycle
 import {
   logIn, register, logInGoogle, emailResetPassword, uploadPost,
-  findPostById, findPosts, SignOut, updatePost, postDeleted, setUserPhoto,
+  findPostById, findPosts, SignOut, updatePost, postDeleted, getURL,
 } from './lib/Firestore.js';
 /* eslint-disable camelcase */
 
@@ -238,17 +238,7 @@ export function editProfilePhoto() {
     modal.classList.remove('showContainer');
   });
 }
-function getURL() {
-  // Recuperar datos
-  const file = document.getElementById('chooseFile').files[0];
-  const reader = new FileReader();
-  reader.addEventListener('load', (event) => {
-    document.getElementById('profilePhoto').src = event.target.result;
-    setUserPhoto(event.target.result);
-    console.log(document.getElementById('profilePhoto').src);
-  });
-  reader.readAsDataURL(file);
-}
+
 // vista del perfil y post creados por el usuario
 export function showProfile() {
   onNavigate('#/profile');
