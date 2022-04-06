@@ -38,6 +38,17 @@ export const Profile = () => {
                                   <p id="userName">${user.displayName}</p>
                                   <p id="userEmail">${user.email}</p>
                                   <button id="editProfileButton">Editar Perfil</button>
+                                  <div class="container" id="cont2">
+                                    <div class="modalEditProfile modal">
+                                      <i class="fa fa-remove" id="closeModal" style="font-size:30px;color:red"></i>
+                                      <label id="editDisplayName"> Cambia tu nombre de usuario </label>
+                                      <input id="newDisplayName" type="text"></input>
+                                    <div id="editProfileButtons">
+                                      <button id="saveProfileChanges">Guardar cambios</button>
+                                      <button id="deleteAccount">Eliminar cuenta</button>
+                                    </div>
+                                    </div>
+                                  </div>
                                 </div>
                               </div>
                               <div id="PageContent">
@@ -45,7 +56,10 @@ export const Profile = () => {
                                   <p id="messagePost"></p>
                                   <input id="title" placeholder="Titulo">
                                   <textarea id="post" placeholder="Descripcion"></textarea>
+                                  <div id="addPhotoDiv">
+                                  <i class="fa fa-photo" id="addPhotoIcon"></i>
                                   <button id="postButton">Publicar</button>
+                                  </div>
                                 </form>
                                 <div id="postsContainer"></div>
                               </div>

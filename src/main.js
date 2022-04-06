@@ -12,7 +12,7 @@ import { Profile } from './components/Profile.js';
 // eslint-disable-next-line import/no-cycle
 import {
   logIn, register, logInGoogle, emailResetPassword, uploadPost,
-  findPostById, findPosts, SignOut, updatePost, postDeleted, getURL,
+  findPostById, findPosts, SignOut, updatePost, postDeleted, getURLProfilePhoto,
 } from './lib/Firestore.js';
 /* eslint-disable camelcase */
 
@@ -168,6 +168,19 @@ export function createNewPost() {
       }
     }
   });
+  addPostPicture();
+}
+export function addPostPicture() {
+  const addPhotoIcon = document.getElementById('addPhotoIcon');
+  const modal = document.getElementById('cont4');
+  const closeModal = document.getElementById('closeModalPhotoPost');
+  addPhotoIcon.addEventListener('click', () => {
+  // mostrar el modal y funcionalidad a los botones del modal
+    modal.classList.add('showContainer');
+    closeModal.addEventListener('click', () => {
+      modal.classList.remove('showContainer');
+    });
+  });
 }
 // Funcion que permite editar los posts
 export function editPosts() {
@@ -177,7 +190,7 @@ export function editPosts() {
       const text = document.querySelectorAll(`.text${button.id}`);
       text.forEach((e) => {
         e.removeAttribute('readonly');
-        e.style.backgroundColor = 'white';
+        e.style.backgroundColor = '#FFF1CE';
       });
       document.querySelector(`.editButton.${button.id}`).classList.add('hide');
       document.querySelector(`.publishButton.${button.id}`).classList.remove('hide');
@@ -190,7 +203,7 @@ export function editPosts() {
         const text = document.querySelectorAll(`.text${button.id}`);
         text.forEach((e) => {
           e.setAttribute('readonly', true);
-          e.style.backgroundColor = '#FFF1CE';
+          e.style.backgroundColor = 'white';
           const title = document.querySelector(`.title.text${button.id}`);
           const post = document.querySelector(`.description.text${button.id}`);
           updatePost(button.id, title.value, post.value);
@@ -245,11 +258,22 @@ export function editProfilePhoto() {
     });
   });
   uploadImage.addEventListener('click', () => {
-    getURL();
+    getURLProfilePhoto();
     modal.classList.remove('showContainer');
   });
 }
 
+export function editProfile() {
+  const editProfileButton = document.getElementById('editProfileButton');
+  const modal = document.getElementById('cont2');
+  const closeModal = document.querySelector('#closeModal');
+  editProfileButton.addEventListener('click', () => {
+    modal.classList.add('showContainer');
+    closeModal.addEventListener('click', () => {
+      modal.classList.remove('showContainer');
+    });
+  });
+}
 // vista del perfil y post creados por el usuario
 export function showProfile() {
   onNavigate('#/profile');
@@ -257,6 +281,7 @@ export function showProfile() {
   createNewPost();
   navIcons();
   editProfilePhoto();
+  editProfile();
 }
 
 // vista de todos los posts

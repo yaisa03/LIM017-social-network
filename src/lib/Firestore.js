@@ -186,7 +186,7 @@ export function setUserPhoto(photoUserURL) {
     console.log('NO se cargo la imagen');
   });
 }
-export async function getURL() {
+export async function getURLProfilePhoto() {
   // Recuperar datos
   const filechoosen = document.getElementById('chooseFile').files[0];
   const storage = getStorage();
