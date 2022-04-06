@@ -85,11 +85,18 @@ export function showRegister() {
   const registerButton = document.getElementById('registerButton');
   show_password('eyeLogo2', 'eyeSlashLogo2', 'newUserPassword');
   hide_password('eyeLogo2', 'eyeSlashLogo2', 'newUserPassword');
+  show_password('eyeLogo3', 'eyeSlashLogo3', 'newUserPassword2');
+  hide_password('eyeLogo3', 'eyeSlashLogo3', 'newUserPassword2');
   registerButton.addEventListener('click', () => {
     const email = document.getElementById('newUser').value;
     const password = document.getElementById('newUserPassword').value;
+    const confirmPassword = document.getElementById('newUserPassword2').value;
     const displayName = document.getElementById('newUserDisplayName').value;
-    register(email, password, displayName);
+    if (password === confirmPassword) {
+      register(email, password, displayName);
+    } else {
+      alert('Las contraseñas deben ser iguales');
+    }
   });
 }
 // funcion que da funcionalida a la pagina LogIn

@@ -28,7 +28,7 @@ export function emailVerification() {
   sendEmailVerification(auth.currentUser)
     .then(() => {
       errorMessageText.classList.add('showMessage');
-      errorMessageText.innerText = 'Email verification sent!';
+      errorMessageText.innerText = 'correo de verificacion enviado!';
       setTimeout(goToLogIn, 2000);
     });
 }
