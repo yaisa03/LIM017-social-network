@@ -186,6 +186,7 @@ export function setUserPhoto(photoUserURL) {
     console.log('NO se cargo la imagen');
   });
 }
+// funcion que crea el url de la foto de perfil del usuario y la inserta
 export async function getURLProfilePhoto() {
   // Recuperar datos
   const filechoosen = document.getElementById('chooseFile').files[0];
@@ -201,6 +202,30 @@ export async function getURLProfilePhoto() {
       const img = document.getElementById('profilePhoto');
       img.setAttribute('src', url);
       setUserPhoto(url);
+    })
+    .catch((error) => {
+      // Handle any errors
+      console.log(error);
+    });
+}
+// funcion que crea los url de las fotos insertadas en la posts
+export async function getURLPostPhoto() {
+  // Recuperar datos
+  const filechoosen = document.getElementById('chooseFilePost').files[0];
+  const storage = getStorage();
+  // eslint-disable-next-line prefer-template
+  const storageRef = ref(storage, filechoosen.name);
+  await uploadBytes(storageRef, filechoosen).then((snapshot) => {
+    console.log(snapshot);
+  });
+  getDownloadURL(ref(storage, filechoosen.name))
+    .then((url) => {
+      const post = document.getElementById('uploadPostImages');
+      let img = document.createElement('img');
+      img.setAttribute('src', url);
+      post.appendChild(img);
+      console.log(url);
+      return url;
     })
     .catch((error) => {
       // Handle any errors

@@ -436,6 +436,16 @@ label[id="editDisplayName"]{
     height: 30px;
     border-radius: 5px;
 }
+#uploadPostImages {
+   width: 90%;
+   display: flex;
+   flex-wrap: wrap;
+   justify-content: center;
+   flex-direction: column;
+}
+#uploadPostImages img {
+    width: 100%;
+}
 @media only screen and (min-width: 768px){
     body{
         background-image: url(Images/BgDesktop.jpg);
@@ -540,4 +550,12 @@ label[id="editDisplayName"]{
         left: 125px;
         height: 30px;        
     }
+    #uploadPostImages {
+        display: flex;
+        flex-wrap: wrap;
+        flex-direction: row;
+     }
+     #uploadPostImages img {
+         width: 50%
+     }
 }
