@@ -375,6 +375,13 @@ span {
     justify-content: center;
     align-items: center;
     border-radius: 10px;
+    position: relative;
+  }
+  i.fa.fa-remove {
+    align-self: flex-end;
+    right: 15px;
+    position: absolute;
+    top: 5%;
   }
   .choose {
     border-radius: 10px;
@@ -390,7 +397,7 @@ span {
     position: absolute;
   }
   .chooseImage {
-    padding: 5px 10px;
+    padding: 8px;
     background: #f55d3e;
     color: #fff;
     border: 0px solid #fff;

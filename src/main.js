@@ -237,8 +237,12 @@ export function editProfilePhoto() {
   const btn = document.getElementById('EditPhoto');
   const modal = document.getElementById('cont');
   const uploadImage = document.getElementById('uploadImage');
+  const closeModal = document.querySelector('i.fa.fa-remove');
   btn.addEventListener('click', () => {
     modal.classList.add('showContainer');
+    closeModal.addEventListener('click', () => {
+      modal.classList.remove('showContainer');
+    });
   });
   uploadImage.addEventListener('click', () => {
     getURL();

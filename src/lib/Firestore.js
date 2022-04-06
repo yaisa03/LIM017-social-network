@@ -191,17 +191,13 @@ export async function getURL() {
   const filechoosen = document.getElementById('chooseFile').files[0];
   const storage = getStorage();
   // eslint-disable-next-line prefer-template
-  // let namephoto = new Date() + '-' + filechoosen.name;
-  console.log(filechoosen);
   const storageRef = ref(storage, filechoosen.name);
-  // 'file' comes from the Blob or File API
   await uploadBytes(storageRef, filechoosen).then((snapshot) => {
     console.log(snapshot);
   });
   // eslint-disable-next-line prefer-template
   getDownloadURL(ref(storage, filechoosen.name))
     .then((url) => {
-      // `url` is the download URL for 'images/stars.jpg'
       const img = document.getElementById('profilePhoto');
       img.setAttribute('src', url);
       setUserPhoto(url);
@@ -210,15 +206,6 @@ export async function getURL() {
       // Handle any errors
       console.log(error);
     });
-  /* reader.addEventListener('load', (event) => {
-    document.getElementById('profilePhoto').src = event.target.result;
-    setUserPhoto(event.target.result);
-  });
-  reader.readAsDataURL(file); */
-  /* const metadata = {
-    content type : file.type,
-  }
-   const task = storageRef.child(namephoto).put(file, metadata); */
 }
 export function getUser() {
   const auth = getAuth();
