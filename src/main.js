@@ -133,6 +133,7 @@ export function goToLogIn() {
   showLogIn();
 }
 // funcion que permite crear posts
+let filechoosen = '';
 export function createNewPost() {
   const errorMessage = document.getElementById('messagePost');
   const title = document.getElementById('title');
@@ -159,8 +160,15 @@ export function createNewPost() {
       errorMessage.classList.add('showMessageError');
       errorMessage.innerHTML = 'Debes ingresar contenido al post';
     } else if (title.value !== '' && post.value !== '') {
-      uploadPost(title.value, post.value);
+      if (filechoosen === '') {
+        uploadPost(title.value, post.value);
+      } else {
+        getURLPostPhoto(title.value, post.value);
+      }
       createPost.reset();
+      const namePostImage = document.getElementById('namePostImage');
+      namePostImage.innerText = '';
+      filechoosen = '';
       errorMessage.classList.remove('showMessageError');
       errorMessage.innerHTML = '';
       if (window.location.hash === '#/profile') {
@@ -184,8 +192,12 @@ export function addPostPicture() {
     });
     uploadImage.addEventListener('click', (e) => {
       e.preventDefault();
-      getURLPostPhoto();
+      const namePostImage = document.getElementById('namePostImage');
+      filechoosen = document.getElementById('chooseFilePost').files[0];
+      namePostImage.innerText = filechoosen.name;
+      console.log(filechoosen);
       modal.classList.remove('showContainer');
+      return filechoosen;
     });
   });
 }
