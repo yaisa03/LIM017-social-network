@@ -209,9 +209,10 @@ export async function getURLProfilePhoto() {
     });
 }
 // funcion que crea los url de las fotos insertadas en la posts
-export async function getURLPostPhoto() {
+export async function getURLPostPhoto(title, post) {
   // Recuperar datos
   const filechoosen = document.getElementById('chooseFilePost').files[0];
+  console.log(filechoosen);
   const storage = getStorage();
   // eslint-disable-next-line prefer-template
   const storageRef = ref(storage, filechoosen.name);
@@ -220,12 +221,10 @@ export async function getURLPostPhoto() {
   });
   getDownloadURL(ref(storage, filechoosen.name))
     .then((url) => {
-      const post = document.getElementById('uploadPostImages');
-      let img = document.createElement('img');
-      img.setAttribute('src', url);
-      post.appendChild(img);
+      /*  const img = document.getElementById('uploadPostImages');
+      img.setAttribute('src', url); */
+      uploadPostImage(title, post, url, filechoosen.name);
       console.log(url);
-      return url;
     })
     .catch((error) => {
       // Handle any errors
@@ -238,11 +237,26 @@ export function getUser() {
   return user;
 }
 // Funcion que guarda post en firebase
+export function uploadPostImage(title, post, url, storageName) {
+  const auth = getAuth();
+  const user = auth.currentUser;
+  console.log(url);
+  addDoc(collection(db, 'posts'), {
+    UserId: user.uid,
+    postTitle: title,
+    content: post,
+    date: new Date(),
+    likes: [],
+    image: url,
+    storageImage: storageName,
+  });
+  findPostById();
+}
 export function uploadPost(title, post) {
   const auth = getAuth();
   const user = auth.currentUser;
   addDoc(collection(db, 'posts'), {
-    UserId: user.uid, postTitle: title, content: post, date: new Date(), likes: [],
+    UserId: user.uid, postTitle: title, content: post, date: new Date(), likes: [], image: '', storageImage: '',
   });
 }
 // Funcion que muestra los posts del usuario dueno del perfil
@@ -256,6 +270,9 @@ export async function findPostById() {
     containerPosts.innerHTML = '';
     snapshot.forEach((e) => {
       containerPosts.innerHTML += ShowPostsById(e, e.data());
+      /* if (e.data().image === '') {
+        document.getElementById('uploadPostImages').style.display = 'none';
+      } */
       const button = document.querySelectorAll('.editButton');
       const text = document.querySelectorAll(`.${button.id}`);
       text.forEach((el) => {
@@ -276,6 +293,9 @@ export async function findPosts() {
     querySnapshot.forEach((d) => {
       createdPosts += ShowPosts(d, d.data());
       containerPosts.innerHTML = createdPosts;
+      if (d.data().image === '') {
+        document.getElementById('uploadPostImages').style.display = 'none';
+      }
       // console.log(d.data());
     });
     AddLikes();

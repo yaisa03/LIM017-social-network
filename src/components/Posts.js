@@ -17,7 +17,7 @@ export const Posts = () => {
                            <p id="messagePost"></p>
                            <input id="title" placeholder="Titulo">
                            <textarea id="post" placeholder="Descripcion"></textarea>
-                           <div id="uploadPostImages"></div>
+                           <p id="namePostImage" style="color: black;font-size: 13px;margin: 3px;"></p>
                            <div id="addPhotoDiv">
                            <i class="fa fa-photo" id="addPhotoIcon"></i>
                            <div class="container" id="cont3">
