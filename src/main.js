@@ -3,12 +3,12 @@
 /* eslint-disable no-alert */
 /* eslint-disable consistent-return */
 /* eslint-disable no-use-before-define */
-/* import { LogIn } from './components/LogIn.js';
+import { LogIn } from './components/LogIn.js';
 import { Register } from './components/Register.js';
 import { ResetPassword } from './components/ResetPassword.js';
 import { Posts } from './components/Posts.js';
 // eslint-disable-next-line import/no-cycle
-import { Profile } from './components/Profile.js'; */
+import { Profile } from './components/Profile.js';
 // eslint-disable-next-line object-curly-newline
 // eslint-disable-next-line import/no-cycle
 import {
@@ -16,12 +16,9 @@ import {
   findPostById, findPosts, SignOut, updatePost, postDeleted, getURLProfilePhoto, getURLPostPhoto,
 } from './lib/Firestore.js';
 /* eslint-disable camelcase */
-import { onNavigate } from './components/Routes.js';
-// Declaracion de variables
-// const pageOne = document.getElementById('containerPageOne');
-const root = document.getElementById('root');
+// import { onNavigate } from './components/Routes.js';
 // router
-/* const routes = {
+const routes = {
   '#/': LogIn,
   '#/register': Register,
   '#/resetpassword': ResetPassword,
@@ -30,13 +27,14 @@ const root = document.getElementById('root');
 };
 // Funcion que relaciona rutas con pathnames
 const onNavigate = (pathname) => {
+  const pageOne = document.getElementById('containerPageOne');
   window.history.pushState(
     {},
     pathname,
     window.location.origin + pathname,
   );
   pageOne.innerHTML = routes[pathname]();
-}; */
+};
 
 // Funcion que permite mostrar contraseña al presionar el icono
 export function show_password(id1, id2, id3) {
@@ -230,6 +228,7 @@ export function editPosts() {
           document.querySelector(`.editButton.${button.id}`).classList.remove('hide');
           document.querySelector(`.publishButton.${button.id}`).classList.add('hide');
         });
+        findPostById();
       }
     });
   });
@@ -248,6 +247,7 @@ export function deletePosts() {
 }
 // funcionalidad de los iconos en el navegador
 export function navIcons() {
+  const root = document.getElementById('root');
   const Usericon = document.getElementById('Usericon');
   Usericon.addEventListener('click', showProfile);
   const Homeicon = document.getElementById('Homeicon');
@@ -306,6 +306,7 @@ export function showProfile() {
 
 // vista de todos los posts
 export function showHome() {
+  const root = document.getElementById('root');
   root.classList.add('hideBackground');
   onNavigate('#/home');
   findPosts();
