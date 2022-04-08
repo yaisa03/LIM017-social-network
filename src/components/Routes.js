@@ -1,8 +1,10 @@
-import { LogIn } from './LogIn.js';
+/* import { LogIn } from './LogIn.js';
 import { Register } from './Register.js';
 import { ResetPassword } from './ResetPassword.js';
 import { Posts } from './Posts.js';
+// eslint-disable-next-line import/no-cycle
 import { Profile } from './Profile.js';
+// eslint-disable-next-line import/no-cycle
 
 const pageOne = document.getElementById('containerPageOne');
 
@@ -23,7 +25,7 @@ export const onNavigate = (pathname) => {
   );
   pageOne.innerHTML = routes[pathname]();
 };
-
+ */
 /* export const changeView = (route) => {
   pageOne.innerHTML = '';
   switch (route) {

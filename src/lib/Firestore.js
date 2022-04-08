@@ -15,27 +15,28 @@ import {
   deleteDoc, doc, setDoc, onSnapshot, getDoc, getStorage, ref, uploadBytes, getDownloadURL,
 } from './FirebaseImport.js';
 import { app } from './FirebaseInit.js';
-import { ShowPosts, ShowPostsById } from '../components/ShowPosts.js';
+/* import { ShowPosts, ShowPostsById } from '../components/ShowPosts.js'; */
 import {
-  goToLogIn, showHome, editPosts, deletePosts,
-} from '../main.js';
+  emailMessageVerificacionOK, cleanMessageError,
+  verifyEmailMessage, removeMessageError, addMessage,
+  resetPasswordMessageOK, removeMessage, addMessageError, messageErrorCases,
+  getFileChoosenProfile, getReferenceImg, getFileChoosenPost, showUserPostsById,
+  showPostsHome, putLikesPosts, goToHome,
+} from './index.js';
 
 const db = getFirestore(app);
 
+// Funcion que envia un mensaje de verificacion al usuario que se ha registrado
 export function emailVerification() {
   const auth = getAuth();
-  const errorMessageText = document.querySelector('#message');
   sendEmailVerification(auth.currentUser)
     .then(() => {
-      errorMessageText.classList.add('showMessage');
-      errorMessageText.innerText = 'correo de verificacion enviado!';
-      setTimeout(goToLogIn, 2000);
+      emailMessageVerificacionOK();
     });
 }
 // Funcion que registra un nuevo usuario en Firebase
 export function register(email, password, displayname) {
   const auth = getAuth();
-  const errorMessageText = document.querySelector('#message');
   createUserWithEmailAndPassword(auth, email, password).then((userCredential) => {
     // Signed in
     const user = userCredential.user;
@@ -53,40 +54,23 @@ export function register(email, password, displayname) {
   })
     .catch((error) => {
       const errorMessage = error.message;
-      errorMessageText.classList.add('showMessageError');
-      switch (errorMessage) {
-        case 'Firebase: Error (auth/email-already-in-use).':
-          errorMessageText.innerText = 'email ya registrado';
-          break;
-        case 'Firebase: Error (auth/internal-error).':
-          errorMessageText.innerText = 'ingresar contraseña';
-          break;
-        case 'Firebase: Error (auth/invalid-email).':
-          errorMessageText.innerText = 'email invalido';
-          break;
-        default:
-          break;
-      }
+      messageErrorCases(errorMessage);
     });
 }
 // Funcion que permite a un usuario loggearse con su email y password
 export function logIn(email, password) {
   const auth = getAuth();
-  const errorMessageText = document.querySelector('#message');
   signInWithEmailAndPassword(auth, email, password)
     .then((userCredential) => {
       // Signed in
       const user = userCredential.user;
-      errorMessageText.classList.remove('showMessageError');
-      errorMessageText.innerText = ' ';
+      cleanMessageError();
       switch (user.emailVerified) {
         case true:
-          console.log(user);
-          showHome();
+          goToHome();
           break;
         case false:
-          errorMessageText.classList.add('showMessageError');
-          errorMessageText.innerText = 'verificar usuario mediante el link enviado a tu correo';
+          verifyEmailMessage();
           break;
         default:
           break;
@@ -94,26 +78,7 @@ export function logIn(email, password) {
     })
     .catch((error) => {
       const errorMessage = error.message;
-      errorMessageText.classList.add('showMessageError');
-      switch (errorMessage) {
-        case 'Firebase: Error (auth/user-not-found).':
-          errorMessageText.innerText = 'usuario no encontrado';
-          break;
-        case 'Firebase: Error (auth/wrong-password).':
-          errorMessageText.innerText = 'contraseña incorrecta';
-          break;
-        case 'Firebase: Error (auth/invalid-email).':
-          errorMessageText.innerText = 'email invalido';
-          break;
-        case 'Firebase: Error (auth/internal-error).':
-          errorMessageText.innerText = 'ingresar contraseña';
-          break;
-        case 'Firebase: Password should be at least 6 characters (auth/weak-password).':
-          errorMessageText.innerText = 'la contraseña debe tener al menos 6 caracteres';
-          break;
-        default:
-          break;
-      }
+      messageErrorCases(errorMessage);
     });
 }
 // Funcion que permite a un usuario loggearse con su cuenta de Gmail
@@ -126,7 +91,7 @@ export function logInGoogle() {
       const token = credential.accessToken; */
       const user = result.user;
       console.log(user);
-      showHome();
+      goToHome();
     }).catch((/* error */) => {
       // const errorMessage = error.message;
     });
@@ -134,31 +99,17 @@ export function logInGoogle() {
 // Funcion que permite reestablecer contraseña enviando un correo al usuario
 export function emailResetPassword(email) {
   const auth = getAuth();
-  const errorMessageText = document.querySelector('#message');
   sendPasswordResetEmail(auth, email)
     .then(() => {
-      errorMessageText.classList.remove('showMessageError');
-      errorMessageText.classList.add('showMessage');
-      errorMessageText.innerText = 'Email de reestablecimiento de contraseña enviado';
-      setTimeout(goToLogIn, 2000);
+      removeMessageError();
+      addMessage();
+      resetPasswordMessageOK();
     })
     .catch((error) => {
       const errorMessage = error.message;
-      errorMessageText.classList.remove('showMessage');
-      errorMessageText.classList.add('showMessageError');
-      switch (errorMessage) {
-        case 'Firebase: Error (auth/user-not-found).':
-          errorMessageText.innerText = 'usuario no encontrado';
-          break;
-        case 'Firebase: Error (auth/invalid-email).':
-          errorMessageText.innerText = 'email invalido';
-          break;
-        case 'Firebase: Error (auth/missing-email).':
-          errorMessageText.innerText = 'ingresar email';
-          break;
-        default:
-          break;
-      }
+      removeMessage();
+      addMessageError();
+      messageErrorCases(errorMessage);
     });
 }
 
@@ -189,18 +140,16 @@ export function setUserPhoto(photoUserURL) {
 // funcion que crea el url de la foto de perfil del usuario y la inserta
 export async function getURLProfilePhoto() {
   // Recuperar datos
-  const filechoosen = document.getElementById('chooseFile').files[0];
+  const filechoosen = getFileChoosenProfile();
   const storage = getStorage();
   // eslint-disable-next-line prefer-template
   const storageRef = ref(storage, filechoosen.name);
-  await uploadBytes(storageRef, filechoosen).then((snapshot) => {
-    console.log(snapshot);
+  await uploadBytes(storageRef, filechoosen).then(() => {
   });
   // eslint-disable-next-line prefer-template
   getDownloadURL(ref(storage, filechoosen.name))
     .then((url) => {
-      const img = document.getElementById('profilePhoto');
-      img.setAttribute('src', url);
+      getReferenceImg(url);
       setUserPhoto(url);
     })
     .catch((error) => {
@@ -211,24 +160,17 @@ export async function getURLProfilePhoto() {
 // funcion que crea los url de las fotos insertadas en la posts
 export async function getURLPostPhoto(title, post) {
   // Recuperar datos
-  const filechoosen = document.getElementById('chooseFilePost').files[0];
-  console.log(filechoosen);
+  const filechoosen = getFileChoosenPost();
   const storage = getStorage();
   // eslint-disable-next-line prefer-template
   const storageRef = ref(storage, filechoosen.name);
-  await uploadBytes(storageRef, filechoosen).then((snapshot) => {
-    console.log(snapshot);
+  await uploadBytes(storageRef, filechoosen).then(() => {
   });
   getDownloadURL(ref(storage, filechoosen.name))
     .then((url) => {
-      /*  const img = document.getElementById('uploadPostImages');
-      img.setAttribute('src', url); */
       uploadPostImage(title, post, url, filechoosen.name);
-      console.log(url);
     })
-    .catch((error) => {
-      // Handle any errors
-      console.log(error);
+    .catch(() => {
     });
 }
 export function getUser() {
@@ -266,13 +208,14 @@ export async function findPostById() {
   const postsRef = collection(db, 'posts');
   const q = query(postsRef, where('UserId', '==', user.uid), orderBy('date', 'desc'));
   onSnapshot(q, (snapshot) => {
-    const containerPosts = document.getElementById('postsContainer');
+    showUserPostsById(snapshot);
+    /* const containerPosts = document.getElementById('postsContainer');
     containerPosts.innerHTML = '';
     snapshot.forEach((e) => {
       containerPosts.innerHTML += ShowPostsById(e, e.data());
-      /* if (e.data().image === '') {
-        document.getElementById('uploadPostImages').style.display = 'none';
-      } */
+      // if (e.data().image === '') {
+      //  document.getElementById('uploadPostImages').style.display = 'none';
+      // }
       const button = document.querySelectorAll('.editButton');
       const text = document.querySelectorAll(`.${button.id}`);
       text.forEach((el) => {
@@ -280,38 +223,39 @@ export async function findPostById() {
       });
       editPosts();
       deletePosts();
-    });
+    }); */
   });
 }
 // Funcion que busca todos los posts en la app
 export async function findPosts() {
-  const containerPosts = document.getElementById('postsContainer');
   const q = query(collection(db, 'posts'), orderBy('date', 'desc'));
   onSnapshot(q, (querySnapshot) => {
+    showPostsHome(querySnapshot);
+    /* const containerPosts = document.getElementById('postsContainer');
     containerPosts.innerHTML = '';
     let createdPosts = '';
     querySnapshot.forEach((d) => {
       createdPosts += ShowPosts(d, d.data());
       containerPosts.innerHTML = createdPosts;
-      /* if (d.data().image === '') {
-        document.getElementById('uploadPostImages').style.display = 'none';
-      } */
+      // if (d.data().image === '') {
+      //  document.getElementById('uploadPostImages').style.display = 'none';
+      // }
       // console.log(d.data());
     });
-    AddLikes();
+    AddLikes(); */
     // search(createdPosts);
   });
 }
-function filterPost(arrayPosts, condition) {
+/* function filterPost(arrayPosts, condition) {
   console.log(JSON.parse(arrayPosts).filter((post) => (post.postTitle).includes(condition)));
   // return;
-}
-export function search(createdPost) {
+} */
+/* export function search(createdPost) {
   const searchPost = document.getElementById('searchPost');
   searchPost.addEventListener('keyup', () => {
     filterPost(createdPost, searchPost.value);
   });
-}
+} */
 // Funcion que elimina los posts de la base de datos de firebase
 export function postDeleted(id) {
   deleteDoc(doc(db, 'posts', id));
@@ -322,10 +266,10 @@ export async function updatePost(id, title, post) {
   setDoc(doc(db, 'posts', id), { content: post }, { merge: true });
   setDoc(doc(db, 'posts', id), { date: new Date() }, { merge: true });
 }
-function postLike(id, newArray) {
+export function postLike(id, newArray) {
   setDoc(doc(db, 'posts', id), { likes: newArray }, { merge: true });
 }
-async function getArrayLikes(e) {
+export async function getArrayLikes(e) {
   const docSnap = await getDoc(doc(db, 'posts', e));
   let array = docSnap.data().likes;
   return array;
@@ -333,7 +277,8 @@ async function getArrayLikes(e) {
 export function AddLikes() {
   const auth = getAuth();
   const user = auth.currentUser;
-  const likeButton = document.querySelectorAll('.likeButton');
+  putLikesPosts(user);
+  /* const likeButton = document.querySelectorAll('.likeButton');
   likeButton.forEach((e) => {
     e.addEventListener('click', async () => {
       let arrayLikes = await getArrayLikes(e.id);
@@ -354,7 +299,7 @@ export function AddLikes() {
         postLike(e.id, arrayLikes);
       }
     });
-  });
+  }); */
 }
 // Funcion que permite cerrar sesion de un usuario
 export function SignOut() {
