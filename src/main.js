@@ -1,13 +1,14 @@
+/* eslint-disable import/no-cycle */
 /* eslint-disable no-console */
 /* eslint-disable no-alert */
 /* eslint-disable consistent-return */
 /* eslint-disable no-use-before-define */
-import { LogIn } from './components/LogIn.js';
+/* import { LogIn } from './components/LogIn.js';
 import { Register } from './components/Register.js';
 import { ResetPassword } from './components/ResetPassword.js';
 import { Posts } from './components/Posts.js';
 // eslint-disable-next-line import/no-cycle
-import { Profile } from './components/Profile.js';
+import { Profile } from './components/Profile.js'; */
 // eslint-disable-next-line object-curly-newline
 // eslint-disable-next-line import/no-cycle
 import {
@@ -15,12 +16,12 @@ import {
   findPostById, findPosts, SignOut, updatePost, postDeleted, getURLProfilePhoto, getURLPostPhoto,
 } from './lib/Firestore.js';
 /* eslint-disable camelcase */
-
+import { onNavigate } from './components/Routes.js';
 // Declaracion de variables
-const pageOne = document.getElementById('containerPageOne');
+// const pageOne = document.getElementById('containerPageOne');
 const root = document.getElementById('root');
 // router
-const routes = {
+/* const routes = {
   '#/': LogIn,
   '#/register': Register,
   '#/resetpassword': ResetPassword,
@@ -35,7 +36,7 @@ const onNavigate = (pathname) => {
     window.location.origin + pathname,
   );
   pageOne.innerHTML = routes[pathname]();
-};
+}; */
 
 // Funcion que permite mostrar contraseña al presionar el icono
 export function show_password(id1, id2, id3) {

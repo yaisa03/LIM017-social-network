@@ -2,11 +2,11 @@
 /* eslint-disable import/no-unresolved */
 // importamos la funcion que vamos a testear
 import {
-  show_password, resetPassword, hide_password, BackToLogIn, showLogInGoogle, showRegister,
+  show_password, hide_password, resetPassword, BackToLogIn, showLogInGoogle, showRegister,
   showLogIn, goToLogIn, createNewPost, editPosts, deletePosts, navIcons, showProfile, showHome,
 } from '../src/main.js';
 
-// jest.mock('../src/lib/FirebaseImport.js');
+jest.mock('../src/lib/FirebaseImport.js');
 
 // function show_password(id1, id2, id3)
 describe('show_password', () => {
