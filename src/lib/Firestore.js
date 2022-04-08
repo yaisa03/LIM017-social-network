@@ -5,14 +5,14 @@
 /* eslint-disable prefer-const */
 /* eslint-disable no-plusplus */
 /* eslint-disable no-console */
-import {
+/* import {
   getStorage, ref, uploadBytes, getDownloadURL,
-} from 'https://www.gstatic.com/firebasejs/9.6.6/firebase-storage.js';
+} from 'https://www.gstatic.com/firebasejs/9.6.6/firebase-storage.js'; */
 import {
   getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, sendPasswordResetEmail,
   GoogleAuthProvider, signInWithPopup, sendEmailVerification, signOut, updateProfile,
   getFirestore, collection, addDoc, query, where, orderBy,
-  deleteDoc, doc, setDoc, onSnapshot, getDoc,
+  deleteDoc, doc, setDoc, onSnapshot, getDoc, getStorage, ref, uploadBytes, getDownloadURL,
 } from './FirebaseImport.js';
 import { app } from './FirebaseInit.js';
 import { ShowPosts, ShowPostsById } from '../components/ShowPosts.js';
@@ -293,9 +293,9 @@ export async function findPosts() {
     querySnapshot.forEach((d) => {
       createdPosts += ShowPosts(d, d.data());
       containerPosts.innerHTML = createdPosts;
-      if (d.data().image === '') {
+      /* if (d.data().image === '') {
         document.getElementById('uploadPostImages').style.display = 'none';
-      }
+      } */
       // console.log(d.data());
     });
     AddLikes();

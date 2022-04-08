@@ -5,6 +5,7 @@ import { Posts } from './Posts.js';
 import { Profile } from './Profile.js';
 
 const pageOne = document.getElementById('containerPageOne');
+
 export const routes = {
   '': LogIn,
   '#/': LogIn,
@@ -23,7 +24,7 @@ export const onNavigate = (pathname) => {
   pageOne.innerHTML = routes[pathname]();
 };
 
-export const changeView = (route) => {
+/* export const changeView = (route) => {
   pageOne.innerHTML = '';
   switch (route) {
     case '':
@@ -48,7 +49,7 @@ export const changeView = (route) => {
       break;
   }
   // console.log(route)
-};
+}; */
 
 /* function loadPage() {
   const path = window.location.hash;
