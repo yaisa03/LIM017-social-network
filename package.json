@@ -36,6 +36,14 @@
     "node": ">=14"
   },
   "dependencies": {
-    "firebase": "^9.6.8"
+    "firebase": "^9.6.8",
+    "jsdom": "^19.0.0"
+  },
+  "jest": {
+    "testEnvironment": "jsdom",
+    "testPathIgnorePatterns" : [
+      "<rootDir>/ignore/this/path/",
+      "/src/componenets/"
+    ]
   }
 }
