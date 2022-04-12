@@ -42,8 +42,7 @@
   "jest": {
     "testEnvironment": "jsdom",
     "testPathIgnorePatterns" : [
-      "<rootDir>/ignore/this/path/",
-      "/src/componenets/"
+      "/src/components/"
     ]
   }
 }
