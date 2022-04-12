@@ -37,10 +37,7 @@ export function emailVerification() {
 // Funcion que registra un nuevo usuario en Firebase
 export function register(email, password, displayname) {
   const auth = getAuth();
-  createUserWithEmailAndPassword(auth, email, password).then((userCredential) => {
-    // Signed in
-    const user = userCredential.user;
-    console.log(user);
+  createUserWithEmailAndPassword(auth, email, password).then(() => {
     updateProfile(auth.currentUser, {
       displayName: displayname,
     }).then(() => {
@@ -114,7 +111,7 @@ export function emailResetPassword(email) {
 }
 
 // eslint-disable-next-line consistent-return
-export function setUser(displayName, photoURL) { // PHOTOURL
+export function setUser(displayName, photoURL) {
   const auth = getAuth();
   const user = auth.currentUser;
   if (user !== null) {
