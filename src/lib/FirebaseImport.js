@@ -2,7 +2,7 @@
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.6.6/firebase-app.js';
 import {
   getFirestore, collection, addDoc, query, where, orderBy,
-  deleteDoc, doc, setDoc, onSnapshot, getDoc,
+  deleteDoc, doc, setDoc, onSnapshot, getDoc, getDocs,
 } from 'https://www.gstatic.com/firebasejs/9.6.6/firebase-firestore.js';
 import {
   getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, sendPasswordResetEmail,
@@ -16,6 +16,6 @@ export {
   initializeApp, getAuth, createUserWithEmailAndPassword,
   signInWithEmailAndPassword, sendPasswordResetEmail,
   GoogleAuthProvider, signInWithPopup, sendEmailVerification, signOut, updateProfile,
-  getFirestore, collection, addDoc, query, where, orderBy, deleteUser,
+  getFirestore, collection, addDoc, query, where, orderBy, deleteUser, getDocs,
   deleteDoc, doc, setDoc, onSnapshot, getDoc, getStorage, ref, uploadBytes, getDownloadURL,
 };

@@ -13,7 +13,7 @@ import {
   GoogleAuthProvider, signInWithPopup, sendEmailVerification, signOut, updateProfile,
   getFirestore, collection, addDoc, query, where, orderBy,
   deleteDoc, doc, setDoc, onSnapshot, getDoc, getStorage,
-  ref, uploadBytes, getDownloadURL, deleteUser,
+  ref, uploadBytes, getDownloadURL, deleteUser, getDocs,
 } from './FirebaseImport.js';
 import { app } from './FirebaseInit.js';
 /* import { ShowPosts, ShowPostsById } from '../components/ShowPosts.js'; */
@@ -153,10 +153,18 @@ export function deleteAccount() {
 
   deleteUser(user).then(() => {
     // User deleted.
-    console.log('elininado');
+    console.log('cuenta eliminada');
+    deleteUserPosts(user);
   }).catch(() => {
     // An error ocurred
     // ...
+  });
+}
+function deleteUserPosts(user) {
+  const q = query(collection(db, 'posts'), where('UserId', '==', user.uid));
+  const querySnapshot = getDocs(q);
+  querySnapshot.forEach((post) => {
+    deleteDoc(doc(db, 'posts', post.id));
   });
 }
 // funcion que crea el url de la foto de perfil del usuario y la inserta
@@ -206,6 +214,7 @@ export async function updatePostPhoto(id, title, post) {
   getDownloadURL(ref(storage, filechoosen.name))
     .then((url) => {
       updatePostImage(id, title, post, url);
+      findPostById();
     })
     .catch(() => {
     });

@@ -260,9 +260,7 @@ export function editPosts() {
           document.querySelector(`.publishButton.${button.id}`).classList.add('hide');
           document.querySelector(`.editPostPhoto.${button.id}`).classList.add('hide');
         });
-        if (window.location.hash === '#/profile') {
-          return findPostById();
-        }
+        return findPostById();
       }
     });
   });
