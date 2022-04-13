@@ -17,6 +17,7 @@ body{
 }
 p{
     color:white;
+    font-size: large;
 }
 #message{
     width: 100%;
@@ -142,8 +143,8 @@ button:hover{
   -webkit-text-security: square;
 }*/
 .facebookLogo, .googleLogo {
-    width: calc(2rem + 0.5vw);
-    height: calc(2rem + 0.5vh);
+    /* width: calc(2rem + 0.5vw); */
+    height: calc(2.5rem + 0.5vh);
     transition: transform .2s; 
 }
 .facebookLogo:hover, .googleLogo:hover{
@@ -154,6 +155,7 @@ a{
     text-decoration: none;
     font-weight: bolder;
     text-shadow: -3px 1px 2px black, 0 0 1em black, 0 0 0.2em black;
+    font-size: large;
 }
 a:hover {
     color: rgb(0, 0, 0);
@@ -279,16 +281,32 @@ textarea {
     box-shadow: 2px 2px 5px grey;
     background-color: #fff;
 }
+.postDiv>p {
+    color: black;
+    margin: 1%;
+    align-self: flex-end;
+}
 .title {
     background: none;
     text-align: center;
+    border: none;
+    font-size: x-large;
+    height: 20px;
 }
 .description{
-    height: 100px;
+    height: 120px;
     background: none;
-    margin: 2% 0;
+    margin: 0 0 5% 0;
     text-align: justify;
     padding: 2%;
+}
+#selectLevel{
+    color: black;
+    font-size: 16px;
+}
+select#level {
+    width: 50%;
+    height: 25px;
 }
 span {
     color:#212431; 
@@ -299,7 +317,7 @@ span {
     font-size:24px;
     margin-right: 2%;
 }
-.editButton, .deleteButton, .publishButton{
+.editButton, .deleteButton, .publishButton, .editPostPhoto{
     background-color: coral;
     height: 40px;
     width: 30%;
@@ -352,6 +370,22 @@ span {
     background-color: black;
     margin-left: 18px;
     margin-bottom: 27px;
+}
+#userInfo{
+    height: 38px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: flex-start;
+    margin-bottom: 2%;
+}
+#userInfo p{
+    color: black;
+    margin-left: 10px;
+}
+.profilePhoto{
+    border-radius: 50%;
+    height: 100%;
 }
 .container {
     background: rgba(48, 48, 48, 0.473);
@@ -410,7 +444,7 @@ span {
     color: #fff;
     background: #f7cb15;
   }
-  #uploadImage, #uploadImagePost{
+  #uploadImage, #uploadImagePost, #changeImagePost {
     margin-top: 10px;
     color: black;
     border-color: orange;
@@ -437,11 +471,13 @@ label[id="editDisplayName"]{
     border-radius: 5px;
 }
 #uploadPostImages {
-   width: 90%;
-   display: flex;
-   flex-wrap: wrap;
-   justify-content: center;
-   flex-direction: column;
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    flex-direction: column;
+    align-self: center;
+    margin-bottom: 5%;
 }
 #uploadPostImages img {
     width: 100%;
@@ -558,4 +594,7 @@ label[id="editDisplayName"]{
      #uploadPostImages img {
          width: 50%
      }
+     select#level {
+        width: 30%;
+    }
 }

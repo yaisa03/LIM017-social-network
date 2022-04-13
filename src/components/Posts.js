@@ -17,6 +17,13 @@ export const Posts = () => {
                            <p id="messagePost"></p>
                            <input id="title" placeholder="Titulo">
                            <textarea id="post" placeholder="Descripcion"></textarea>
+                           <p id="selectLevel">Nivel de dificultad:
+                           <select name="level" id="level">
+                             <option value="Facil">Facil</option>
+                             <option value="Intermedio">Intermedio</option>
+                             <option value="Avanzado">Avanzado</option>
+                           </select>
+                           </p>
                            <p id="namePostImage" style="color: black;font-size: 13px;margin: 3px;"></p>
                            <div id="addPhotoDiv">
                            <i class="fa fa-photo" id="addPhotoIcon"></i>

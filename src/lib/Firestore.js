@@ -21,7 +21,7 @@ import {
   verifyEmailMessage, removeMessageError, addMessage,
   resetPasswordMessageOK, removeMessage, addMessageError, messageErrorCases,
   getFileChoosenProfile, getReferenceImg, getFileChoosenPost, showUserPostsById,
-  showPostsHome, putLikesPosts, goToHome,
+  showPostsHome, putLikesPosts, goToHome, getFileChoosenPostEdit,
 } from './index.js';
 
 const db = getFirestore(app);
@@ -155,7 +155,7 @@ export async function getURLProfilePhoto() {
     });
 }
 // funcion que crea los url de las fotos insertadas en la posts
-export async function getURLPostPhoto(title, post) {
+export async function getURLPostPhoto(title, post, level) {
   // Recuperar datos
   const filechoosen = getFileChoosenPost();
   const storage = getStorage();
@@ -165,10 +165,30 @@ export async function getURLPostPhoto(title, post) {
   });
   getDownloadURL(ref(storage, filechoosen.name))
     .then((url) => {
-      uploadPostImage(title, post, url, filechoosen.name);
+      uploadPostImage(title, post, url, filechoosen.name, level);
     })
     .catch(() => {
     });
+}
+export async function updatePostPhoto(id, title, post) {
+  // Recuperar datos
+  const filechoosen = getFileChoosenPostEdit();
+  const storage = getStorage();
+  // eslint-disable-next-line prefer-template
+  const storageRef = ref(storage, filechoosen.name);
+  await uploadBytes(storageRef, filechoosen).then(() => {
+  });
+  getDownloadURL(ref(storage, filechoosen.name))
+    .then((url) => {
+      updatePostImage(id, title, post, url);
+    })
+    .catch(() => {
+    });
+}
+export async function updatePostImage(id, title, post, url) {
+  setDoc(doc(db, 'posts', id), { postTitle: title }, { merge: true });
+  setDoc(doc(db, 'posts', id), { content: post }, { merge: true });
+  setDoc(doc(db, 'posts', id), { image: url }, { merge: true });
 }
 export function getUser() {
   const auth = getAuth();
@@ -176,7 +196,7 @@ export function getUser() {
   return user;
 }
 // Funcion que guarda post en firebase
-export function uploadPostImage(title, post, url, storageName) {
+export function uploadPostImage(title, post, url, storageName, level) {
   const auth = getAuth();
   const user = auth.currentUser;
   console.log(url);
@@ -188,14 +208,26 @@ export function uploadPostImage(title, post, url, storageName) {
     likes: [],
     image: url,
     storageImage: storageName,
+    userImage: user.photoURL,
+    userName: user.displayName,
+    postLevel: level,
   });
   findPostById();
 }
-export function uploadPost(title, post) {
+export function uploadPost(title, post, level) {
   const auth = getAuth();
   const user = auth.currentUser;
   addDoc(collection(db, 'posts'), {
-    UserId: user.uid, postTitle: title, content: post, date: new Date(), likes: [], image: '', storageImage: '',
+    UserId: user.uid,
+    postTitle: title,
+    content: post,
+    date: new Date(),
+    likes: [],
+    image: '',
+    storageImage: '',
+    userImage: user.photoURL,
+    userName: user.displayName,
+    postLevel: level,
   });
 }
 // Funcion que muestra los posts del usuario dueno del perfil
@@ -261,7 +293,7 @@ export function postDeleted(id) {
 export async function updatePost(id, title, post) {
   setDoc(doc(db, 'posts', id), { postTitle: title }, { merge: true });
   setDoc(doc(db, 'posts', id), { content: post }, { merge: true });
-  setDoc(doc(db, 'posts', id), { date: new Date() }, { merge: true });
+  // setDoc(doc(db, 'posts', id), { date: new Date() }, { merge: true });
 }
 export function postLike(id, newArray) {
   setDoc(doc(db, 'posts', id), { likes: newArray }, { merge: true });
