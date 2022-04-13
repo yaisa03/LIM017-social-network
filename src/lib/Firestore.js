@@ -12,7 +12,8 @@ import {
   getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, sendPasswordResetEmail,
   GoogleAuthProvider, signInWithPopup, sendEmailVerification, signOut, updateProfile,
   getFirestore, collection, addDoc, query, where, orderBy,
-  deleteDoc, doc, setDoc, onSnapshot, getDoc, getStorage, ref, uploadBytes, getDownloadURL,
+  deleteDoc, doc, setDoc, onSnapshot, getDoc, getStorage,
+  ref, uploadBytes, getDownloadURL, deleteUser,
 } from './FirebaseImport.js';
 import { app } from './FirebaseInit.js';
 /* import { ShowPosts, ShowPostsById } from '../components/ShowPosts.js'; */
@@ -144,6 +145,18 @@ export function setUserInfo(newname) {
   }).catch((/* error */) => {
     // An error occurred
     console.log('NO cambio');
+  });
+}
+export function deleteAccount() {
+  const auth = getAuth();
+  const user = auth.currentUser;
+
+  deleteUser(user).then(() => {
+    // User deleted.
+    console.log('elininado');
+  }).catch(() => {
+    // An error ocurred
+    // ...
   });
 }
 // funcion que crea el url de la foto de perfil del usuario y la inserta

@@ -14,7 +14,7 @@ import { Profile } from './components/Profile.js';
 import {
   logIn, register, logInGoogle, emailResetPassword, uploadPost,
   findPostById, findPosts, SignOut, updatePost, postDeleted, getURLProfilePhoto,
-  getURLPostPhoto, updatePostPhoto, setUserInfo,
+  getURLPostPhoto, updatePostPhoto, setUserInfo, deleteAccount,
 } from './lib/Firestore.js';
 /* eslint-disable camelcase */
 // import { onNavigate } from './components/Routes.js';
@@ -322,6 +322,7 @@ export function editProfile() {
   const modal = document.getElementById('cont2');
   const closeModal = document.querySelector('#closeModal');
   const saveProfileChanges = document.getElementById('saveProfileChanges');
+  const deleteAccountButton = document.getElementById('deleteAccount');
   editProfileButton.addEventListener('click', () => {
     const newDisplayName = document.getElementById('newDisplayName');
     modal.classList.add('showContainer');
@@ -334,6 +335,14 @@ export function editProfile() {
         modal.classList.remove('showContainer');
         document.getElementById('Usericon').click();
       }, 1000);
+    });
+    deleteAccountButton.addEventListener('click', () => {
+      if (window.confirm('¿Estas seguro de eliminar tu cuenta?')) {
+        deleteAccount();
+        setTimeout(() => {
+          document.getElementById('logOut').click();
+        }, 1000);
+      }
     });
   });
 }
