@@ -9,7 +9,8 @@ const fs = require('fs');
 window.document.body.innerHTML = fs.readFileSync('./src/index.html');
 
 const {
-  register, /* , logIn, SignOut, emailVerification, logInGoogle, findPosts, findPostById,
+  register, emailVerification,
+  /* , logIn, SignOut, emailVerification, logInGoogle, findPosts, findPostById,
   emailResetPassword, */
 } = require('../src/lib/Firestore.js');
 const { Register } = require('../src/components/Register.js');
@@ -20,7 +21,8 @@ const { ShowPosts, ShowPostsById } = require('../src/components/ShowPosts.js');
 const { getAuth } = require('../src/lib/FirebaseImport.js');
 
 const {
-  createUserWithEmailAndPassword, /* , signInWithEmailAndPassword, signOut, sendEmailVerification,
+  createUserWithEmailAndPassword, /*
+  sendEmailVerification,/* , signInWithEmailAndPassword, signOut,
   signInWithPopup, addDoc, collection, sendPasswordResetEmail, */
 } = require('../src/lib/FirebaseImport.js');
 
@@ -96,11 +98,12 @@ describe('ShowPostsById', () => {
   });
 });
 
-/* describe('emailVerification', () => {
+describe('emailVerification', () => {
   it('debería ser una función', () => {
     expect(typeof emailVerification).toBe('function');
   });
-}); */
+});
+
 describe('register', () => {
   it('deberia ser una funcion', () => {
     expect(typeof register).toBe('function');

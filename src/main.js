@@ -13,7 +13,8 @@ import { Profile } from './components/Profile.js';
 // eslint-disable-next-line import/no-cycle
 import {
   logIn, register, logInGoogle, emailResetPassword, uploadPost,
-  findPostById, findPosts, SignOut, updatePost, postDeleted, getURLProfilePhoto, getURLPostPhoto,
+  findPostById, findPosts, SignOut, updatePost, postDeleted, getURLProfilePhoto,
+  getURLPostPhoto, updatePostPhoto,
 } from './lib/Firestore.js';
 /* eslint-disable camelcase */
 // import { onNavigate } from './components/Routes.js';
@@ -137,6 +138,7 @@ export function createNewPost() {
   const errorMessage = document.getElementById('messagePost');
   const title = document.getElementById('title');
   const post = document.getElementById('post');
+  const level = document.getElementById('level');
   const postButton = document.getElementById('postButton');
   errorMessage.classList.remove('showMessageError');
   errorMessage.innerHTML = '';
@@ -160,9 +162,9 @@ export function createNewPost() {
       errorMessage.innerHTML = 'Debes ingresar contenido al post';
     } else if (title.value !== '' && post.value !== '') {
       if (filechoosen === '') {
-        uploadPost(title.value, post.value);
+        uploadPost(title.value, post.value, level.value);
       } else {
-        getURLPostPhoto(title.value, post.value);
+        getURLPostPhoto(title.value, post.value, level.value);
       }
       createPost.reset();
       const namePostImage = document.getElementById('namePostImage');
@@ -212,6 +214,30 @@ export function editPosts() {
       });
       document.querySelector(`.editButton.${button.id}`).classList.add('hide');
       document.querySelector(`.publishButton.${button.id}`).classList.remove('hide');
+      document.querySelector(`.editPostPhoto.${button.id}`).classList.remove('hide');
+    });
+  });
+  let newFileChoseen = '';
+  const editPostPhoto = document.querySelectorAll('.editPostPhoto');
+  editPostPhoto.forEach((button) => {
+    const modal = document.getElementById('cont4');
+    const closeModal = document.querySelector('#closeModalPhoto');
+    const uploadImage = document.getElementById('changeImagePost');
+    button.addEventListener('click', () => {
+      modal.classList.add('showContainer');
+      closeModal.addEventListener('click', () => {
+        modal.classList.remove('showContainer');
+      });
+      uploadImage.addEventListener('click', (e) => {
+        e.preventDefault();
+        const namePostImage = document.getElementById('uploadPostImages');
+        newFileChoseen = document.getElementById('chooseFilePost1').files[0];
+        namePostImage.src = '';
+        namePostImage.alt = newFileChoseen.name;
+        console.log(newFileChoseen);
+        modal.classList.remove('showContainer');
+        return newFileChoseen;
+      });
     });
   });
   const publishButton = document.querySelectorAll('.publishButton');
@@ -224,11 +250,17 @@ export function editPosts() {
           e.style.backgroundColor = 'white';
           const title = document.querySelector(`.title.text${button.id}`);
           const post = document.querySelector(`.description.text${button.id}`);
-          updatePost(button.id, title.value, post.value);
+          if (newFileChoseen === '') {
+            updatePost(button.id, title.value, post.value);
+          } else {
+            updatePostPhoto(button.id, title.value, post.value);
+          }
+          newFileChoseen = '';
           document.querySelector(`.editButton.${button.id}`).classList.remove('hide');
           document.querySelector(`.publishButton.${button.id}`).classList.add('hide');
+          document.querySelector(`.editPostPhoto.${button.id}`).classList.add('hide');
         });
-        findPostById();
+        return findPostById();
       }
     });
   });

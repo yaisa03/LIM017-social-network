@@ -86,6 +86,10 @@ export function getFileChoosenPost() {
   const filechoosen = document.getElementById('chooseFilePost').files[0];
   return filechoosen;
 }
+export function getFileChoosenPostEdit() {
+  const filechoosen = document.getElementById('chooseFilePost1').files[0];
+  return filechoosen;
+}
 export function showUserPostsById(snapshot) {
   const containerPosts = document.getElementById('postsContainer');
   containerPosts.innerHTML = '';
