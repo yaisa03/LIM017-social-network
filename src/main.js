@@ -14,7 +14,7 @@ import { Profile } from './components/Profile.js';
 import {
   logIn, register, logInGoogle, emailResetPassword, uploadPost,
   findPostById, findPosts, SignOut, updatePost, postDeleted, getURLProfilePhoto,
-  getURLPostPhoto, updatePostPhoto,
+  getURLPostPhoto, updatePostPhoto, setUserInfo,
 } from './lib/Firestore.js';
 /* eslint-disable camelcase */
 // import { onNavigate } from './components/Routes.js';
@@ -260,7 +260,9 @@ export function editPosts() {
           document.querySelector(`.publishButton.${button.id}`).classList.add('hide');
           document.querySelector(`.editPostPhoto.${button.id}`).classList.add('hide');
         });
-        return findPostById();
+        if (window.location.hash === '#/profile') {
+          return findPostById();
+        }
       }
     });
   });
@@ -319,10 +321,19 @@ export function editProfile() {
   const editProfileButton = document.getElementById('editProfileButton');
   const modal = document.getElementById('cont2');
   const closeModal = document.querySelector('#closeModal');
+  const saveProfileChanges = document.getElementById('saveProfileChanges');
   editProfileButton.addEventListener('click', () => {
+    const newDisplayName = document.getElementById('newDisplayName');
     modal.classList.add('showContainer');
     closeModal.addEventListener('click', () => {
       modal.classList.remove('showContainer');
+    });
+    saveProfileChanges.addEventListener('click', () => {
+      setUserInfo(newDisplayName.value);
+      setTimeout(() => {
+        modal.classList.remove('showContainer');
+        document.getElementById('Usericon').click();
+      }, 1000);
     });
   });
 }

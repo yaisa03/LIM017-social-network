@@ -134,6 +134,18 @@ export function setUserPhoto(photoUserURL) {
     console.log('NO se cargo la imagen');
   });
 }
+export function setUserInfo(newname) {
+  const auth = getAuth();
+  updateProfile(auth.currentUser, {
+    displayName: newname,
+  }).then(() => {
+    // Profile updated!
+    console.log('cambio el nombre');
+  }).catch((/* error */) => {
+    // An error occurred
+    console.log('NO cambio');
+  });
+}
 // funcion que crea el url de la foto de perfil del usuario y la inserta
 export async function getURLProfilePhoto() {
   // Recuperar datos
