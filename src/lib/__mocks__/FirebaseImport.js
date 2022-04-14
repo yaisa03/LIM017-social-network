@@ -66,6 +66,10 @@ export const createUserWithEmailAndPassword = jest.fn((email, password, user) =>
   },
 }));
 
+export const GoogleAuthProvider = jest.fn();
+
+export const updateProfile = jest.fn(() => Promise.resolve({}));
+
 export const signOut = jest.fn(() => Promise.resolve({}));
 // export const onAuthStateChanged = jest.fn(() => Promise.resolve({}));
 export const sendPasswordResetEmail = jest.fn(() => Promise.resolve({}));

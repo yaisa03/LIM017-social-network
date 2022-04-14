@@ -9,9 +9,9 @@ const fs = require('fs');
 window.document.body.innerHTML = fs.readFileSync('./src/index.html');
 
 const {
-  register, emailVerification,
-  /* , logIn, SignOut, emailVerification, logInGoogle, findPosts, findPostById,
-  emailResetPassword, */
+  register, emailVerification, logIn, logInGoogle, emailResetPassword,
+  /* SignOut, emailVerification, findPosts, findPostById,
+   */
 } = require('../src/lib/Firestore.js');
 const { Register } = require('../src/components/Register.js');
 const { Posts } = require('../src/components/Posts.js');
@@ -21,9 +21,10 @@ const { ShowPosts, ShowPostsById } = require('../src/components/ShowPosts.js');
 const { getAuth } = require('../src/lib/FirebaseImport.js');
 
 const {
-  createUserWithEmailAndPassword, /*
-  sendEmailVerification,/* , signInWithEmailAndPassword, signOut,
-  signInWithPopup, addDoc, collection, sendPasswordResetEmail, */
+  createUserWithEmailAndPassword, signInWithEmailAndPassword, sendEmailVerification,
+  signInWithPopup, sendPasswordResetEmail,
+  /*  signOut,
+   addDoc, collection,  */
 } = require('../src/lib/FirebaseImport.js');
 
 jest.mock('../src/lib/FirebaseImport.js');
@@ -102,32 +103,77 @@ describe('emailVerification', () => {
   it('debería ser una función', () => {
     expect(typeof emailVerification).toBe('function');
   });
+  it('Debería poder registrar a un usuario', () => sendEmailVerification()
+    .then(() => {
+      expect(sendEmailVerification).toHaveBeenCalled();
+    }));
 });
 
 describe('register', () => {
   it('deberia ser una funcion', () => {
     expect(typeof register).toBe('function');
   });
-  it('Debería poder registrar a un usuario', () => createUserWithEmailAndPassword('front@end.la', '123456', 'userlab')
+  it('deberia ser undefined', () => {
+    const el = register('front@end.la', '123456', 'userlab');
+    expect(el).toBeUndefined();
+  });
+  getAuth.mockReturnValue({
+    currentUser: {
+      displayName: 'name',
+      email: 'front@end.la',
+      photoURL: null,
+    },
+  });
+  it('Debería poder registrar a un usuario', () => createUserWithEmailAndPassword()
     .then(() => {
-      expect(createUserWithEmailAndPassword.mock.calls[0][0]).toBe('front@end.la');
-      expect(createUserWithEmailAndPassword.mock.calls[0][1]).toBe('123456');
-      expect(createUserWithEmailAndPassword.mock.calls[0][2]).toBe('userlab');
-      expect(createUserWithEmailAndPassword.user).toBe();
+      /* expect(createUserWithEmailAndPassword.mock.calls[0][0]).toBe(getAuth()); */
+      expect(createUserWithEmailAndPassword.mock.calls[0][1]).toBe('front@end.la');
+      expect(createUserWithEmailAndPassword.mock.calls[0][2]).toBe('123456');
     }));
 });
 
 // inicioSesionUsuario
-/* describe('logIn', () => {
+describe('logIn', () => {
   it('deberia ser una funcion', () => {
     expect(typeof logIn).toBe('function');
   });
-  it('Debería poder iniciar sesion', () => logIn('front@end.la', '123456')
+  it('Debería poder iniciar sesion', () => {
+    const el = logIn('front@end.la', '123456');
+    expect(el).toBeUndefined();
+  });
+  it('Debería poder', () => signInWithEmailAndPassword()
     .then(() => {
       expect(signInWithEmailAndPassword.mock.calls[0][1]).toBe('front@end.la');
       expect(signInWithEmailAndPassword.mock.calls[0][2]).toBe('123456');
     }));
 });
+// googleInicioSesion
+describe('logInGoogle', () => {
+  it('debería ser una función', () => {
+    expect(typeof logInGoogle).toBe('function');
+  });
+  /* const provider = { id: 123, correo: 'hola@gmail.com' }; */
+  it('proveedor', () => signInWithPopup().then(() => {
+    expect(signInWithPopup).toHaveBeenCalled();
+  }));
+  it('Debería poder iniciar sesion', () => {
+    const el = logInGoogle();
+    expect(el).toBeUndefined();
+  });
+});
+// envioCorreoRecuperacionContrasena
+describe('emailResetPassword', () => {
+  it('debería ser una función', () => {
+    expect(typeof emailResetPassword).toBe('function');
+  });
+  it('deberia devolver', () => expect(emailResetPassword('front@end.la')).toBeUndefined());
+  it('', () => sendPasswordResetEmail()
+    .then(() => {
+      // console.log(auth.mock.currentUser);
+      expect(sendPasswordResetEmail.mock.calls).toHaveLength(2);
+    }));
+});
+/*
 // cierreActividadUsuario
 describe('SignOut', () => {
   it('deberia cerrar sesion', () => SignOut()
@@ -146,28 +192,7 @@ describe('emailVerification', () => {
       expect(sendEmailVerification.mock.calls).toHaveLength(1);
     }));
 });
-// envioCorreoRecuperacionContrasena
-describe('emailResetPassword', () => {
-  it('debería ser una función', () => {
-    expect(typeof emailResetPassword).toBe('function');
-  });
-  it('', () => emailResetPassword('front@end.la')
-    .then(() => {
-      // console.log(auth.mock.currentUser);
-      expect(sendPasswordResetEmail.mock.calls).toHaveLength(1);
-    }));
-});
 
-// googleInicioSesion
-describe('logInGoogle', () => {
-  it('debería ser una función', () => {
-    expect(typeof logInGoogle).toBe('function');
-  });
-  const provider = { id: 123, correo: 'hola@gmail.com' };
-  it('proveedor', () => logInGoogle(provider).then(() => {
-    expect(signInWithPopup.mock.calls[0][1]).toBe(provider);
-  }));
-});
 describe('findPosts', () => {
   it('Deberia subir data a coleccion posts', () => findPosts().then(async () => {
     const prueba = await addDoc(collection.mock.results[0].value, addDoc.mock.calls[0][1]);
