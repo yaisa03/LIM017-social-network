@@ -18,8 +18,8 @@ import {
 import { app } from './FirebaseInit.js';
 /* import { ShowPosts, ShowPostsById } from '../components/ShowPosts.js'; */
 import {
-  emailMessageVerificacionOK, cleanMessageError,
-  verifyEmailMessage, removeMessageError, addMessage,
+  emailMessageVerificacionOK, cleanMessageError, validateEmailVerification,
+  removeMessageError, addMessage,
   resetPasswordMessageOK, removeMessage, addMessageError, messageErrorCases,
   getFileChoosenProfile, getReferenceImg, getFileChoosenPost, showUserPostsById,
   showPostsHome, putLikesPosts, goToHome, getFileChoosenPostEdit,
@@ -63,16 +63,7 @@ export function logIn(email, password) {
       // Signed in
       const user = userCredential.user;
       cleanMessageError();
-      switch (user.emailVerified) {
-        case true:
-          goToHome();
-          break;
-        case false:
-          verifyEmailMessage();
-          break;
-        default:
-          break;
-      }
+      validateEmailVerification(user);
     })
     .catch((error) => {
       const errorMessage = error.message;

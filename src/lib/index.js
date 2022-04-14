@@ -52,6 +52,21 @@ export function verifyEmailMessage() {
   errorMessageText.classList.add('showMessageError');
   errorMessageText.innerText = 'verificar usuario mediante el link enviado a tu correo';
 }
+export function goToHome() {
+  showHome();
+}
+export function validateEmailVerification(user) {
+  switch (user.emailVerified) {
+    case true:
+      goToHome();
+      break;
+    case false:
+      verifyEmailMessage();
+      break;
+    default:
+      break;
+  }
+}
 export function removeMessageError() {
   const errorMessageText = document.querySelector('#message');
   errorMessageText.classList.remove('showMessageError');
@@ -147,7 +162,4 @@ export function putLikesPosts(user) {
       }
     });
   });
-}
-export function goToHome() {
-  showHome();
 }
