@@ -234,7 +234,6 @@ export function editPosts() {
         newFileChoseen = document.getElementById('chooseFilePost1').files[0];
         namePostImage.src = '';
         namePostImage.alt = newFileChoseen.name;
-        console.log(newFileChoseen);
         modal.classList.remove('showContainer');
         return newFileChoseen;
       });
@@ -298,6 +297,7 @@ export function navIcons() {
     showLogIn();
   });
 }
+// funcion que permite editar la foto de usuario
 export function editProfilePhoto() {
   const btn = document.getElementById('EditPhoto');
   const modal = document.getElementById('cont');
@@ -314,7 +314,7 @@ export function editProfilePhoto() {
     modal.classList.remove('showContainer');
   });
 }
-
+// funcion que permite editar la informacion del usuario
 export function editProfile() {
   const editProfileButton = document.getElementById('editProfileButton');
   const modal = document.getElementById('cont2');

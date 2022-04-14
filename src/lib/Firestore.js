@@ -135,6 +135,7 @@ export function setUserPhoto(photoUserURL) {
     console.log('NO se cargo la imagen');
   });
 }
+// funcion que permite editar el nombre de usurio
 export function setUserInfo(newname) {
   const auth = getAuth();
   updateProfile(auth.currentUser, {
@@ -147,10 +148,10 @@ export function setUserInfo(newname) {
     console.log('NO cambio');
   });
 }
+// funcion que permite eliminar el usuario
 export function deleteAccount() {
   const auth = getAuth();
   const user = auth.currentUser;
-
   deleteUser(user).then(() => {
     // User deleted.
     console.log('cuenta eliminada');
@@ -160,9 +161,11 @@ export function deleteAccount() {
     // ...
   });
 }
-function deleteUserPosts(user) {
+// funcion pra eliminar post del usuario que borra su cuenta
+async function deleteUserPosts(user) {
   const q = query(collection(db, 'posts'), where('UserId', '==', user.uid));
-  const querySnapshot = getDocs(q);
+  const querySnapshot = await getDocs(q);
+  console.log(querySnapshot);
   querySnapshot.forEach((post) => {
     deleteDoc(doc(db, 'posts', post.id));
   });
@@ -203,6 +206,7 @@ export async function getURLPostPhoto(title, post, level) {
     .catch(() => {
     });
 }
+// funcion para editar foto del post
 export async function updatePostPhoto(id, title, post) {
   // Recuperar datos
   const filechoosen = getFileChoosenPostEdit();
@@ -219,17 +223,19 @@ export async function updatePostPhoto(id, title, post) {
     .catch(() => {
     });
 }
+// funcion para actualizar la info en firestore
 export async function updatePostImage(id, title, post, url) {
   setDoc(doc(db, 'posts', id), { postTitle: title }, { merge: true });
   setDoc(doc(db, 'posts', id), { content: post }, { merge: true });
   setDoc(doc(db, 'posts', id), { image: url }, { merge: true });
 }
+// funcion para obtener la informacion del usuario actual
 export function getUser() {
   const auth = getAuth();
   const user = auth.currentUser;
   return user;
 }
-// Funcion que guarda post en firebase
+// Funcion que guarda post con foto en firebase
 export function uploadPostImage(title, post, url, storageName, level) {
   const auth = getAuth();
   const user = auth.currentUser;
@@ -248,6 +254,7 @@ export function uploadPostImage(title, post, url, storageName, level) {
   });
   findPostById();
 }
+// Funcion que guarda post sin foto en firebase
 export function uploadPost(title, post, level) {
   const auth = getAuth();
   const user = auth.currentUser;
