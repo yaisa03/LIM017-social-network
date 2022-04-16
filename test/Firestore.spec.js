@@ -10,7 +10,7 @@ window.document.body.innerHTML = fs.readFileSync('./src/index.html');
 
 const {
   register, emailVerification, logIn, logInGoogle, emailResetPassword,
-  /* SignOut, emailVerification, findPosts, findPostById,
+  SignOut, /* emailVerification, findPosts, findPostById,
    */
 } = require('../src/lib/Firestore.js');
 const { Register } = require('../src/components/Register.js');
@@ -22,8 +22,8 @@ const { getAuth } = require('../src/lib/FirebaseImport.js');
 
 const {
   createUserWithEmailAndPassword, signInWithEmailAndPassword, sendEmailVerification,
-  signInWithPopup, sendPasswordResetEmail,
-  /*  signOut,
+  signInWithPopup, sendPasswordResetEmail, signOut,
+  /*
    addDoc, collection,  */
 } = require('../src/lib/FirebaseImport.js');
 
@@ -129,9 +129,15 @@ describe('register', () => {
       /* expect(createUserWithEmailAndPassword.mock.calls[0][0]).toBe(getAuth()); */
       expect(createUserWithEmailAndPassword.mock.calls[0][1]).toBe('front@end.la');
       expect(createUserWithEmailAndPassword.mock.calls[0][2]).toBe('123456');
+    })
+    .catch(() => {
+      expect(createUserWithEmailAndPassword).toThrow('ERROR');
     }));
+  /* it('Deberia arrojar un error', () => createUserWithEmailAndPassword()
+    .catch(() => {
+      expect(createUserWithEmailAndPassword).toBe('ERROR');
+    })); */
 });
-
 // inicioSesionUsuario
 describe('logIn', () => {
   it('deberia ser una funcion', () => {
@@ -173,14 +179,17 @@ describe('emailResetPassword', () => {
       expect(sendPasswordResetEmail.mock.calls).toHaveLength(2);
     }));
 });
-/*
 // cierreActividadUsuario
 describe('SignOut', () => {
-  it('deberia cerrar sesion', () => SignOut()
+  it('debería ser una función', () => {
+    expect(typeof SignOut).toBe('function');
+  });
+  it('deberia cerrar sesion', () => signOut()
     .then(() => {
       expect(signOut.mock.calls[0][1]).toBe(undefined);
     }));
 });
+/*
 // envioCorreoVerificacion
 describe('emailVerification', () => {
   it('debería ser una función', () => {
