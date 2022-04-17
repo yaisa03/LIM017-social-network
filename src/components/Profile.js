@@ -11,6 +11,9 @@ export const Profile = () => {
   }
   const errorMessage = '<p id="message"></p>';
   const containerProfile = `<header>
+                             <div id="logoContainer">
+                               <img id="FoodLogoHead" src="Images/FoodBookHead.jpg">
+                             </div>
                              <nav>
                               <ul>
                                <li><i id="Homeicon" class="fa fa-home"> </i></li>

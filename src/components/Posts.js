@@ -1,5 +1,8 @@
 export const Posts = () => {
   const containerPosts = `<header>
+                           <div id="logoContainer">
+                           <img id="FoodLogoHead" src="Images/FoodBookHead.jpg">
+                           </div>
                            <nav>
                             <ul>
                              <li><i id="Homeicon" class="fa fa-home"> </i></li>
