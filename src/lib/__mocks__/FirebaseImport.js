@@ -1,3 +1,8 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable prefer-const */
+
+// import { createUserWithEmailAndPassword } from "../FirebaseImport";
+
 /* export const initializeApp = () => {};
 
 export const getAuth = () => ({
@@ -57,14 +62,31 @@ export const setDoc = () => { };
 
 export const signOut = () => Promise.resolve({}); */
 export const initializeApp = () => {};
-export const signInWithEmailAndPassword = jest.fn(() => Promise.resolve({}));
-export const createUserWithEmailAndPassword = jest.fn((email, password, user) => Promise.resolve({
-  userData: {
-    userEmail: email,
-    userPassword: password,
-    username: user,
-  },
-}));
+// eslint-disable-next-line import/no-mutable-exports
+export let signInWithEmailAndPassword = jest.fn(() => Promise.resolve({}));
+// signInWithEmailAndPassword = jest.fn(() => Promise.reject((throw new TypeError('NO')));
+export const createUserWithEmailAndPassword = jest.fn(
+  (email, password, user) => Promise.resolve({
+    userData: {
+      userEmail: email,
+      userPassword: password,
+      username: user,
+    },
+  }),
+  Promise.reject(new Error('ERROR')),
+);
+/* export const createUserWithEmailAndPassword = jest.fn((email, password, user) => {
+  let promise = new Promise((resolve, reject) => {
+    resolve({
+      userData: {
+        userEmail: email,
+        userPassword: password,
+        username: user,
+      },
+    });
+    reject(new Error('ERROR'));
+  });
+}); */
 
 export const GoogleAuthProvider = jest.fn();
 
