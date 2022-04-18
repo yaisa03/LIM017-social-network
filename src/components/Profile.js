@@ -1,8 +1,8 @@
 // eslint-disable-next-line import/no-cycle
-import { getUser } from '../lib/Firestore.js';
+import { auth } from '../lib/Firestore.js';
 
 export const Profile = () => {
-  const user = getUser();
+  const user = auth.currentUser;
   let url = '';
   if (user.photoURL === null) {
     url = 'Images/userImage.jpeg';
