@@ -26,10 +26,11 @@ import {
 } from './index.js';
 
 const db = getFirestore(app);
+export const auth = getAuth();
 
 // Funcion que envia un mensaje de verificacion al usuario que se ha registrado
 export function emailVerification() {
-  const auth = getAuth();
+  // const auth = getAuth();
   sendEmailVerification(auth.currentUser)
     .then(() => {
       emailMessageVerificacionOK();
@@ -37,7 +38,7 @@ export function emailVerification() {
 }
 // Funcion que registra un nuevo usuario en Firebase
 export function register(email, password, displayname) {
-  const auth = getAuth();
+  // const auth = getAuth();
   createUserWithEmailAndPassword(auth, email, password).then(() => {
     updateProfile(auth.currentUser, {
       displayName: displayname,
@@ -57,7 +58,7 @@ export function register(email, password, displayname) {
 }
 // Funcion que permite a un usuario loggearse con su email y password
 export function logIn(email, password) {
-  const auth = getAuth();
+  // const auth = getAuth();
   signInWithEmailAndPassword(auth, email, password)
     .then((userCredential) => {
       // Signed in
@@ -73,7 +74,7 @@ export function logIn(email, password) {
 // Funcion que permite a un usuario loggearse con su cuenta de Gmail
 export function logInGoogle() {
   const provider = new GoogleAuthProvider();
-  const auth = getAuth();
+  // const auth = getAuth();
   signInWithPopup(auth, provider)
     .then((result) => {
       /* const credential = GoogleAuthProvider.credentialFromResult(result);
@@ -87,7 +88,7 @@ export function logInGoogle() {
 }
 // Funcion que permite reestablecer contraseña enviando un correo al usuario
 export function emailResetPassword(email) {
-  const auth = getAuth();
+  // const auth = getAuth();
   sendPasswordResetEmail(auth, email)
     .then(() => {
       removeMessageError();
@@ -104,7 +105,7 @@ export function emailResetPassword(email) {
 
 // eslint-disable-next-line consistent-return
 export function setUser(displayName, photoURL) {
-  const auth = getAuth();
+  // const auth = getAuth();
   const user = auth.currentUser;
   if (user !== null) {
     user.displayName = displayName;
@@ -115,8 +116,8 @@ export function setUser(displayName, photoURL) {
 }
 // eslint-disable-next-line consistent-return
 export function setUserPhoto(photoUserURL) {
-  const auth = getAuth();
-  updateProfile(auth.currentUser, {
+  // const auth = getAuth();
+  return updateProfile(auth.currentUser, {
     photoURL: photoUserURL,
   }).then(() => {
     // Profile updated!
@@ -128,7 +129,7 @@ export function setUserPhoto(photoUserURL) {
 }
 // funcion que permite editar el nombre de usurio
 export function setUserInfo(newname) {
-  const auth = getAuth();
+  // const auth = getAuth();
   updateProfile(auth.currentUser, {
     displayName: newname,
   }).then(() => {
@@ -141,7 +142,7 @@ export function setUserInfo(newname) {
 }
 // funcion que permite eliminar el usuario
 export function deleteAccount() {
-  const auth = getAuth();
+  // const auth = getAuth();
   const user = auth.currentUser;
   deleteUser(user).then(() => {
     // User deleted.
@@ -222,13 +223,13 @@ export async function updatePostImage(id, title, post, url) {
 }
 // funcion para obtener la informacion del usuario actual
 export function getUser() {
-  const auth = getAuth();
+  // const auth = getAuth();
   const user = auth.currentUser;
   return user;
 }
 // Funcion que guarda post con foto en firebase
 export function uploadPostImage(title, post, url, storageName, level) {
-  const auth = getAuth();
+  // const auth = getAuth();
   const user = auth.currentUser;
   console.log(url);
   addDoc(collection(db, 'posts'), {
@@ -247,7 +248,7 @@ export function uploadPostImage(title, post, url, storageName, level) {
 }
 // Funcion que guarda post sin foto en firebase
 export function uploadPost(title, post, level) {
-  const auth = getAuth();
+  // const auth = getAuth();
   const user = auth.currentUser;
   addDoc(collection(db, 'posts'), {
     UserId: user.uid,
@@ -264,7 +265,7 @@ export function uploadPost(title, post, level) {
 }
 // Funcion que muestra los posts del usuario dueno del perfil
 export async function findPostById() {
-  const auth = getAuth();
+  // const auth = getAuth();
   const user = auth.currentUser;
   const postsRef = collection(db, 'posts');
   const q = query(postsRef, where('UserId', '==', user.uid), orderBy('date', 'desc'));
@@ -336,7 +337,7 @@ export async function getArrayLikes(e) {
   return array;
 }
 export function AddLikes() {
-  const auth = getAuth();
+  // const auth = getAuth();
   const user = auth.currentUser;
   putLikesPosts(user);
   /* const likeButton = document.querySelectorAll('.likeButton');
@@ -364,7 +365,7 @@ export function AddLikes() {
 }
 // Funcion que permite cerrar sesion de un usuario
 export function SignOut() {
-  const auth = getAuth();
+  // const auth = getAuth();
   signOut(auth).then(() => {
     // Sign-out successful.
     console.log('Sesion cerrada satisfactoriamente');

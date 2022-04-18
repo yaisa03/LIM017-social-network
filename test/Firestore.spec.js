@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 /* eslint-disable camelcase */
 /* eslint-disable import/no-unresolved */
 // importamos la funcion que vamos a testear
@@ -10,7 +11,8 @@ window.document.body.innerHTML = fs.readFileSync('./src/index.html');
 
 const {
   register, emailVerification, logIn, logInGoogle, emailResetPassword,
-  SignOut, /* emailVerification, findPosts, findPostById,
+  SignOut, setUser, setUserPhoto, setUserInfo,
+  /* emailVerification, findPosts, findPostById, deleteAccount,
    */
 } = require('../src/lib/Firestore.js');
 const { Register } = require('../src/components/Register.js');
@@ -22,9 +24,8 @@ const { getAuth } = require('../src/lib/FirebaseImport.js');
 
 const {
   createUserWithEmailAndPassword, signInWithEmailAndPassword, sendEmailVerification,
-  signInWithPopup, sendPasswordResetEmail, signOut,
-  /*
-   addDoc, collection,  */
+  signInWithPopup, sendPasswordResetEmail, signOut, updateProfile,
+  /* addDoc, collection, deleteUser, */
 } = require('../src/lib/FirebaseImport.js');
 
 jest.mock('../src/lib/FirebaseImport.js');
@@ -49,24 +50,34 @@ describe('Posts', () => {
 
 describe('Profile', () => {
   it('should render without crashing, con photoURL', () => {
-    getAuth.mockReturnValue({
+  /*  getAuth.mockReturnValue({
       currentUser: {
         displayName: 'name',
         email: 'bob@example.com',
         photoURL: 'http://example.com',
       },
-    });
+    }); */
     const el = Profile();
     expect(typeof el).toBe('string');
   });
   it('should render without crashing, con photoURL NULL', () => {
-    getAuth.mockReturnValue({
+    /* getAuth.mockReturnValue({
       currentUser: {
         displayName: 'name',
         email: 'bob@example.com',
         photoURL: null,
       },
-    });
+    }); */
+    /* getAuth.mockImplementationOnce({
+      currentUser: {
+        displayName: 'name',
+        email: 'bob@example.com',
+        photoURL: null,
+      },
+    }); */
+    const user = getAuth();
+    user.currentUser.photoURL = null;
+    console.log(user.currentUser.photoURL);
     const el = Profile();
     expect(typeof el).toBe('string');
   });
@@ -81,7 +92,7 @@ describe('ResetPassword', () => {
 
 const post = {
   id: '123',
-  url: 'Images/userImage.jpeg',
+  photoURL: 'Images/userImage.jpeg',
   likes: 5,
 };
 
@@ -189,6 +200,53 @@ describe('SignOut', () => {
       expect(signOut.mock.calls[0][1]).toBe(undefined);
     }));
 });
+describe('setUser', () => {
+  it('deberia retornar un uid', () => {
+    expect(typeof setUser('username', 'urlphoto')).toBe('string');
+  });
+});
+describe('setUserPhoto', () => {
+  it('debería ser una función', () => {
+    expect(typeof setUserPhoto).toBe('function');
+  });
+  it('deberia funcionar', async () => {
+    const result = await setUserPhoto('myURL');
+    expect(result).toStrictEqual(undefined);
+  });
+  it('deberia ', () => updateProfile({}, {})
+    .then(() => {
+      expect(typeof updateProfile.mock.calls[0][0]).toBe('object');
+      expect(typeof updateProfile.mock.calls[0][1]).toBe('object');
+    }));
+});
+describe('setUserInfo', () => {
+  it('debería ser una función', () => {
+    expect(typeof setUserInfo).toBe('function');
+  });
+  it('deberia funcionar', async () => {
+    const result = await setUserInfo('user');
+    expect(result).toStrictEqual(undefined);
+  });
+  it('deberia ', () => updateProfile({}, {})
+    .then(() => {
+      expect(typeof updateProfile.mock.calls[0][0]).toBe('object');
+      expect(typeof updateProfile.mock.calls[0][1]).toBe('object');
+    }));
+});
+/* describe('deleteAccount', () => {
+  it('debería ser una función', () => {
+    expect(typeof deleteAccount).toBe('function');
+  });
+  it('deberia funcionar', () => {
+    const result = deleteAccount();
+    expect(result).toStrictEqual(undefined);
+  });
+  it('deberia ', () => deleteUser({})
+    .then(() => {
+      expect(typeof deleteUser.mock.calls[0][0]).toBe('object');
+    }));
+}); */
+
 /*
 // envioCorreoVerificacion
 describe('emailVerification', () => {
