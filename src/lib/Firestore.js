@@ -154,7 +154,7 @@ export function deleteAccount() {
   });
 }
 // funcion pra eliminar post del usuario que borra su cuenta
-async function deleteUserPosts(user) {
+export async function deleteUserPosts(user) {
   const q = query(collection(db, 'posts'), where('UserId', '==', user.uid));
   const querySnapshot = await getDocs(q);
   console.log(querySnapshot);
@@ -172,7 +172,7 @@ export async function getURLProfilePhoto() {
   await uploadBytes(storageRef, filechoosen).then(() => {
   });
   // eslint-disable-next-line prefer-template
-  getDownloadURL(ref(storage, filechoosen.name))
+  return getDownloadURL(ref(storage, filechoosen.name))
     .then((url) => {
       getReferenceImg(url);
       setUserPhoto(url);

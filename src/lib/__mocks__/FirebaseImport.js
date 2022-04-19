@@ -1,3 +1,4 @@
+/* eslint-disable prefer-promise-reject-errors */
 /* eslint-disable no-unused-vars */
 /* eslint-disable prefer-const */
 
@@ -33,8 +34,10 @@ export const signOut = jest.fn(() => Promise.resolve({}));
 export const sendPasswordResetEmail = jest.fn(() => Promise.resolve({}));
 
 export const sendEmailVerification = jest.fn(() => Promise.resolve({}));
-export const deleteUser = jest.fn(() => Promise.resolve({}));
-export const deleteDoc = () => {};
+
+export const deleteUser = jest.fn(() => Promise.reject('something bad happened'));
+
+export const deleteDoc = jest.fn();
 
 export const signInWithPopup = jest.fn((_auth_, provider) => Promise.resolve({ provider }));
 
@@ -46,11 +49,15 @@ export const addDoc = jest.fn((Collection, data) => Promise.resolve({ [Collectio
 
 export const doc = jest.fn((_db_, nameCol, idDoc) => Object({ [nameCol]: idDoc }));
 export const getDoc = jest.fn(() => ({}));
-export const getDocs = jest.fn(() => ({
+export const getDocs = jest.fn(() => Promise.resolve({
   post: {
     id: '25448661',
   },
 }));
+export const uploadBytes = jest.fn(() => Promise.resolve({}));
+
+export const getDownloadURL = jest.fn(() => Promise.resolve({}));
+
 export const getFirestore = () => {};
 
 export const getStorage = () => {};
