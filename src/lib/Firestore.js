@@ -16,7 +16,7 @@ import {
   ref, uploadBytes, getDownloadURL, deleteUser, getDocs,
 } from './FirebaseImport.js';
 import { app } from './FirebaseInit.js';
-/* import { ShowPosts, ShowPostsById } from '../components/ShowPosts.js'; */
+import { ShowPosts } from '../components/ShowPosts.js';
 import {
   emailMessageVerificacionOK, cleanMessageError, validateEmailVerification,
   removeMessageError, addMessage,
@@ -393,5 +393,17 @@ export function SignOut() {
     console.log('Sesion cerrada satisfactoriamente');
   }).catch((/* error */) => {
     // An error happened.
+  });
+}
+// funcion que permite obtener los por Postres
+export async function findPostByType(type) {
+  const postsRef = collection(db, 'posts');
+  const q = query(postsRef, where('postType', '==', type), orderBy('date', 'desc'));
+  onSnapshot(q, (snapshot) => {
+    const containerPosts = document.getElementById('postsContainer');
+    containerPosts.innerHTML = '';
+    snapshot.forEach((e) => {
+      containerPosts.innerHTML += ShowPosts(e, e.data());
+    });
   });
 }
