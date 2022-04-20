@@ -12,7 +12,7 @@ import { Profile } from './components/Profile.js';
 // eslint-disable-next-line object-curly-newline
 // eslint-disable-next-line import/no-cycle
 import {
-  logIn, register, logInGoogle, emailResetPassword, // uploadPost,
+  logIn, register, logInGoogle, emailResetPassword, findPostByType, // uploadPost,
   findPostById, findPosts, SignOut, updatePost, postDeleted, getURLProfilePhoto,
   getURLPostPhoto, updatePostPhoto, setUserInfo, deleteAccount,
 } from './lib/Firestore.js';
@@ -293,6 +293,7 @@ export function navIcons() {
     findPosts();
     createNewPost();
     navIcons();
+    filterPostsByType();
   });
   const logOut = document.getElementById('logOut');
   logOut.addEventListener('click', () => {
@@ -358,7 +359,15 @@ export function showProfile() {
   editProfilePhoto();
   editProfile();
 }
-
+// botones para filtrar los posts por tipo de comida
+function filterPostsByType() {
+  const buttonsByType = document.querySelectorAll('[id^="levelButton"]');
+  buttonsByType.forEach((button) => {
+    button.addEventListener('click', () => {
+      findPostByType(button.innerHTML);
+    });
+  });
+}
 // vista de todos los posts
 export function showHome() {
   const root = document.getElementById('root');
@@ -367,6 +376,7 @@ export function showHome() {
   findPosts();
   createNewPost();
   navIcons();
+  filterPostsByType();
 }
 // mostrar el logIn cuando carga la pagina
 onNavigate('#/');

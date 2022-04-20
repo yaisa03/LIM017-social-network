@@ -24,8 +24,10 @@ export const Profile = () => {
                             </header>
                             <main id="mainContainer">
                               <div id="profileInfo">
+                               <div id="profilePhotoDiv">
                                 <img id="profilePhoto" src= ${url} class="profilePicture">
-                                <button id="EditPhoto"> Editar Foto </button>
+                                <i class="fa fa-camera" id="EditPhoto" style="font-size:24px"></i>
+                                </div>
                                 <div class="container" id="cont">
                                   <div class="modal">
                                     <i class="fa fa-remove" style="font-size:30px;color:red"></i>
@@ -58,13 +60,22 @@ export const Profile = () => {
                                   <p id="messagePost"></p>
                                   <input id="title" placeholder="Titulo">
                                   <textarea id="post" placeholder="Descripcion"></textarea>
-                                  <p id="selectLevel">Nivel de dificultad:
+                                  <div id="selectsContainer">
+                                  <p id="selectLevel">Dificultad:
                                   <select name="level" id="level">
                                     <option value="Facil">Facil</option>
                                     <option value="Intermedio">Intermedio</option>
                                     <option value="Avanzado">Avanzado</option>
                                   </select>
                                   </p>
+                                  <p id="selectType">Tipo de plato:
+                                  <select name="type" id="type">
+                                    <option value="Entrada">Entrada</option>
+                                    <option value="Plato Fuerte">Plato Fuerte</option>
+                                    <option value="Postre">Postre</option>
+                                  </select>
+                                  </p>
+                                  </div>
                                   <p id="namePostImage" style="color: black;font-size: 13px;margin: 3px;"></p>
                                   <div id="addPhotoDiv">
                                   <i class="fa fa-photo" id="addPhotoIcon"></i>
@@ -87,3 +98,4 @@ export const Profile = () => {
   return profileDivs;
 };
 /* onerror="this.src='Images/userImage.jpg';" */
+/* <button id="EditPhoto"> Editar Foto </button> */
