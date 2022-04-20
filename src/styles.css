@@ -140,7 +140,6 @@ button:hover{
     margin: 2%;
 }
 .facebookLogo, .googleLogo {
-    /* width: calc(2rem + 0.5vw); */
     height: calc(2.5rem + 0.5vh);
     transition: transform .2s; 
 }
@@ -170,8 +169,8 @@ a:hover {
 }
 
 .hideBackground {
-    background-image: none;
-    background-color: #fff;
+    background-image: url(Images/back3.jpg);
+    /* background-color: #fff; */
 }
 header{
     width: 100%;
@@ -208,7 +207,8 @@ li{
     color: black;
 }
 #SearchContainer{
-    height: 35px;
+    height: 5px;
+    /* height: 35px; */
     position: relative;
     display: flex;
     flex-direction: row;
@@ -273,7 +273,7 @@ textarea {
 .postDiv {
     display: flex;
     flex-direction: column;
-    width: 80%;
+    width: 100%;
     border:2px solid #212431;
     padding: 5%;
     margin: 3%;
@@ -485,6 +485,7 @@ label[id="editDisplayName"]{
 }
 #FoodLogoHead{
     width: 100%;
+    margin-top: 10px;
 }
 #logoContainer{
     width: 40%;
@@ -552,6 +553,9 @@ label[id="editDisplayName"]{
         top: 80px;
         bottom: 0px;
     }
+    .postDiv {
+        width: 80%;
+    }
     #editProfileButton{
         margin-top: 20px;
         font-size: 15px;
@@ -612,5 +616,6 @@ label[id="editDisplayName"]{
     }
     #FoodLogoHead {
         width: 20%;
+        margin-top: 0px;
     }
 }
