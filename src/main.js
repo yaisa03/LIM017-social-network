@@ -12,7 +12,7 @@ import { Profile } from './components/Profile.js';
 // eslint-disable-next-line object-curly-newline
 // eslint-disable-next-line import/no-cycle
 import {
-  logIn, register, logInGoogle, emailResetPassword, uploadPost,
+  logIn, register, logInGoogle, emailResetPassword, // uploadPost,
   findPostById, findPosts, SignOut, updatePost, postDeleted, getURLProfilePhoto,
   getURLPostPhoto, updatePostPhoto, setUserInfo, deleteAccount,
 } from './lib/Firestore.js';
@@ -139,6 +139,7 @@ export function createNewPost() {
   const title = document.getElementById('title');
   const post = document.getElementById('post');
   const level = document.getElementById('level');
+  const type = document.getElementById('type');
   const postButton = document.getElementById('postButton');
   errorMessage.classList.remove('showMessageError');
   errorMessage.innerHTML = '';
@@ -160,12 +161,16 @@ export function createNewPost() {
       post.classList.add('inputError');
       errorMessage.classList.add('showMessageError');
       errorMessage.innerHTML = 'Debes ingresar contenido al post';
+    } else if (filechoosen === '') {
+      post.classList.add('inputError');
+      errorMessage.classList.add('showMessageError');
+      errorMessage.innerHTML = 'Debes ingresar una imagen al post';
     } else if (title.value !== '' && post.value !== '') {
-      if (filechoosen === '') {
-        uploadPost(title.value, post.value, level.value);
-      } else {
-        getURLPostPhoto(title.value, post.value, level.value);
-      }
+      /*  if (filechoosen === '') {
+         uploadPost(title.value, post.value, level.value, type.value);
+       } else { */
+      getURLPostPhoto(title.value, post.value, level.value, type.value);
+      // }
       createPost.reset();
       const namePostImage = document.getElementById('namePostImage');
       namePostImage.innerText = '';
