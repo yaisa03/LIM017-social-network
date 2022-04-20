@@ -122,10 +122,21 @@ export function setUserPhoto(photoUserURL) {
   }).then(() => {
     // Profile updated!
     console.log('se cargo la imagen');
+    updatePhotoPosts(photoUserURL, auth.currentUser);
+    // return findPostById();
   }).catch((/* error */) => {
     // An error occurred
     console.log('NO se cargo la imagen');
   });
+}
+// funcion cambiar nombre de usuario en los post
+export async function updatePhotoPosts(photoUserURL, user) {
+  const q = query(collection(db, 'posts'), where('UserId', '==', user.uid));
+  const querySnapshot = await getDocs(q);
+  querySnapshot.forEach((post) => {
+    setDoc(doc(db, 'posts', post.id), { userImage: photoUserURL }, { merge: true });
+  });
+  return findPostById();
 }
 // funcion que permite editar el nombre de usurio
 export function setUserInfo(newname) {
@@ -135,9 +146,18 @@ export function setUserInfo(newname) {
   }).then(() => {
     // Profile updated!
     console.log('cambio el nombre');
+    updateNamePosts(newname, auth.currentUser);
   }).catch((/* error */) => {
     // An error occurred
     console.log('NO cambio');
+  });
+}
+// funcion cambiar nombre de usuario en los post
+export async function updateNamePosts(newname, user) {
+  const q = query(collection(db, 'posts'), where('UserId', '==', user.uid));
+  const querySnapshot = await getDocs(q);
+  querySnapshot.forEach((post) => {
+    setDoc(doc(db, 'posts', post.id), { userName: newname }, { merge: true });
   });
 }
 // funcion que permite eliminar el usuario
@@ -183,7 +203,7 @@ export async function getURLProfilePhoto() {
     });
 }
 // funcion que crea los url de las fotos insertadas en la posts
-export async function getURLPostPhoto(title, post, level) {
+export async function getURLPostPhoto(title, post, level, type) {
   // Recuperar datos
   const filechoosen = getFileChoosenPost();
   const storage = getStorage();
@@ -193,7 +213,7 @@ export async function getURLPostPhoto(title, post, level) {
   });
   getDownloadURL(ref(storage, filechoosen.name))
     .then((url) => {
-      uploadPostImage(title, post, url, filechoosen.name, level);
+      uploadPostImage(title, post, url, filechoosen.name, level, type);
     })
     .catch(() => {
     });
@@ -228,7 +248,7 @@ export function getUser() {
   return user;
 }
 // Funcion que guarda post con foto en firebase
-export function uploadPostImage(title, post, url, storageName, level) {
+export function uploadPostImage(title, post, url, storageName, level, type) {
   // const auth = getAuth();
   const user = auth.currentUser;
   console.log(url);
@@ -243,11 +263,12 @@ export function uploadPostImage(title, post, url, storageName, level) {
     userImage: user.photoURL,
     userName: user.displayName,
     postLevel: level,
+    postType: type,
   });
   findPostById();
 }
 // Funcion que guarda post sin foto en firebase
-export function uploadPost(title, post, level) {
+/* export function uploadPost(title, post, level, type) {
   // const auth = getAuth();
   const user = auth.currentUser;
   addDoc(collection(db, 'posts'), {
@@ -261,8 +282,9 @@ export function uploadPost(title, post, level) {
     userImage: user.photoURL,
     userName: user.displayName,
     postLevel: level,
+    postType: type,
   });
-}
+} */
 // Funcion que muestra los posts del usuario dueno del perfil
 export async function findPostById() {
   // const auth = getAuth();

@@ -18,7 +18,6 @@ export const Profile = () => {
                               <ul>
                                <li><i id="Homeicon" class="fa fa-home"> </i></li>
                                <li><i id="Usericon" class="fa fa-user" > </i></li>
-                               <li><i id="Bellicon" class="fa fa-bell" > </i></li>
                                <li><i id="logOut" class="fa fa-power-off"></i></li>
                               </ul>
                              </nav>

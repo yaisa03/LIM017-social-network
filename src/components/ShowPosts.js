@@ -6,7 +6,8 @@ export const ShowPosts = (doc, e) => {
                               </div>
                               <img id="uploadPostImages" src="${e.image}"></img>
                               <textarea class="title" readonly>${e.postTitle}</textarea>
-                              <p>Nivel de dificultad: ${e.postLevel}</p>
+                              <p>Dificultad: ${e.postLevel}</p>
+                              <p>Tipo: ${e.postType}</p>
                               <textarea class="description" readonly>${e.content}</textarea>
                               <span id="likeCount"><i id="${doc.id}" class="fa fa-heart likeButton"></i>${e.likes.length}</span>
                             </div>`;
@@ -20,7 +21,8 @@ export const ShowPostsById = (doc, e) => {
                               </div>
                               <img id="uploadPostImages" src="${e.image}"></img>
                               <textarea class="title text${doc.id}" readonly>${e.postTitle}</textarea>
-                              <p>Nivel de dificultad: ${e.postLevel}</p>
+                              <p>Dificultad: ${e.postLevel}</p>
+                              <p>Tipo: ${e.postType}</p>
                               <textarea class="description text${doc.id}" readonly>${e.content}</textarea>
                               <div>
                               <button id="${doc.id}" class="editButton ${doc.id}">Editar</button>
