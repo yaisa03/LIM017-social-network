@@ -26,8 +26,8 @@ const { getAuth } = require('../src/lib/FirebaseImport.js');
 const {
   createUserWithEmailAndPassword, signInWithEmailAndPassword, sendEmailVerification,
   signInWithPopup, sendPasswordResetEmail, signOut, updateProfile, deleteDoc,
-  deleteUser, uploadBytes, getDownloadURL,
-  /* addDoc, collection */
+  getDownloadURL,
+  /* addDoc, collection, deleteUser, uploadBytes, */
 } = require('../src/lib/FirebaseImport.js');
 
 jest.mock('../src/lib/FirebaseImport.js');
