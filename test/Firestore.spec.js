@@ -11,8 +11,9 @@ window.document.body.innerHTML = fs.readFileSync('./src/index.html');
 
 const {
   register, emailVerification, logIn, logInGoogle, emailResetPassword,
-  SignOut, setUser, setUserPhoto, setUserInfo,
-  /* emailVerification, findPosts, findPostById, deleteAccount,
+  SignOut, setUser, setUserPhoto, setUserInfo, deleteUserPosts,
+  deleteAccount, getURLProfilePhoto,
+  /* emailVerification, findPosts, findPostById,
    */
 } = require('../src/lib/Firestore.js');
 const { Register } = require('../src/components/Register.js');
@@ -24,8 +25,9 @@ const { getAuth } = require('../src/lib/FirebaseImport.js');
 
 const {
   createUserWithEmailAndPassword, signInWithEmailAndPassword, sendEmailVerification,
-  signInWithPopup, sendPasswordResetEmail, signOut, updateProfile,
-  /* addDoc, collection, deleteUser, */
+  signInWithPopup, sendPasswordResetEmail, signOut, updateProfile, deleteDoc,
+  deleteUser, uploadBytes, getDownloadURL,
+  /* addDoc, collection */
 } = require('../src/lib/FirebaseImport.js');
 
 jest.mock('../src/lib/FirebaseImport.js');
@@ -158,7 +160,7 @@ describe('logIn', () => {
     const el = logIn('front@end.la', '123456');
     expect(el).toBeUndefined();
   });
-  it('Debería poder', () => signInWithEmailAndPassword()
+  it('Deberia recibir los parametros correctos', () => signInWithEmailAndPassword()
     .then(() => {
       expect(signInWithEmailAndPassword.mock.calls[0][1]).toBe('front@end.la');
       expect(signInWithEmailAndPassword.mock.calls[0][2]).toBe('123456');
@@ -170,7 +172,7 @@ describe('logInGoogle', () => {
     expect(typeof logInGoogle).toBe('function');
   });
   /* const provider = { id: 123, correo: 'hola@gmail.com' }; */
-  it('proveedor', () => signInWithPopup().then(() => {
+  it('proveedor deberia ser llamado', () => signInWithPopup().then(() => {
     expect(signInWithPopup).toHaveBeenCalled();
   }));
   it('Debería poder iniciar sesion', () => {
@@ -183,7 +185,7 @@ describe('emailResetPassword', () => {
   it('debería ser una función', () => {
     expect(typeof emailResetPassword).toBe('function');
   });
-  it('deberia devolver', () => expect(emailResetPassword('front@end.la')).toBeUndefined());
+  it('deberia devolver undefined', () => expect(emailResetPassword('front@end.la')).toBeUndefined());
   it('', () => sendPasswordResetEmail()
     .then(() => {
       // console.log(auth.mock.currentUser);
@@ -209,11 +211,11 @@ describe('setUserPhoto', () => {
   it('debería ser una función', () => {
     expect(typeof setUserPhoto).toBe('function');
   });
-  it('deberia funcionar', async () => {
+  it('deberia cambiar la foto de perfil', async () => {
     const result = await setUserPhoto('myURL');
     expect(result).toStrictEqual(undefined);
   });
-  it('deberia ', () => updateProfile({}, {})
+  it('deberia recibir los parametros correctos ', () => updateProfile({}, {})
     .then(() => {
       expect(typeof updateProfile.mock.calls[0][0]).toBe('object');
       expect(typeof updateProfile.mock.calls[0][1]).toBe('object');
@@ -223,17 +225,17 @@ describe('setUserInfo', () => {
   it('debería ser una función', () => {
     expect(typeof setUserInfo).toBe('function');
   });
-  it('deberia funcionar', async () => {
+  it('deberia modificar la informacion del usuario', async () => {
     const result = await setUserInfo('user');
     expect(result).toStrictEqual(undefined);
   });
-  it('deberia ', () => updateProfile({}, {})
+  it('deberia recibir los paraametros correctos ', () => updateProfile({}, {})
     .then(() => {
       expect(typeof updateProfile.mock.calls[0][0]).toBe('object');
       expect(typeof updateProfile.mock.calls[0][1]).toBe('object');
     }));
 });
-/* describe('deleteAccount', () => {
+describe('deleteAccount', () => {
   it('debería ser una función', () => {
     expect(typeof deleteAccount).toBe('function');
   });
@@ -241,25 +243,32 @@ describe('setUserInfo', () => {
     const result = deleteAccount();
     expect(result).toStrictEqual(undefined);
   });
-  it('deberia ', () => deleteUser({})
-    .then(() => {
-      expect(typeof deleteUser.mock.calls[0][0]).toBe('object');
-    }));
-}); */
-
-/*
-// envioCorreoVerificacion
-describe('emailVerification', () => {
-  it('debería ser una función', () => {
-    expect(typeof emailVerification).toBe('function');
-  });
-  it('', () => emailVerification()
-    .then(() => {
-      // console.log(auth.mock.currentUser);
-      expect(sendEmailVerification.mock.calls).toHaveLength(1);
-    }));
 });
-
+describe('deleteUserPosts', () => {
+  it('debería ser una función', () => {
+    expect(typeof deleteUserPosts).toBe('function');
+  });
+  it('deberia ser llamado deleteDoc ', () => {
+    expect(deleteDoc).toHaveBeenCalledTimes(0);
+  });
+  /*
+  it('deberia funcionar', () => {
+    const result = deleteUserPosts({ user: { uid: 'u145632' } });
+    expect(result).toStrictEqual(undefined);
+  }); */
+});
+describe('getURLProfilePhoto', () => {
+  it('debería ser una función', () => {
+    expect(typeof getURLProfilePhoto).toBe('function');
+  });
+  it('deberia llamar a UploadBytes ', () => {
+    expect(getURLProfilePhoto()).toBe({});
+  });
+  it('deberia llamar a getDownloadURL', () => getDownloadURL().then(() => {
+    expect(getDownloadURL).toHaveBeenCalledTimes(1);
+  }));
+});
+/*
 describe('findPosts', () => {
   it('Deberia subir data a coleccion posts', () => findPosts().then(async () => {
     const prueba = await addDoc(collection.mock.results[0].value, addDoc.mock.calls[0][1]);
