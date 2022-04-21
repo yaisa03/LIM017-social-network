@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 // aqui exportaras las funciones que necesites
 // eslint-disable-next-line import/no-cycle
 import {
@@ -5,13 +6,19 @@ import {
 } from '../main.js';
 import { ShowPostsById, ShowPosts } from '../components/ShowPosts.js';
 // eslint-disable-next-line import/no-cycle
-import { AddLikes, postLike, getArrayLikes } from './Firestore.js';
+import {
+  AddLikes, postLike, getArrayLikes, emailVerification, createUser, signIn,
+  signInGoogle, passwordReset, urlPhoto, setUserPhoto, uploadPostImage,
+  updatePostImage, findPostById,
+} from './Firestore.js';
 
-export function emailMessageVerificacionOK() {
-  const errorMessageText = document.querySelector('#message');
-  errorMessageText.classList.add('showMessage');
-  errorMessageText.innerText = 'correo de verificacion enviado!';
-  setTimeout(goToLogIn, 2000);
+export function emailVerificacionMessage() {
+  emailVerification().then(() => {
+    const errorMessageText = document.querySelector('#message');
+    errorMessageText.classList.add('showMessage');
+    errorMessageText.innerText = 'correo de verificacion enviado!';
+    setTimeout(goToLogIn, 2000);
+  });
 }
 export function messageErrorCases(errorMessage) {
   const errorMessageText = document.querySelector('#message');
@@ -42,6 +49,27 @@ export function messageErrorCases(errorMessage) {
       break;
   }
 }
+export function register(email, password, displayname) {
+  createUser(email, password, displayname).then(() => {
+    emailVerificacionMessage();
+  })
+    .catch((error) => {
+      const errorMessage = error.message;
+      messageErrorCases(errorMessage);
+    });
+}
+export function logInGoogle() {
+  signInGoogle()
+    .then((result) => {
+      const user = result.user;
+      // eslint-disable-next-line no-console
+      console.log(user);
+      showHome();
+    }).catch((/* error */) => {
+      // const errorMessage = error.message;
+    });
+}
+
 export function cleanMessageError() {
   const errorMessageText = document.querySelector('#message');
   errorMessageText.classList.remove('showMessageError');
@@ -52,13 +80,11 @@ export function verifyEmailMessage() {
   errorMessageText.classList.add('showMessageError');
   errorMessageText.innerText = 'verificar usuario mediante el link enviado a tu correo';
 }
-export function goToHome() {
-  showHome();
-}
+
 export function validateEmailVerification(user) {
   switch (user.emailVerified) {
     case true:
-      goToHome();
+      showHome();
       break;
     case false:
       verifyEmailMessage();
@@ -67,10 +93,19 @@ export function validateEmailVerification(user) {
       break;
   }
 }
-export function removeMessageError() {
-  const errorMessageText = document.querySelector('#message');
-  errorMessageText.classList.remove('showMessageError');
+export function logIn(email, password) {
+  signIn(email, password).then((userCredential) => {
+    const user = userCredential.user;
+    cleanMessageError();
+    validateEmailVerification(user);
+  })
+    .catch((error) => {
+      const errorMessage = error.message;
+      console.log(errorMessage);
+      messageErrorCases(errorMessage);
+    });
 }
+
 export function addMessageError() {
   const errorMessageText = document.querySelector('#message');
   errorMessageText.classList.add('showMessageError');
@@ -78,6 +113,10 @@ export function addMessageError() {
 export function removeMessage() {
   const errorMessageText = document.querySelector('#message');
   errorMessageText.classList.remove('showMessage');
+}
+export function removeMessageError() {
+  const errorMessageText = document.querySelector('#message');
+  errorMessageText.classList.remove('showMessageError');
 }
 export function addMessage() {
   const errorMessageText = document.querySelector('#message');
@@ -88,6 +127,23 @@ export function resetPasswordMessageOK() {
   errorMessageText.innerText = 'Email de reestablecimiento de contraseña enviado';
   setTimeout(goToLogIn, 2000);
 }
+
+export function emailResetPassword(email) {
+  // const auth = getAuth();
+  passwordReset(email)
+    .then(() => {
+      removeMessageError();
+      addMessage();
+      resetPasswordMessageOK();
+    })
+    .catch((error) => {
+      const errorMessage = error.message;
+      removeMessage();
+      addMessageError();
+      messageErrorCases(errorMessage);
+    });
+}
+
 export function getFileChoosenProfile() {
   const filechoosen = document.getElementById('chooseFile').files[0];
   return filechoosen;
@@ -97,13 +153,40 @@ export function getReferenceImg(url) {
   img.setAttribute('src', url);
   return img;
 }
+export function getURLProfilePhoto() {
+  const filechoosen = getFileChoosenProfile();
+  urlPhoto(filechoosen)
+    .then((url) => {
+      getReferenceImg(url);
+      setUserPhoto(url);
+    });
+}
+
 export function getFileChoosenPost() {
   const filechoosen = document.getElementById('chooseFilePost').files[0];
   return filechoosen;
 }
+export function getURLPostPhoto(title, post, level, type) {
+  const filechoosen = getFileChoosenPost();
+  urlPhoto(filechoosen)
+    .then((url) => {
+      uploadPostImage(title, post, url, filechoosen.name, level, type);
+    });
+}
+
 export function getFileChoosenPostEdit() {
   const filechoosen = document.getElementById('chooseFilePost1').files[0];
   return filechoosen;
+}
+// funcion para editar foto del post
+export function updatePostPhoto(id, title, post) {
+  // Recuperar datos
+  const filechoosen = getFileChoosenPostEdit();
+  urlPhoto(filechoosen)
+    .then((url) => {
+      updatePostImage(id, title, post, url);
+      findPostById();
+    });
 }
 export function showUserPostsById(snapshot) {
   const containerPosts = document.getElementById('postsContainer');
