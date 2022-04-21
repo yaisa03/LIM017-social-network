@@ -12,10 +12,15 @@ import { Profile } from './components/Profile.js';
 // eslint-disable-next-line object-curly-newline
 // eslint-disable-next-line import/no-cycle
 import {
-  logIn, register, logInGoogle, emailResetPassword, findPostByType, // uploadPost,
-  findPostById, findPosts, SignOut, updatePost, postDeleted, getURLProfilePhoto,
-  getURLPostPhoto, updatePostPhoto, setUserInfo, deleteAccount,
+  /* emailResetPassword, */ findPostByType, // uploadPost,
+  findPostById, findPosts, SignOut, updatePost, postDeleted,
+  setUserInfo, deleteAccount,
 } from './lib/Firestore.js';
+
+import {
+  register, logIn, logInGoogle, emailResetPassword, getURLPostPhoto, getURLProfilePhoto,
+  updatePostPhoto,
+} from './lib/index.js';
 /* eslint-disable camelcase */
 // import { onNavigate } from './components/Routes.js';
 // router

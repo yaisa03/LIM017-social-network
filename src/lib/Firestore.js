@@ -18,94 +18,49 @@ import {
 import { app } from './FirebaseInit.js';
 import { ShowPosts } from '../components/ShowPosts.js';
 import {
-  emailMessageVerificacionOK, cleanMessageError, validateEmailVerification,
+  /* emailMessageVerificacionOK,  cleanMessageError, validateEmailVerification,
   removeMessageError, addMessage,
-  resetPasswordMessageOK, removeMessage, addMessageError, messageErrorCases,
-  getFileChoosenProfile, getReferenceImg, getFileChoosenPost, showUserPostsById,
-  showPostsHome, putLikesPosts, goToHome, getFileChoosenPostEdit,
+resetPasswordMessageOK, removeMessage, addMessageError, messageErrorCases,
+  getFileChoosenProfile, getReferenceImg, getFileChoosenPost, */showUserPostsById,
+  showPostsHome, putLikesPosts, // getFileChoosenPostEdit, emailVerificacionMessage,
 } from './index.js';
 
 const db = getFirestore(app);
 export const auth = getAuth();
 
 // Funcion que envia un mensaje de verificacion al usuario que se ha registrado
-export function emailVerification() {
-  // const auth = getAuth();
-  sendEmailVerification(auth.currentUser)
-    .then(() => {
-      emailMessageVerificacionOK();
-    });
-}
+export const emailVerification = () => sendEmailVerification(auth.currentUser);
 // Funcion que registra un nuevo usuario en Firebase
-export function register(email, password, displayname) {
-  // const auth = getAuth();
-  createUserWithEmailAndPassword(auth, email, password).then(() => {
+export function createUser(email, password, displayname) {
+  return createUserWithEmailAndPassword(auth, email, password).then(() => {
     updateProfile(auth.currentUser, {
       displayName: displayname,
     }).then(() => {
       // Profile updated!
-      // ...
-    }).catch((/* error */) => {
-      // An error occurred
-      // ...
-    });
-    emailVerification();
-  })
-    .catch((error) => {
-      const errorMessage = error.message;
-      messageErrorCases(errorMessage);
-    });
+    }).catch((error) => error);
+  });
 }
+/* ********************************** */
 // Funcion que permite a un usuario loggearse con su email y password
-export function logIn(email, password) {
-  // const auth = getAuth();
-  signInWithEmailAndPassword(auth, email, password)
-    .then((userCredential) => {
-      // Signed in
-      const user = userCredential.user;
-      cleanMessageError();
-      validateEmailVerification(user);
-    })
-    .catch((error) => {
-      const errorMessage = error.message;
-      messageErrorCases(errorMessage);
-    });
+export function signIn(email, password) {
+  return signInWithEmailAndPassword(auth, email, password).then((userCredential) => userCredential)
+    .catch((error) => error);
 }
 // Funcion que permite a un usuario loggearse con su cuenta de Gmail
-export function logInGoogle() {
+export function signInGoogle() {
   const provider = new GoogleAuthProvider();
-  // const auth = getAuth();
-  signInWithPopup(auth, provider)
-    .then((result) => {
-      /* const credential = GoogleAuthProvider.credentialFromResult(result);
-      const token = credential.accessToken; */
-      const user = result.user;
-      console.log(user);
-      goToHome();
-    }).catch((/* error */) => {
-      // const errorMessage = error.message;
-    });
+  return signInWithPopup(auth, provider)
+    .then((result) => result);
 }
 // Funcion que permite reestablecer contraseña enviando un correo al usuario
-export function emailResetPassword(email) {
-  // const auth = getAuth();
-  sendPasswordResetEmail(auth, email)
-    .then(() => {
-      removeMessageError();
-      addMessage();
-      resetPasswordMessageOK();
-    })
-    .catch((error) => {
-      const errorMessage = error.message;
-      removeMessage();
-      addMessageError();
-      messageErrorCases(errorMessage);
-    });
+export function passwordReset(email) {
+  return sendPasswordResetEmail(auth, email)
+    .then()
+    .catch((error) => error);
 }
 
 // eslint-disable-next-line consistent-return
 export function setUser(displayName, photoURL) {
-  // const auth = getAuth();
   const user = auth.currentUser;
   if (user !== null) {
     user.displayName = displayName;
@@ -116,18 +71,12 @@ export function setUser(displayName, photoURL) {
 }
 // eslint-disable-next-line consistent-return
 export function setUserPhoto(photoUserURL) {
-  // const auth = getAuth();
   return updateProfile(auth.currentUser, {
     photoURL: photoUserURL,
   }).then(() => {
-    // Profile updated!
-    console.log('se cargo la imagen');
     updatePhotoPosts(photoUserURL, auth.currentUser);
-    // return findPostById();
-  }).catch((/* error */) => {
-    // An error occurred
-    console.log('NO se cargo la imagen');
-  });
+  })
+    .catch((error) => error);
 }
 // funcion cambiar nombre de usuario en los post
 export async function updatePhotoPosts(photoUserURL, user) {
@@ -140,17 +89,11 @@ export async function updatePhotoPosts(photoUserURL, user) {
 }
 // funcion que permite editar el nombre de usurio
 export function setUserInfo(newname) {
-  // const auth = getAuth();
   updateProfile(auth.currentUser, {
     displayName: newname,
   }).then(() => {
-    // Profile updated!
-    console.log('cambio el nombre');
     updateNamePosts(newname, auth.currentUser);
-  }).catch((/* error */) => {
-    // An error occurred
-    console.log('NO cambio');
-  });
+  }).catch((error) => error);
 }
 // funcion cambiar nombre de usuario en los post
 export async function updateNamePosts(newname, user) {
@@ -162,16 +105,10 @@ export async function updateNamePosts(newname, user) {
 }
 // funcion que permite eliminar el usuario
 export function deleteAccount() {
-  // const auth = getAuth();
   const user = auth.currentUser;
   deleteUser(user).then(() => {
-    // User deleted.
-    console.log('cuenta eliminada');
     deleteUserPosts(user);
-  }).catch(() => {
-    // An error ocurred
-    // ...
-  });
+  }).catch((error) => error);
 }
 // funcion pra eliminar post del usuario que borra su cuenta
 export async function deleteUserPosts(user) {
@@ -183,58 +120,16 @@ export async function deleteUserPosts(user) {
   });
 }
 // funcion que crea el url de la foto de perfil del usuario y la inserta
-export async function getURLProfilePhoto() {
-  // Recuperar datos
-  const filechoosen = getFileChoosenProfile();
+export async function urlPhoto(filechoosen) {
   const storage = getStorage();
-  // eslint-disable-next-line prefer-template
   const storageRef = ref(storage, filechoosen.name);
   await uploadBytes(storageRef, filechoosen).then(() => {
   });
-  // eslint-disable-next-line prefer-template
   return getDownloadURL(ref(storage, filechoosen.name))
-    .then((url) => {
-      getReferenceImg(url);
-      setUserPhoto(url);
-    })
-    .catch((error) => {
-      // Handle any errors
-      console.log(error);
-    });
+    .then((url) => url)
+    .catch((error) => error);
 }
-// funcion que crea los url de las fotos insertadas en la posts
-export async function getURLPostPhoto(title, post, level, type) {
-  // Recuperar datos
-  const filechoosen = getFileChoosenPost();
-  const storage = getStorage();
-  // eslint-disable-next-line prefer-template
-  const storageRef = ref(storage, filechoosen.name);
-  await uploadBytes(storageRef, filechoosen).then(() => {
-  });
-  getDownloadURL(ref(storage, filechoosen.name))
-    .then((url) => {
-      uploadPostImage(title, post, url, filechoosen.name, level, type);
-    })
-    .catch(() => {
-    });
-}
-// funcion para editar foto del post
-export async function updatePostPhoto(id, title, post) {
-  // Recuperar datos
-  const filechoosen = getFileChoosenPostEdit();
-  const storage = getStorage();
-  // eslint-disable-next-line prefer-template
-  const storageRef = ref(storage, filechoosen.name);
-  await uploadBytes(storageRef, filechoosen).then(() => {
-  });
-  getDownloadURL(ref(storage, filechoosen.name))
-    .then((url) => {
-      updatePostImage(id, title, post, url);
-      findPostById();
-    })
-    .catch(() => {
-    });
-}
+
 // funcion para actualizar la info en firestore
 export async function updatePostImage(id, title, post, url) {
   setDoc(doc(db, 'posts', id), { postTitle: title }, { merge: true });
