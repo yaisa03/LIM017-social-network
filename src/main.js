@@ -12,9 +12,9 @@ import { Profile } from './components/Profile.js';
 // eslint-disable-next-line object-curly-newline
 // eslint-disable-next-line import/no-cycle
 import {
-  /* emailResetPassword, */ findPostByType, // uploadPost,
-  findPostById, findPosts, SignOut, updatePost, postDeleted,
-  setUserInfo, deleteAccount,
+  findPostByType,
+  findPosts, SignOut, updatePost, postDeleted,
+  setUserInfo, deleteAccount, findPostById,
 } from './lib/Firestore.js';
 
 import {
@@ -22,7 +22,6 @@ import {
   updatePostPhoto,
 } from './lib/index.js';
 /* eslint-disable camelcase */
-// import { onNavigate } from './components/Routes.js';
 // router
 const routes = {
   '#/': LogIn,
@@ -182,9 +181,9 @@ export function createNewPost() {
       filechoosen = '';
       errorMessage.classList.remove('showMessageError');
       errorMessage.innerHTML = '';
-      if (window.location.hash === '#/profile') {
+      /*  if (window.location.hash === '#/profile') {
         return findPostById();
-      }
+      } */
     }
   });
   addPostPicture();

@@ -7,9 +7,9 @@ import {
 import { ShowPostsById, ShowPosts } from '../components/ShowPosts.js';
 // eslint-disable-next-line import/no-cycle
 import {
-  AddLikes, postLike, getArrayLikes, emailVerification, createUser, signIn,
+  postLike, getArrayLikes, emailVerification, createUser, signIn,
   signInGoogle, passwordReset, urlPhoto, setUserPhoto, uploadPostImage,
-  updatePostImage, findPostById,
+  updatePostImage, findPostById, auth,
 } from './Firestore.js';
 
 export function emailVerificacionMessage() {
@@ -168,9 +168,13 @@ export function getFileChoosenPost() {
 }
 export function getURLPostPhoto(title, post, level, type) {
   const filechoosen = getFileChoosenPost();
-  urlPhoto(filechoosen)
+  return urlPhoto(filechoosen)
+    // eslint-disable-next-line consistent-return
     .then((url) => {
       uploadPostImage(title, post, url, filechoosen.name, level, type);
+      if (window.location.hash === '#/profile') {
+        return findPostById();
+      }
     });
 }
 
@@ -193,9 +197,6 @@ export function showUserPostsById(snapshot) {
   containerPosts.innerHTML = '';
   snapshot.forEach((e) => {
     containerPosts.innerHTML += ShowPostsById(e, e.data());
-    // if (e.data().image === '') {
-    //  document.getElementById('uploadPostImages').style.display = 'none';
-    // }
     const button = document.querySelectorAll('.editButton');
     const text = document.querySelectorAll(`.${button.id}`);
     text.forEach((el) => {
@@ -206,21 +207,14 @@ export function showUserPostsById(snapshot) {
     deletePosts();
   });
 }
-export function showPostsHome(querySnapshot) {
+export function showPostsByType(snapshot) {
   const containerPosts = document.getElementById('postsContainer');
   containerPosts.innerHTML = '';
-  let createdPosts = '';
-  querySnapshot.forEach((d) => {
-    createdPosts += ShowPosts(d, d.data());
-    containerPosts.innerHTML = createdPosts;
-    /* if (d.data().image === '') {
-        document.getElementById('uploadPostImages').style.display = 'none';
-      } */
-    // console.log(d.data());
+  snapshot.forEach((e) => {
+    containerPosts.innerHTML += ShowPosts(e, e.data());
   });
-  AddLikes();
 }
-export function putLikesPosts(user) {
+export function AddLikes(user) {
   const likeButton = document.querySelectorAll('.likeButton');
   likeButton.forEach((e) => {
     e.addEventListener('click', async () => {
@@ -245,4 +239,15 @@ export function putLikesPosts(user) {
       }
     });
   });
+}
+
+export function showPostsHome(querySnapshot) {
+  const containerPosts = document.getElementById('postsContainer');
+  containerPosts.innerHTML = '';
+  let createdPosts = '';
+  querySnapshot.forEach((d) => {
+    createdPosts += ShowPosts(d, d.data());
+    containerPosts.innerHTML = createdPosts;
+  });
+  AddLikes(auth.currentUser);
 }
