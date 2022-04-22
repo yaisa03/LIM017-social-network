@@ -58,7 +58,9 @@ export function setUser(displayName, photoURL) {
   if (user !== null) {
     user.displayName = displayName;
     user.photoURL = photoURL;
-  }
+  } /* else {
+    throw new TypeError('El usuario no esta loggeado');
+  } */
   return uid;
 }
 // eslint-disable-next-line consistent-return
@@ -66,12 +68,13 @@ export function setUserPhoto(photoUserURL) {
   return updateProfile(auth.currentUser, {
     photoURL: photoUserURL,
   }).then(() => {
-    updatePhotoPosts(photoUserURL, auth.currentUser);
+
   })
     .catch((error) => error);
 }
 // funcion cambiar nombre de usuario en los post
-export async function updatePhotoPosts(photoUserURL, user) {
+export async function updatePhotoPosts(photoUserURL) {
+  const user = auth.currentUser;
   const q = query(collection(db, 'posts'), where('UserId', '==', user.uid));
   const querySnapshot = await getDocs(q);
   querySnapshot.forEach((post) => {
@@ -84,11 +87,12 @@ export function setUserInfo(newname) {
   return updateProfile(auth.currentUser, {
     displayName: newname,
   }).then(() => {
-    updateNamePosts(newname, auth.currentUser);
+
   }).catch((error) => error);
 }
 // funcion cambiar nombre de usuario en los post
-export async function updateNamePosts(newname, user) {
+export async function updateNamePosts(newname) {
+  const user = auth.currentUser;
   const q = query(collection(db, 'posts'), where('UserId', '==', user.uid));
   const querySnapshot = await getDocs(q);
   return querySnapshot.forEach((post) => {
@@ -147,7 +151,6 @@ export function uploadPostImage(title, post, url, storageName, level, type) {
 }
 // Funcion que muestra los posts del usuario dueno del perfil
 export async function findPostById() {
-  // const auth = getAuth();
   const user = auth.currentUser;
   const postsRef = collection(db, 'posts');
   const q = query(postsRef, where('UserId', '==', user.uid), orderBy('date', 'desc'));
@@ -166,22 +169,20 @@ export async function findPosts() {
 export async function findPostByType(type) {
   const postsRef = collection(db, 'posts');
   const q = query(postsRef, where('postType', '==', type), orderBy('date', 'desc'));
-  onSnapshot(q, (snapshot) => {
+  return onSnapshot(q, (snapshot) => {
     showPostsByType(snapshot);
   });
 }
 // Funcion que elimina los posts de la base de datos de firebase
-export function postDeleted(id) {
-  deleteDoc(doc(db, 'posts', id));
-}
+export const postDeleted = (id) => deleteDoc(doc(db, 'posts', id));
+
 // Funcion que actualiza la informacion de un post cuando se lo edita en la base de datos
 export async function updatePost(id, title, post) {
   setDoc(doc(db, 'posts', id), { postTitle: title }, { merge: true });
   setDoc(doc(db, 'posts', id), { content: post }, { merge: true });
-  // setDoc(doc(db, 'posts', id), { date: new Date() }, { merge: true });
 }
 export function postLike(id, newArray) {
-  setDoc(doc(db, 'posts', id), { likes: newArray }, { merge: true });
+  return setDoc(doc(db, 'posts', id), { likes: newArray }, { merge: true });
 }
 export async function getArrayLikes(e) {
   const docSnap = await getDoc(doc(db, 'posts', e));

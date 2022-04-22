@@ -9,7 +9,7 @@ import { ShowPostsById, ShowPosts } from '../components/ShowPosts.js';
 import {
   postLike, getArrayLikes, emailVerification, createUser, signIn,
   signInGoogle, passwordReset, urlPhoto, setUserPhoto, uploadPostImage,
-  updatePostImage, findPostById, auth,
+  updatePostImage, findPostById, auth, updatePhotoPosts,
 } from './Firestore.js';
 
 export function emailVerificacionMessage() {
@@ -158,7 +158,9 @@ export function getURLProfilePhoto() {
   urlPhoto(filechoosen)
     .then((url) => {
       getReferenceImg(url);
-      setUserPhoto(url);
+      setUserPhoto(url).then(() => {
+        updatePhotoPosts(url);
+      });
     });
 }
 
