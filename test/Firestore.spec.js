@@ -2,7 +2,6 @@
 /* eslint-disable camelcase */
 /* eslint-disable import/no-unresolved */
 // importamos la funcion que vamos a testear
-// importamos la funcion que
 // import { emailVerification } from '../src/lib/Firestore.js';
 
 const fs = require('fs');
@@ -10,11 +9,10 @@ const fs = require('fs');
 window.document.body.innerHTML = fs.readFileSync('./src/index.html');
 
 const {
-  register, emailVerification, logIn, logInGoogle, emailResetPassword,
-  SignOut, setUser, setUserPhoto, setUserInfo, deleteUserPosts,
-  deleteAccount, getURLProfilePhoto,
-  /* emailVerification, findPosts, findPostById,
-   */
+  createUser, emailVerification, signIn, signInGoogle, passwordReset,
+  SignOut, setUser, setUserPhoto, setUserInfo, deleteUserPosts, uploadPostImage,
+  deleteAccount, getURLProfilePhoto, updatePhotoPosts, urlPhoto, postDeleted,
+  findPostByType, postLike, getArrayLikes,
 } = require('../src/lib/Firestore.js');
 const { Register } = require('../src/components/Register.js');
 const { Posts } = require('../src/components/Posts.js');
@@ -26,8 +24,7 @@ const { getAuth } = require('../src/lib/FirebaseImport.js');
 const {
   createUserWithEmailAndPassword, signInWithEmailAndPassword, sendEmailVerification,
   signInWithPopup, sendPasswordResetEmail, signOut, updateProfile, deleteDoc,
-  getDownloadURL,
-  /* addDoc, collection, deleteUser, uploadBytes, */
+  getDownloadURL, GoogleAuthProvider, addDoc, onSnapshot, setDoc,
 } = require('../src/lib/FirebaseImport.js');
 
 jest.mock('../src/lib/FirebaseImport.js');
@@ -77,9 +74,9 @@ describe('Profile', () => {
         photoURL: null,
       },
     }); */
-    const user = getAuth();
+    /*     const user = getAuth();
     user.currentUser.photoURL = null;
-    console.log(user.currentUser.photoURL);
+    console.log(user.currentUser.photoURL); */
     const el = Profile();
     expect(typeof el).toBe('string');
   });
@@ -95,7 +92,7 @@ describe('ResetPassword', () => {
 const post = {
   id: '123',
   photoURL: 'Images/userImage.jpeg',
-  likes: 5,
+  likes: [],
 };
 
 describe('ShowPosts', () => {
@@ -113,183 +110,142 @@ describe('ShowPostsById', () => {
 });
 
 describe('emailVerification', () => {
-  it('debería ser una función', () => {
-    expect(typeof emailVerification).toBe('function');
+  it('debería retornar una funcion', () => {
+    expect(emailVerification()).toEqual(sendEmailVerification());
   });
-  it('Debería poder registrar a un usuario', () => sendEmailVerification()
+  it('Debería enviar un correo de verificacion', () => sendEmailVerification()
     .then(() => {
       expect(sendEmailVerification).toHaveBeenCalled();
+      expect(sendEmailVerification.mock.calls[0][0]).toEqual(getAuth().currentUser);
     }));
 });
-
-describe('register', () => {
-  it('deberia ser una funcion', () => {
-    expect(typeof register).toBe('function');
+describe('createUser', () => {
+  it('debería retornar una funcion', () => {
+    expect(createUser('some@mail.com', '12345', 'username')).toEqual(createUserWithEmailAndPassword());
   });
-  it('deberia ser undefined', () => {
-    const el = register('front@end.la', '123456', 'userlab');
-    expect(el).toBeUndefined();
-  });
-  getAuth.mockReturnValue({
-    currentUser: {
-      displayName: 'name',
-      email: 'front@end.la',
-      photoURL: null,
-    },
-  });
-  it('Debería poder registrar a un usuario', () => createUserWithEmailAndPassword()
+  it('Debería crear un nuevo usuario', () => createUserWithEmailAndPassword()
     .then(() => {
-      /* expect(createUserWithEmailAndPassword.mock.calls[0][0]).toBe(getAuth()); */
-      expect(createUserWithEmailAndPassword.mock.calls[0][1]).toBe('front@end.la');
-      expect(createUserWithEmailAndPassword.mock.calls[0][2]).toBe('123456');
-    })
-    .catch(() => {
-      expect(createUserWithEmailAndPassword).toThrow('ERROR');
+      expect(createUserWithEmailAndPassword).toHaveBeenCalled();
+      expect(createUserWithEmailAndPassword.mock.calls[0][0]).toEqual(getAuth());
+      expect(createUserWithEmailAndPassword.mock.calls[0][1]).toEqual('some@mail.com');
+      expect(createUserWithEmailAndPassword.mock.calls[0][2]).toEqual('12345');
     }));
-  /* it('Deberia arrojar un error', () => createUserWithEmailAndPassword()
-    .catch(() => {
-      expect(createUserWithEmailAndPassword).toBe('ERROR');
-    })); */
-});
-// inicioSesionUsuario
-describe('logIn', () => {
-  it('deberia ser una funcion', () => {
-    expect(typeof logIn).toBe('function');
-  });
-  it('Debería poder iniciar sesion', () => {
-    const el = logIn('front@end.la', '123456');
-    expect(el).toBeUndefined();
-  });
-  it('Deberia recibir los parametros correctos', () => signInWithEmailAndPassword()
+  it('Debería actualizar nombre de usuario', () => updateProfile()
     .then(() => {
-      expect(signInWithEmailAndPassword.mock.calls[0][1]).toBe('front@end.la');
-      expect(signInWithEmailAndPassword.mock.calls[0][2]).toBe('123456');
+      expect(updateProfile).toHaveBeenCalled();
+      expect(updateProfile.mock.calls[0][0]).toEqual(getAuth().currentUser);
+      // eslint-disable-next-line object-curly-spacing
+      // eslint-disable-next-line quote-props
+      expect(updateProfile.mock.calls[0][1]).toEqual({ 'displayName': 'username' });
+    }));
+});
+describe('signIn', () => {
+  it('debería retornar una funcion', () => {
+    expect(signIn('some@mail.com', '12345')).toEqual(signInWithEmailAndPassword());
+  });
+  it('Debería loggear al usuario', () => signInWithEmailAndPassword()
+    .then(() => {
+      expect(signInWithEmailAndPassword).toHaveBeenCalled();
+      expect(signInWithEmailAndPassword.mock.calls[0][0]).toEqual(getAuth());
+      expect(signInWithEmailAndPassword.mock.calls[0][1]).toEqual('some@mail.com');
+      expect(signInWithEmailAndPassword.mock.calls[0][2]).toEqual('12345');
     }));
 });
 // googleInicioSesion
-describe('logInGoogle', () => {
-  it('debería ser una función', () => {
-    expect(typeof logInGoogle).toBe('function');
+describe('signInGoogle', () => {
+  it('debería retornar una funcion', () => {
+    expect(signInGoogle()).toEqual(signInWithPopup());
   });
-  /* const provider = { id: 123, correo: 'hola@gmail.com' }; */
-  it('proveedor deberia ser llamado', () => signInWithPopup().then(() => {
-    expect(signInWithPopup).toHaveBeenCalled();
-  }));
-  it('Debería poder iniciar sesion', () => {
-    const el = logInGoogle();
-    expect(el).toBeUndefined();
-  });
-});
-// envioCorreoRecuperacionContrasena
-describe('emailResetPassword', () => {
-  it('debería ser una función', () => {
-    expect(typeof emailResetPassword).toBe('function');
-  });
-  it('deberia devolver undefined', () => expect(emailResetPassword('front@end.la')).toBeUndefined());
-  it('', () => sendPasswordResetEmail()
+  it('Debería loggear al usuario', () => signInWithPopup()
     .then(() => {
-      // console.log(auth.mock.currentUser);
-      expect(sendPasswordResetEmail.mock.calls).toHaveLength(2);
+      expect(signInWithPopup).toHaveBeenCalled();
+      expect(signInWithPopup.mock.calls[0][0]).toEqual(getAuth());
+      expect(signInWithPopup.mock.calls[0][1]).toEqual(new GoogleAuthProvider());
     }));
 });
-// cierreActividadUsuario
-describe('SignOut', () => {
-  it('debería ser una función', () => {
-    expect(typeof SignOut).toBe('function');
+// envioCorreoRecuperacionContrasena
+describe('passwordReset', () => {
+  it('debería retornar una funcion', () => {
+    expect(passwordReset('some@mail.com')).toEqual(sendPasswordResetEmail());
   });
-  it('deberia cerrar sesion', () => signOut()
+  it('Debería loggear al usuario', () => sendPasswordResetEmail()
     .then(() => {
-      expect(signOut.mock.calls[0][1]).toBe(undefined);
+      expect(sendPasswordResetEmail).toHaveBeenCalled();
+      expect(sendPasswordResetEmail.mock.calls[0][0]).toEqual(getAuth());
+      expect(sendPasswordResetEmail.mock.calls[0][1]).toEqual('some@mail.com');
     }));
 });
 describe('setUser', () => {
-  it('deberia retornar un uid', () => {
-    expect(typeof setUser('username', 'urlphoto')).toBe('string');
+  it('debería retornar un uid', () => {
+    expect(setUser('username', 'photo.jpeg')).toEqual(getAuth().currentUser.uid);
   });
-});
-describe('setUserPhoto', () => {
-  it('debería ser una función', () => {
-    expect(typeof setUserPhoto).toBe('function');
-  });
-  it('deberia cambiar la foto de perfil', async () => {
-    const result = await setUserPhoto('myURL');
-    expect(result).toStrictEqual(undefined);
-  });
-  it('deberia recibir los parametros correctos ', () => updateProfile({}, {})
-    .then(() => {
-      expect(typeof updateProfile.mock.calls[0][0]).toBe('object');
-      expect(typeof updateProfile.mock.calls[0][1]).toBe('object');
-    }));
-});
-describe('setUserInfo', () => {
-  it('debería ser una función', () => {
-    expect(typeof setUserInfo).toBe('function');
-  });
-  it('deberia modificar la informacion del usuario', async () => {
-    const result = await setUserInfo('user');
-    expect(result).toStrictEqual(undefined);
-  });
-  it('deberia recibir los paraametros correctos ', () => updateProfile({}, {})
-    .then(() => {
-      expect(typeof updateProfile.mock.calls[0][0]).toBe('object');
-      expect(typeof updateProfile.mock.calls[0][1]).toBe('object');
-    }));
-});
-describe('deleteAccount', () => {
-  it('debería ser una función', () => {
-    expect(typeof deleteAccount).toBe('function');
-  });
-  it('deberia funcionar', () => {
-    const result = deleteAccount();
-    expect(result).toStrictEqual(undefined);
-  });
-});
-describe('deleteUserPosts', () => {
-  it('debería ser una función', () => {
-    expect(typeof deleteUserPosts).toBe('function');
-  });
-  it('deberia ser llamado deleteDoc ', () => {
-    expect(deleteDoc).toHaveBeenCalledTimes(0);
-  });
-  /*
-  it('deberia funcionar', () => {
-    const result = deleteUserPosts({ user: { uid: 'u145632' } });
-    expect(result).toStrictEqual(undefined);
+/*  it('debería retornar un error', () => {
+    expect(() => {
+      getAuth.mockReturnValue({
+        currentUser: null,
+      });
+      setUser('username', 'photo.jpeg');
+      console.log(getAuth().currentUser);
+    }).toThrow(TypeError());
+    // expect(setUser('username', 'photo.jpeg')).toEqual(getAuth().currentUser.uid);
   }); */
 });
-describe('getURLProfilePhoto', () => {
-  it('debería ser una función', () => {
-    expect(typeof getURLProfilePhoto).toBe('function');
+describe('setUserPhoto', () => {
+  it('Deberia retornar la photo setup', () => {
+    expect(setUserPhoto('photo.jpeg')).toEqual(updateProfile());
   });
-  it('deberia llamar a UploadBytes ', () => {
-    expect(getURLProfilePhoto()).toBe({});
+});
+/* describe('updatePhotoPosts', () => {
+  it('Deberia retornar', () => {
+    expect(updatePhotoPosts('photo.jpeg')).toEqual(findPostById());
   });
-  it('deberia llamar a getDownloadURL', () => getDownloadURL().then(() => {
-    expect(getDownloadURL).toHaveBeenCalledTimes(1);
-  }));
-});
-/*
-describe('findPosts', () => {
-  it('Deberia subir data a coleccion posts', () => findPosts().then(async () => {
-    const prueba = await addDoc(collection.mock.results[0].value, addDoc.mock.calls[0][1]);
-    const variable = {
-      posts: {
-        categoria: 'strCat', imgPost: '', likes: [],
-        publicacion: 'strPost', timestamp: undefined, usuarioId: 'strCreador',
-      },
-    };
-    expect(prueba).toEqual(variable);
-  }));
-});
-describe('findPostById', () => {
-  it('Deberia subir data a coleccion posts', () => findPostById().then(async () => {
-    const prueba = await addDoc(collection.mock.results[0].value, addDoc.mock.calls[0][1]);
-    const variable = {
-      posts: {
-        categoria: 'strCat', imgPost: '', likes: [],
-        publicacion: 'strPost', timestamp: undefined, usuarioId: 'strCreador',
-      },
-    };
-    expect(prueba).toEqual(variable);
-  }));
 }); */
+describe('setUserInfo', () => {
+  it('Deberia retornar la informacion del usuario', () => {
+    expect(setUserInfo('newUserName')).toEqual(updateProfile());
+  });
+});
+describe('urlPhoto', () => {
+  it('Deberia retornar la url de la photo', () => {
+    expect(urlPhoto('file.jpeg')).toEqual(getDownloadURL());
+  });
+});
+describe('uploadPostImage', () => {
+  it('Deberia subir el post con foto photo', () => {
+    expect(uploadPostImage('title', 'postDescription', 'url', 'storageName', 'level', 'type')).toEqual(addDoc());
+  });
+});
+describe('findPostByType', () => {
+  it('Deberia retornar los post por categoria', () => {
+    expect(findPostByType('type')).toEqual(onSnapshot());
+  });
+});
+
+describe('postDeleted', () => {
+  it('debería retornar una funcion', () => {
+    expect(postDeleted('id')).toEqual(deleteDoc());
+  });
+  it('Debería enviar un correo de verificacion', () => {
+    expect(deleteDoc).toHaveBeenCalled();
+    // eslint-disable-next-line quote-props
+    expect(deleteDoc.mock.calls[0][0]).toEqual({ 'posts': 'id' });
+  });
+});
+
+describe('postLike', () => {
+  it('Deberia retornar los post por categoria', () => {
+    expect(postLike('id', 'newArray')).toEqual(setDoc());
+  });
+});
+
+/* describe('getArrayLikes', () => {
+  it('Deberia retornar los post por categoria', () => {
+    expect(typeof getArrayLikes('id')).toBe('object');
+  });
+}); */
+
+describe('SignOut', () => {
+  it('Deberia cerrar sesion', () => {
+    expect(SignOut()).toEqual(signOut());
+  });
+});

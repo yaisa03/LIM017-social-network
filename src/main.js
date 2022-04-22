@@ -14,7 +14,7 @@ import { Profile } from './components/Profile.js';
 import {
   findPostByType,
   findPosts, SignOut, updatePost, postDeleted,
-  setUserInfo, deleteAccount, findPostById,
+  setUserInfo, deleteAccount, findPostById, updateNamePosts,
 } from './lib/Firestore.js';
 
 import {
@@ -338,7 +338,9 @@ export function editProfile() {
       modal.classList.remove('showContainer');
     });
     saveProfileChanges.addEventListener('click', () => {
-      setUserInfo(newDisplayName.value);
+      setUserInfo(newDisplayName.value).then(() => {
+        updateNamePosts(newDisplayName.value);
+      });
       setTimeout(() => {
         modal.classList.remove('showContainer');
         document.getElementById('Usericon').click();
