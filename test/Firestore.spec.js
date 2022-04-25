@@ -10,9 +10,9 @@ window.document.body.innerHTML = fs.readFileSync('./src/index.html');
 
 const {
   createUser, emailVerification, signIn, signInGoogle, passwordReset,
-  SignOut, setUser, setUserPhoto, setUserInfo, deleteUserPosts, uploadPostImage,
-  deleteAccount, getURLProfilePhoto, updatePhotoPosts, urlPhoto, postDeleted,
-  findPostByType, postLike, getArrayLikes,
+  SignOut, setUser, setUserPhoto, setUserInfo, uploadPostImage,
+  urlPhoto, postDeleted, findPostByType, postLike, updatePost, getArrayLikes,
+  /* deleteUserPosts, deleteAccount, getURLProfilePhoto, updatePhotoPosts, */
 } = require('../src/lib/Firestore.js');
 const { Register } = require('../src/components/Register.js');
 const { Posts } = require('../src/components/Posts.js');
@@ -49,13 +49,13 @@ describe('Posts', () => {
 
 describe('Profile', () => {
   it('should render without crashing, con photoURL', () => {
-  /*  getAuth.mockReturnValue({
-      currentUser: {
-        displayName: 'name',
-        email: 'bob@example.com',
-        photoURL: 'http://example.com',
-      },
-    }); */
+    /*  getAuth.mockReturnValue({
+        currentUser: {
+          displayName: 'name',
+          email: 'bob@example.com',
+          photoURL: 'http://example.com',
+        },
+      }); */
     const el = Profile();
     expect(typeof el).toBe('string');
   });
@@ -138,6 +138,18 @@ describe('createUser', () => {
       // eslint-disable-next-line quote-props
       expect(updateProfile.mock.calls[0][1]).toEqual({ 'displayName': 'username' });
     }));
+  it('DEBERIA FALLAR', () => {
+    expect.assertions(0);
+    return (updateProfile().catch((e) => expect(e).toEqual({
+      error: 'usuario no fue actualizado',
+    })));
+  });
+  /* it('should throw an error, when user is invalid', () => {
+    updateProfile('', null)
+      .catch(() => {
+        expect(updateProfile()).toEqual('usuario no fue actualizado');
+      });
+  }); */
 });
 describe('signIn', () => {
   it('debería retornar una funcion', () => {
@@ -150,6 +162,12 @@ describe('signIn', () => {
       expect(signInWithEmailAndPassword.mock.calls[0][1]).toEqual('some@mail.com');
       expect(signInWithEmailAndPassword.mock.calls[0][2]).toEqual('12345');
     }));
+  it('should throw an error, when user is invalid', () => {
+    signIn('', '')
+      .catch(() => {
+        expect(signIn).toEqual('no se inicio sesion');
+      });
+  });
 });
 // googleInicioSesion
 describe('signInGoogle', () => {
@@ -174,21 +192,27 @@ describe('passwordReset', () => {
       expect(sendPasswordResetEmail.mock.calls[0][0]).toEqual(getAuth());
       expect(sendPasswordResetEmail.mock.calls[0][1]).toEqual('some@mail.com');
     }));
+  it('debería retornar error', () => {
+    passwordReset('')
+      .catch(() => {
+        expect(passwordReset).toEqual('no se envio el correo');
+      });
+  });
 });
 describe('setUser', () => {
   it('debería retornar un uid', () => {
     expect(setUser('username', 'photo.jpeg')).toEqual(getAuth().currentUser.uid);
   });
-/*  it('debería retornar un error', () => {
-    expect(() => {
-      getAuth.mockReturnValue({
-        currentUser: null,
-      });
-      setUser('username', 'photo.jpeg');
-      console.log(getAuth().currentUser);
-    }).toThrow(TypeError());
-    // expect(setUser('username', 'photo.jpeg')).toEqual(getAuth().currentUser.uid);
-  }); */
+  /*  it('debería retornar un error', () => {
+      expect(() => {
+        getAuth.mockReturnValue({
+          currentUser: null,
+        });
+        setUser('username', 'photo.jpeg');
+        console.log(getAuth().currentUser);
+      }).toThrow(TypeError());
+      // expect(setUser('username', 'photo.jpeg')).toEqual(getAuth().currentUser.uid);
+    }); */
 });
 describe('setUserPhoto', () => {
   it('Deberia retornar la photo setup', () => {
@@ -238,14 +262,32 @@ describe('postLike', () => {
   });
 });
 
-/* describe('getArrayLikes', () => {
+describe('getArrayLikes', () => {
   it('Deberia retornar los post por categoria', () => {
     expect(typeof getArrayLikes('id')).toBe('object');
   });
-}); */
+});
 
 describe('SignOut', () => {
   it('Deberia cerrar sesion', () => {
     expect(SignOut()).toEqual(signOut());
+  });
+  it('No deberia cerrar sesion', () => {
+    SignOut()
+      .catch(() => {
+        console.log(SignOut);
+        expect(SignOut).toEqual('no se cerro sesion');
+      });
+  });
+  it('mock', () => {
+    signOut()
+      .catch(() => {
+        expect(signOut).toEqual('no se cerro sesion');
+      });
+  });
+});
+describe('updatePost', () => {
+  it('Deberia actualizar los post', () => {
+    expect(updatePost('id', 'title', 'post')).toEqual(setDoc());
   });
 });

@@ -96,10 +96,16 @@ export function showRegister() {
     const password = document.getElementById('newUserPassword').value;
     const confirmPassword = document.getElementById('newUserPassword2').value;
     const displayName = document.getElementById('newUserDisplayName').value;
-    if (password === confirmPassword) {
+    if (password !== confirmPassword) {
+      const errorMessageText = document.querySelector('#message');
+      errorMessageText.classList.add('showMessageError');
+      errorMessageText.innerText = 'Las contraseñas deben ser iguales';
+    } else if (displayName === '') {
+      const errorMessageText = document.querySelector('#message');
+      errorMessageText.classList.add('showMessageError');
+      errorMessageText.innerText = 'Ingresa un nombre de usuario';
+    } else if (password === confirmPassword) {
       register(email, password, displayName);
-    } else {
-      alert('Las contraseñas deben ser iguales');
     }
   });
 }

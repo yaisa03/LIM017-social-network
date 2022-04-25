@@ -179,7 +179,7 @@ export const postDeleted = (id) => deleteDoc(doc(db, 'posts', id));
 // Funcion que actualiza la informacion de un post cuando se lo edita en la base de datos
 export async function updatePost(id, title, post) {
   setDoc(doc(db, 'posts', id), { postTitle: title }, { merge: true });
-  setDoc(doc(db, 'posts', id), { content: post }, { merge: true });
+  return setDoc(doc(db, 'posts', id), { content: post }, { merge: true });
 }
 export function postLike(id, newArray) {
   return setDoc(doc(db, 'posts', id), { likes: newArray }, { merge: true });
