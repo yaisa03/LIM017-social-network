@@ -10,9 +10,11 @@ window.document.body.innerHTML = fs.readFileSync('./src/index.html');
 
 const {
   createUser, emailVerification, signIn, signInGoogle, passwordReset,
-  SignOut, setUser, setUserPhoto, setUserInfo, uploadPostImage,
+  SignOut, setUserPhoto, setUserInfo, uploadPostImage, findPosts,
   urlPhoto, postDeleted, findPostByType, postLike, updatePost, getArrayLikes,
-  /* deleteUserPosts, deleteAccount, getURLProfilePhoto, updatePhotoPosts, */
+  findPostById, updatePhotoPosts, updateNamePosts, deleteUserPosts, updatePostImage,
+  deleteAccount,
+  /*  getURLProfilePhoto,  */
 } = require('../src/lib/Firestore.js');
 const { Register } = require('../src/components/Register.js');
 const { Posts } = require('../src/components/Posts.js');
@@ -24,7 +26,7 @@ const { getAuth } = require('../src/lib/FirebaseImport.js');
 const {
   createUserWithEmailAndPassword, signInWithEmailAndPassword, sendEmailVerification,
   signInWithPopup, sendPasswordResetEmail, signOut, updateProfile, deleteDoc,
-  getDownloadURL, GoogleAuthProvider, addDoc, onSnapshot, setDoc,
+  getDownloadURL, GoogleAuthProvider, addDoc, onSnapshot, setDoc, getDocs, deleteUser,
 } = require('../src/lib/FirebaseImport.js');
 
 jest.mock('../src/lib/FirebaseImport.js');
@@ -138,19 +140,23 @@ describe('createUser', () => {
       // eslint-disable-next-line quote-props
       expect(updateProfile.mock.calls[0][1]).toEqual({ 'displayName': 'username' });
     }));
-  it('DEBERIA FALLAR', () => {
+  /* it('DEBERIA FALLAR', () => {
     expect.assertions(0);
     return (updateProfile().catch((e) => expect(e).toEqual({
       error: 'usuario no fue actualizado',
     })));
-  });
+  }); */
+  /*   beforeEach(() => {
+    getAuth.mockImplementationOnce({ currentUser: null });
+  }); */
   /* it('should throw an error, when user is invalid', () => {
-    updateProfile('', null)
+    updateProfile()
       .catch(() => {
         expect(updateProfile()).toEqual('usuario no fue actualizado');
       });
   }); */
 });
+
 describe('signIn', () => {
   it('debería retornar una funcion', () => {
     expect(signIn('some@mail.com', '12345')).toEqual(signInWithEmailAndPassword());
@@ -199,31 +205,30 @@ describe('passwordReset', () => {
       });
   });
 });
-describe('setUser', () => {
-  it('debería retornar un uid', () => {
-    expect(setUser('username', 'photo.jpeg')).toEqual(getAuth().currentUser.uid);
-  });
-  /*  it('debería retornar un error', () => {
-      expect(() => {
-        getAuth.mockReturnValue({
-          currentUser: null,
-        });
-        setUser('username', 'photo.jpeg');
-        console.log(getAuth().currentUser);
-      }).toThrow(TypeError());
-      // expect(setUser('username', 'photo.jpeg')).toEqual(getAuth().currentUser.uid);
-    }); */
-});
+
 describe('setUserPhoto', () => {
   it('Deberia retornar la photo setup', () => {
     expect(setUserPhoto('photo.jpeg')).toEqual(updateProfile());
   });
 });
-/* describe('updatePhotoPosts', () => {
+
+describe('updatePhotoPosts', () => {
   it('Deberia retornar', () => {
     expect(updatePhotoPosts('photo.jpeg')).toEqual(findPostById());
   });
-}); */
+});
+
+describe('updateNamePosts', () => {
+  it('Deberia retornar', () => {
+    expect(updateNamePosts('username')).toEqual(getDocs());
+  });
+});
+describe('deleteUserPosts', () => {
+  it('Deberia retornar', () => {
+    expect(deleteUserPosts('username')).toEqual(getDocs());
+  });
+});
+
 describe('setUserInfo', () => {
   it('Deberia retornar la informacion del usuario', () => {
     expect(setUserInfo('newUserName')).toEqual(updateProfile());
@@ -245,6 +250,11 @@ describe('findPostByType', () => {
   });
 });
 
+describe('findPosts', () => {
+  it('Deberia retornar los post por categoria', () => {
+    expect(findPosts()).toEqual(onSnapshot());
+  });
+});
 describe('postDeleted', () => {
   it('debería retornar una funcion', () => {
     expect(postDeleted('id')).toEqual(deleteDoc());
@@ -268,9 +278,24 @@ describe('getArrayLikes', () => {
   });
 });
 
+describe('updatePost', () => {
+  it('Deberia actualizar los post', () => {
+    expect(updatePost('id', 'title', 'post')).toEqual(setDoc());
+  });
+});
+
+describe('updatePostImage', () => {
+  it('Deberia actualizar los post', () => {
+    expect(updatePostImage('id', 'title', 'post', 'url')).toEqual(setDoc());
+  });
+});
+
 describe('SignOut', () => {
   it('Deberia cerrar sesion', () => {
     expect(SignOut()).toEqual(signOut());
+  });
+  /* beforeEach(() => {
+    getAuth.mockImplementationOnce({ currentUser: null });
   });
   it('No deberia cerrar sesion', () => {
     SignOut()
@@ -284,10 +309,11 @@ describe('SignOut', () => {
       .catch(() => {
         expect(signOut).toEqual('no se cerro sesion');
       });
-  });
+  }); */
 });
-describe('updatePost', () => {
-  it('Deberia actualizar los post', () => {
-    expect(updatePost('id', 'title', 'post')).toEqual(setDoc());
+
+describe('deleteAccount', () => {
+  it('Deberia retornar la photo setup', () => {
+    expect(deleteAccount()).toEqual(deleteUser());
   });
 });

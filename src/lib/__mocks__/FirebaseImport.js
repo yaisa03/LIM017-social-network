@@ -71,7 +71,7 @@ export const signOut = jest.fn((auth) => new Promise((resolve, reject) => {
 }));
 // export const onAuthStateChanged = jest.fn(() => Promise.resolve({}));
 
-export const deleteUser = jest.fn(() => Promise.reject('something bad happened'));
+export const deleteUser = jest.fn(() => Promise.resolve({}));
 
 export const deleteDoc = jest.fn(() => { });
 
@@ -92,6 +92,7 @@ export const getDocs = jest.fn(() => Promise.resolve({
   post: {
     id: '25448661',
   },
+  forEach: () => ([{ post: { id: '25448661' } }]),
 }));
 export const uploadBytes = jest.fn(() => Promise.resolve({}));
 
