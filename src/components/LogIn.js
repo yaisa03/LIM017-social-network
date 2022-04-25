@@ -1,3 +1,4 @@
+/* istanbul ignore file */
 export const LogIn = () => {
   const errorMessage = '<p id="message"></p>';
   const containerLogo = `<figure class="containerLogo">

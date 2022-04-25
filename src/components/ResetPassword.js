@@ -1,3 +1,4 @@
+/* istanbul ignore file */
 export const ResetPassword = () => {
   const containerResetPassword = `<p id="message"></p>
                             <figure class="containerLogo">

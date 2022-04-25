@@ -1,3 +1,4 @@
+/* istanbul ignore file */
 export const Posts = () => {
   const containerPosts = `<header>
                            <div id="logoContainer">

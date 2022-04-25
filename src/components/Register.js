@@ -1,3 +1,4 @@
+/* istanbul ignore file */
 export const Register = () => {
   const containerNewRegister = `<p id="message"></p>
                          <figure class="containerLogo">

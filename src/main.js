@@ -1,3 +1,4 @@
+/* istanbul ignore file */
 /* eslint-disable import/no-cycle */
 /* eslint-disable no-console */
 /* eslint-disable no-alert */

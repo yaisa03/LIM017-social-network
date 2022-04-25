@@ -1,3 +1,4 @@
+/* istanbul ignore file */
 /* eslint-disable no-console */
 // aqui exportaras las funciones que necesites
 // eslint-disable-next-line import/no-cycle

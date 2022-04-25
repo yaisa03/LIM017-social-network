@@ -1,3 +1,4 @@
+/* istanbul ignore file */
 export const ShowPosts = (doc, e) => {
   const containerPosts = `<div class="postDiv">
                               <div id="userInfo">
