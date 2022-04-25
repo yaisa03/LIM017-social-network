@@ -42,8 +42,8 @@
   "jest": {
     "testEnvironment": "jsdom",
     "testPathIgnorePatterns" : [
-      "/src/components/",
-      "/src/lib/index.js"
+      "./src/components/",
+      "./src/lib/index.js"
     ]
   }
 }

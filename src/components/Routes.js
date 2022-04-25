@@ -1,3 +1,4 @@
+/* istanbul ignore file */
 /* import { LogIn } from './LogIn.js';
 import { Register } from './Register.js';
 import { ResetPassword } from './ResetPassword.js';

@@ -6,7 +6,7 @@
 
 const fs = require('fs');
 
-window.document.body.innerHTML = fs.readFileSync('./src/index.html');
+document.body.innerHTML = fs.readFileSync('./src/index.html');
 
 const {
   createUser, emailVerification, signIn, signInGoogle, passwordReset,
@@ -16,11 +16,6 @@ const {
   deleteAccount,
   /*  getURLProfilePhoto,  */
 } = require('../src/lib/Firestore.js');
-const { Register } = require('../src/components/Register.js');
-const { Posts } = require('../src/components/Posts.js');
-const { Profile } = require('../src/components/Profile.js');
-const { ResetPassword } = require('../src/components/ResetPassword.js');
-const { ShowPosts, ShowPostsById } = require('../src/components/ShowPosts.js');
 const { getAuth } = require('../src/lib/FirebaseImport.js');
 
 const {
@@ -34,81 +29,6 @@ jest.mock('../src/lib/FirebaseImport.js');
 test('use jsdom in this test file', () => {
   const pageOne = document.getElementById('containerPageOne');
   expect(pageOne).not.toBeNull();
-});
-describe('Register', () => {
-  it('should render without crashing', () => {
-    const el = Register();
-    expect(typeof el).toBe('string');
-  });
-});
-
-describe('Posts', () => {
-  it('should render without crashing', () => {
-    const el = Posts();
-    expect(typeof el).toBe('string');
-  });
-});
-
-describe('Profile', () => {
-  it('should render without crashing, con photoURL', () => {
-    /*  getAuth.mockReturnValue({
-        currentUser: {
-          displayName: 'name',
-          email: 'bob@example.com',
-          photoURL: 'http://example.com',
-        },
-      }); */
-    const el = Profile();
-    expect(typeof el).toBe('string');
-  });
-  it('should render without crashing, con photoURL NULL', () => {
-    /* getAuth.mockReturnValue({
-      currentUser: {
-        displayName: 'name',
-        email: 'bob@example.com',
-        photoURL: null,
-      },
-    }); */
-    /* getAuth.mockImplementationOnce({
-      currentUser: {
-        displayName: 'name',
-        email: 'bob@example.com',
-        photoURL: null,
-      },
-    }); */
-    /*     const user = getAuth();
-    user.currentUser.photoURL = null;
-    console.log(user.currentUser.photoURL); */
-    const el = Profile();
-    expect(typeof el).toBe('string');
-  });
-});
-
-describe('ResetPassword', () => {
-  it('should render without crashing', () => {
-    const el = ResetPassword();
-    expect(typeof el).toBe('string');
-  });
-});
-
-const post = {
-  id: '123',
-  photoURL: 'Images/userImage.jpeg',
-  likes: [],
-};
-
-describe('ShowPosts', () => {
-  it('should render without crashing', () => {
-    const el = ShowPosts(post, post);
-    expect(typeof el).toBe('string');
-  });
-});
-
-describe('ShowPostsById', () => {
-  it('should render without crashing', () => {
-    const el = ShowPostsById(post, post);
-    expect(typeof el).toBe('string');
-  });
 });
 
 describe('emailVerification', () => {
@@ -150,10 +70,8 @@ describe('createUser', () => {
     getAuth.mockImplementationOnce({ currentUser: null });
   }); */
   /* it('should throw an error, when user is invalid', () => {
-    updateProfile()
-      .catch(() => {
-        expect(updateProfile()).toEqual('usuario no fue actualizado');
-      });
+    updateProfile().mockImplementation(() => Promise.reject('usuario no fue actualizado'));
+    expect(updateProfile().mockRejectedValue()).toEqual('usuario no fue actualizado');
   }); */
 });
 
