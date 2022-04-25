@@ -2,12 +2,12 @@
 // aqui exportaras las funciones que necesites
 // eslint-disable-next-line import/no-cycle
 import {
-  editPosts, deletePosts, goToLogIn, showHome,
+  editPosts, deletePosts, goToLogIn, showHome, AddLikes,
 } from '../main.js';
 import { ShowPostsById, ShowPosts } from '../components/ShowPosts.js';
 // eslint-disable-next-line import/no-cycle
 import {
-  postLike, getArrayLikes, emailVerification, createUser, signIn,
+  emailVerification, createUser, signIn,
   signInGoogle, passwordReset, urlPhoto, setUserPhoto, uploadPostImage,
   updatePostImage, findPostById, auth, updatePhotoPosts,
 } from './Firestore.js';
@@ -214,32 +214,6 @@ export function showPostsByType(snapshot) {
   containerPosts.innerHTML = '';
   snapshot.forEach((e) => {
     containerPosts.innerHTML += ShowPosts(e, e.data());
-  });
-}
-export function AddLikes(user) {
-  const likeButton = document.querySelectorAll('.likeButton');
-  likeButton.forEach((e) => {
-    e.addEventListener('click', async () => {
-      // eslint-disable-next-line prefer-const
-      let arrayLikes = await getArrayLikes(e.id);
-      let count = 0;
-      const arrayCounter = arrayLikes.length;
-      // eslint-disable-next-line no-plusplus
-      for (let i = 0; i < arrayLikes.length; i++) {
-        if (arrayLikes[i] === user.uid) {
-          arrayLikes.splice(i, 1);
-          postLike(e.id, arrayLikes);
-          break;
-        } else {
-          // eslint-disable-next-line no-plusplus
-          count++;
-        }
-      }
-      if (count === arrayCounter) {
-        arrayLikes.push(user.uid);
-        postLike(e.id, arrayLikes);
-      }
-    });
   });
 }
 

@@ -12,7 +12,7 @@ import { Profile } from './components/Profile.js';
 // eslint-disable-next-line object-curly-newline
 // eslint-disable-next-line import/no-cycle
 import {
-  findPostByType,
+  findPostByType, postLike, getArrayLikes,
   findPosts, SignOut, updatePost, postDeleted,
   setUserInfo, deleteAccount, findPostById, updateNamePosts,
 } from './lib/Firestore.js';
@@ -393,3 +393,31 @@ export function showHome() {
 // mostrar el logIn cuando carga la pagina
 onNavigate('#/');
 showLogIn();
+
+// funcion para dar y quitar likes
+export function AddLikes(user) {
+  const likeButton = document.querySelectorAll('.likeButton');
+  likeButton.forEach((e) => {
+    e.addEventListener('click', async () => {
+      // eslint-disable-next-line prefer-const
+      let arrayLikes = await getArrayLikes(e.id);
+      let count = 0;
+      const arrayCounter = arrayLikes.length;
+      // eslint-disable-next-line no-plusplus
+      for (let i = 0; i < arrayLikes.length; i++) {
+        if (arrayLikes[i] === user.uid) {
+          arrayLikes.splice(i, 1);
+          postLike(e.id, arrayLikes);
+          break;
+        } else {
+          // eslint-disable-next-line no-plusplus
+          count++;
+        }
+      }
+      if (count === arrayCounter) {
+        arrayLikes.push(user.uid);
+        postLike(e.id, arrayLikes);
+      }
+    });
+  });
+}
