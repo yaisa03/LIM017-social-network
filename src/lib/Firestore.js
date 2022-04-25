@@ -52,18 +52,6 @@ export function passwordReset(email) {
 }
 
 // eslint-disable-next-line consistent-return
-export function setUser(displayName, photoURL) {
-  const user = auth.currentUser;
-  const uid = user.uid;
-  if (user !== null) {
-    user.displayName = displayName;
-    user.photoURL = photoURL;
-  } /* else {
-    throw new TypeError('El usuario no esta loggeado');
-  } */
-  return uid;
-}
-// eslint-disable-next-line consistent-return
 export function setUserPhoto(photoUserURL) {
   return updateProfile(auth.currentUser, {
     photoURL: photoUserURL,
@@ -77,9 +65,7 @@ export async function updatePhotoPosts(photoUserURL) {
   const user = auth.currentUser;
   const q = query(collection(db, 'posts'), where('UserId', '==', user.uid));
   const querySnapshot = await getDocs(q);
-  querySnapshot.forEach((post) => {
-    setDoc(doc(db, 'posts', post.id), { userImage: photoUserURL }, { merge: true });
-  });
+  querySnapshot.forEach((post) => setDoc(doc(db, 'posts', post.id), { userImage: photoUserURL }, { merge: true }));
   return findPostById();
 }
 // funcion que permite editar el nombre de usurio
@@ -95,24 +81,19 @@ export async function updateNamePosts(newname) {
   const user = auth.currentUser;
   const q = query(collection(db, 'posts'), where('UserId', '==', user.uid));
   const querySnapshot = await getDocs(q);
-  return querySnapshot.forEach((post) => {
-    setDoc(doc(db, 'posts', post.id), { userName: newname }, { merge: true });
-  });
+  return querySnapshot.forEach((post) => setDoc(doc(db, 'posts', post.id), { userName: newname }, { merge: true }));
 }
 // funcion que permite eliminar el usuario
 export function deleteAccount() {
   const user = auth.currentUser;
-  return deleteUser(user).then(() => {
-    deleteUserPosts(user);
-  }).catch((error) => error);
+  return deleteUser(user).then(() => deleteUserPosts(user))
+    .catch((error) => error);
 }
 // funcion pra eliminar post del usuario que borra su cuenta
 export async function deleteUserPosts(user) {
   const q = query(collection(db, 'posts'), where('UserId', '==', user.uid));
   const querySnapshot = await getDocs(q);
-  return querySnapshot.forEach((post) => {
-    deleteDoc(doc(db, 'posts', post.id));
-  });
+  return querySnapshot.forEach((post) => deleteDoc(doc(db, 'posts', post.id)));
 }
 // funcion que crea el url de la foto de perfil del usuario y la inserta
 export async function urlPhoto(filechoosen) {
@@ -129,7 +110,7 @@ export async function urlPhoto(filechoosen) {
 export async function updatePostImage(id, title, post, url) {
   setDoc(doc(db, 'posts', id), { postTitle: title }, { merge: true });
   setDoc(doc(db, 'posts', id), { content: post }, { merge: true });
-  setDoc(doc(db, 'posts', id), { image: url }, { merge: true });
+  return setDoc(doc(db, 'posts', id), { image: url }, { merge: true });
 }
 // Funcion que guarda post con foto en firebase
 export function uploadPostImage(title, post, url, storageName, level, type) {
@@ -154,24 +135,18 @@ export async function findPostById() {
   const user = auth.currentUser;
   const postsRef = collection(db, 'posts');
   const q = query(postsRef, where('UserId', '==', user.uid), orderBy('date', 'desc'));
-  return onSnapshot(q, (snapshot) => {
-    showUserPostsById(snapshot);
-  });
+  return onSnapshot(q, (snapshot) => showUserPostsById(snapshot));
 }
 // Funcion que busca todos los posts en la app
 export async function findPosts() {
   const q = query(collection(db, 'posts'), orderBy('date', 'desc'));
-  return onSnapshot(q, (querySnapshot) => {
-    showPostsHome(querySnapshot);
-  });
+  return onSnapshot(q, (querySnapshot) => showPostsHome(querySnapshot));
 }
 // funcion que permite obtener los por el tipo de receta
 export async function findPostByType(type) {
   const postsRef = collection(db, 'posts');
   const q = query(postsRef, where('postType', '==', type), orderBy('date', 'desc'));
-  return onSnapshot(q, (snapshot) => {
-    showPostsByType(snapshot);
-  });
+  return onSnapshot(q, (snapshot) => showPostsByType(snapshot));
 }
 // Funcion que elimina los posts de la base de datos de firebase
 export const postDeleted = (id) => deleteDoc(doc(db, 'posts', id));
