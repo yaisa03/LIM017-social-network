@@ -154,9 +154,11 @@ export async function updatePost(id, title, post) {
   setDoc(doc(db, 'posts', id), { postTitle: title }, { merge: true });
   return setDoc(doc(db, 'posts', id), { content: post }, { merge: true });
 }
+// Funcion que sube un nuevo array con los ids de los usuarios que han dado like a la publicacion
 export function postLike(id, newArray) {
   return setDoc(doc(db, 'posts', id), { likes: newArray }, { merge: true });
 }
+// Funcion que obtiene el array de likes de una publicacion
 export async function getArrayLikes(e) {
   const docSnap = await getDoc(doc(db, 'posts', e));
   let array = docSnap.data().likes;
