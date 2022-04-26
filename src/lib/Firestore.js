@@ -27,15 +27,14 @@ export function createUser(email, password, displayname) {
   return createUserWithEmailAndPassword(auth, email, password).then(() => {
     updateProfile(auth.currentUser, {
       displayName: displayname,
-    }).then(() => {
-      // Profile updated!
-    }).catch((error) => error);
+    }).then(() => {})
+      .catch((error) => error);
   });
 }
-/* ********************************** */
 // Funcion que permite a un usuario loggearse con su email y password
 export function signIn(email, password) {
-  return signInWithEmailAndPassword(auth, email, password).then((userCredential) => userCredential)
+  return signInWithEmailAndPassword(auth, email, password)
+    .then((userCredential) => userCredential)
     .catch((error) => error);
 }
 // Funcion que permite a un usuario loggearse con su cuenta de Gmail
@@ -50,14 +49,11 @@ export function passwordReset(email) {
     .then()
     .catch((error) => error);
 }
-
 // eslint-disable-next-line consistent-return
 export function setUserPhoto(photoUserURL) {
   return updateProfile(auth.currentUser, {
     photoURL: photoUserURL,
-  }).then(() => {
-
-  })
+  }).then(() => {})
     .catch((error) => error);
 }
 // funcion cambiar nombre de usuario en los post
@@ -72,9 +68,8 @@ export async function updatePhotoPosts(photoUserURL) {
 export function setUserInfo(newname) {
   return updateProfile(auth.currentUser, {
     displayName: newname,
-  }).then(() => {
-
-  }).catch((error) => error);
+  }).then(() => {})
+    .catch((error) => error);
 }
 // funcion cambiar nombre de usuario en los post
 export async function updateNamePosts(newname) {
@@ -105,7 +100,6 @@ export async function urlPhoto(filechoosen) {
     .then((url) => url)
     .catch((error) => error);
 }
-
 // funcion para actualizar la info en firestore
 export async function updatePostImage(id, title, post, url) {
   setDoc(doc(db, 'posts', id), { postTitle: title }, { merge: true });
@@ -166,6 +160,6 @@ export async function getArrayLikes(e) {
 }
 // Funcion que permite cerrar sesion de un usuario
 export function SignOut() {
-  return signOut(auth).then(() => {
-  }).catch((error) => error);
+  return signOut(auth).then(() => {})
+    .catch((error) => error);
 }

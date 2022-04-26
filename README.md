@@ -44,6 +44,7 @@ FoodBook fue pensado y diseñado para los amantes de la gastronomía quienes gus
 |Cumple los tests unitarios|
 |El diseño es reponsive|
 |Es una SPA|
+![Historia 2](src/Images/Hu2.jpg)
 
 |***HISTORIA DE USUARIO 3:*** Como nuevo usuario de FoodBook quiero poder crear una cuenta para iniciar sesion|
 |---------------------------|
@@ -58,6 +59,36 @@ FoodBook fue pensado y diseñado para los amantes de la gastronomía quienes gus
 |El diseño es reponsive|
 |Es una SPA|
 ![Historia 3](src/Images/Hu3.jpg)
+
+|***HISTORIA DE USUARIO 4:*** Como usuario de FoodBook quiero poder crear una publicacion|
+|---------------------------|
+||
+|***Criterios de aceptacion***|
+|Deben existir los inputs para ingresar el titulo y la descripción|
+|Al presionar el icono de la imagen se puede seleccionar una foto para el post|
+|Debe existir un boton para publicar el post|
+|***Definicion de terminado***|
+|El usuario puede cargar una foto en su post|
+|Se muestran mensajes de error si el usuario intenta publicar teniendo campos vacios|
+|Cumple los tests unitarios|
+|El diseño es reponsive|
+|Es una SPA|
+![Historia 4 desktop](src/Images/Hu4.jpg)
+![Historia 4 mobile](src/Images/Hu4M.jpg)
+
+|***HISTORIA DE USUARIO 5:*** Como usuario de FoodBook quiero poder ver las publicaciones/recetas por tipo de plato|
+|---------------------------|
+||
+|***Criterios de aceptacion***|
+|Deben existir los botones por categoria|
+|Deben de podr visualizarse los posts|
+|***Definicion de terminado***|
+|El usuario puede ver los post de todos los usarios de la app|
+|Cumple los tests unitarios|
+|El diseño es reponsive|
+|Es una SPA|
+![Historia 5 desktop](src/Images/Hu5.jpg)
+![Historia 5 mobile](src/Images/Hu5M.jpg)
 
 ***
 
