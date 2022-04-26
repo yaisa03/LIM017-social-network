@@ -1,0 +1,792 @@
+* {
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+}
+
+body {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-image: url(Images/BgMovile.jpg);
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: cover;
+    background-attachment: fixed;
+}
+
+p {
+    color: white;
+    font-size: large;
+}
+
+#message {
+    width: 100%;
+    text-align: center;
+    font-weight: bold;
+    font-size: x-large;
+}
+
+#messagePost {
+    font-size: 15px;
+    text-align: center;
+    font-weight: bold;
+}
+
+.showMessageError {
+    background-color: red;
+}
+
+.showMessage {
+    background-color: green;
+}
+
+.inputError {
+    border-color: red;
+}
+
+/*pagina 1*/
+[id^="container"] {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    /*height: 100%;*/
+}
+
+#containerPageOne>div {
+    margin: 4%;
+    color: #fff;
+    width: 100%;
+}
+
+.containerLogo {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    margin-top: 30%;
+}
+
+.foodBookIcon {
+    width: 35%;
+    height: 35%;
+}
+
+figcaption {
+    font-size: calc(2rem + 0.5vw);
+    font-family: ink free, Times, serif;
+    color: #fff;
+    text-shadow: rgb(0, 5, 0) 10px 6px 4px;
+}
+
+input {
+    margin-bottom: 2%;
+    font-size: 16px;
+    font-family: "Times New Roman", Georgia, Serif;
+}
+
+input::placeholder {
+    color: white;
+    font-size: 16px;
+}
+
+#user,
+#newUser,
+#emailReset,
+#newUserDisplayName {
+    width: 70%;
+    height: 30px;
+    border: none;
+    border-bottom: 2px solid #fff;
+    background: none;
+    color: #fff;
+    padding-left: 1%;
+}
+
+#passwordContainer,
+[id^="newPasswordContainer"] {
+    width: 70%;
+    height: 30px;
+    position: relative;
+    margin-bottom: 2%;
+}
+
+#password,
+[id^="newUserPassword"] {
+    width: 100%;
+    height: 100%;
+    border: none;
+    border-bottom: 2px solid #fff;
+    background: none;
+    color: #fff;
+    padding-left: 2%;
+}
+
+[id^="eye"] {
+    position: absolute;
+    right: 1.5%;
+    top: 20%;
+    pointer-events: auto;
+}
+
+.fa-eye-slash {
+    display: none;
+}
+
+button {
+    width: 50%;
+    height: 30px;
+    border-radius: 8px;
+    background: none;
+    border-color: #fff;
+    color: #fff;
+    font-size: 16px;
+}
+
+button#resetPasswordButton,
+button#registerButton,
+.backToLogIn {
+    height: 45px;
+    margin-bottom: 20px;
+}
+
+button:hover {
+    color: rgb(0, 0, 0);
+    background-color: rgb(172, 172, 172);
+    font-weight: bold
+}
+
+#registerIcons {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    width: 30%;
+    height: 40px;
+    margin: 2%;
+}
+
+.facebookLogo,
+.googleLogo {
+    height: calc(2.5rem + 0.5vh);
+    transition: transform .2s;
+}
+
+.facebookLogo:hover,
+.googleLogo:hover {
+    transform: scale(1.2);
+}
+
+a {
+    color: white;
+    text-decoration: none;
+    font-weight: bolder;
+    text-shadow: -3px 1px 2px black, 0 0 1em black, 0 0 0.2em black;
+    font-size: large;
+}
+
+a:hover {
+    color: rgb(0, 0, 0);
+    font-weight: bold
+}
+
+#register:hover,
+#forgotPassword:hover {
+    text-decoration: underline;
+    color: rgb(37, 235, 225);
+}
+
+.show {
+    display: block;
+}
+
+.hide {
+    display: none;
+}
+
+.hideBackground {
+    background-image: url(Images/back3.jpg);
+    /* background-color: #fff; */
+}
+
+header {
+    width: 100%;
+    height: 60px;
+    background-color: coral;
+    display: flex;
+    flex-direction: row;
+    position: sticky;
+    top: 0;
+}
+
+nav {
+    width: 100%;
+    height: 100%;
+}
+
+ul {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+li {
+    list-style: none;
+}
+
+#Homeicon,
+#Usericon,
+#Bellicon,
+#logOut {
+    color: white;
+    font-size: 24px;
+    transition: transform .2s;
+}
+
+#Homeicon:hover,
+#Usericon:hover,
+#Bellicon:hover,
+#logOut:hover {
+    transform: scale(1.3);
+}
+
+#searchPost::placeholder {
+    color: black;
+}
+
+#SearchByLevelContainer {
+    height: 35px;
+    display: flex;
+    flex-direction: row;
+    width: 80% !important;
+    justify-content: space-around;
+    margin: 0% !important;
+}
+#levelButton1{
+    background-color: #fcb18b;
+}
+#levelButton2{
+    background-color: #F98866;
+}
+#levelButton3{
+    background-color: #FF420E;
+}
+
+#searchPost {
+    height: 100%;
+    width: 100%;
+    border-radius: 10px;
+    padding-left: 2%;
+}
+
+.fa-search-minus {
+    color: black;
+    right: 3%;
+    position: absolute;
+    top: 20%;
+}
+
+#postButton {
+    background-color: coral;
+    height: 40px;
+    color: black;
+    font-weight: bolder;
+    align-self: center;
+}
+
+#postButton:hover {
+    background-color: #C7461E;
+    color: #212431;
+}
+
+#createPost {
+    display: flex;
+    flex-direction: column;
+    width: 80%;
+    border: 2px solid #212431;
+    padding: 5%;
+    border-radius: 10px;
+    box-shadow: 2px 2px 15px 2px grey;
+    background-color: #fff;
+    margin: 4%;
+}
+
+textarea {
+    margin-bottom: 2%;
+    border: 1px solid #212431;
+    padding-left: 5px;
+    font-size: large;
+    font-family: "Times New Roman", Georgia, Serif;
+}
+
+#post {
+    height: 100px;
+}
+
+#title::placeholder {
+    color: grey !important;
+    padding-left: 5px;
+    font-size: large;
+}
+
+#postsContainer {
+    width: 100%;
+    color: #212431;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.postDiv {
+    display: flex;
+    flex-direction: column;
+    width: 90%;
+    border: 2px solid #212431;
+    padding: 5%;
+    margin: 3%;
+    border-radius: 10px;
+    box-shadow: 2px 2px 15px 2px grey;
+    background-color: #fff;
+}
+
+.postDiv>p {
+    color: black;
+    margin: 1%;
+    align-self: flex-end;
+    border-radius: 5px;
+    padding: 2px;
+}
+
+.title {
+    background: none;
+    text-align: center;
+    border: none;
+    font-size: x-large;
+    height: 30px;
+    font-weight: bold;
+}
+
+.description {
+    height: 120px;
+    background: none;
+    margin: 0 0 5% 0;
+    text-align: justify;
+    padding: 2%;
+    border-radius: 5px;
+    border: gray solid 2px;
+}
+
+#createPost p {
+    color: black;
+    font-size: 16px;
+    margin-top: 10px;
+}
+
+#level, #type {
+    width: 50%;
+    height: 25px;
+}
+#selectsContainer {
+    width: 100%;
+}
+span {
+    color: #212431;
+    font-size: 20px;
+}
+
+.likeButton,
+#addPhotoIcon {
+    color: #212431;
+    font-size: 24px;
+    margin-right: 2%;
+}
+
+.editButton,
+.deleteButton,
+.publishButton,
+.editPostPhoto {
+    background-color: coral;
+    height: 40px;
+    width: 30%;
+    color: black;
+    font-weight: bolder;
+}
+
+.showButton {
+    display: flex;
+}
+
+#profileInfo {
+    display: flex;
+    background-image: url(Images/BgProfile.jpg);
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: cover;
+    border-radius: 10px;
+    height: 130px;
+    padding: 10px;
+    align-items: center;
+    width: 95% !important;
+    margin: 4%;
+    font-size: 15px;
+}
+
+#userName {
+    font-size: 25px;
+}
+
+#userEmail {
+    font-size: 15px;
+}
+
+#editProfileButton {
+    margin-top: 8px;
+    width: 50%;
+    height: 25px;
+    background-color: coral;
+    color: black;
+    font-size: small;
+    font-weight: bolder
+}
+
+#mainContainer,
+#PageContent {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+#profilePhotoDiv{
+    position: relative;
+    height: 90%;
+    width: 30%;
+    margin-left: 50px;
+    margin-bottom: 27px;
+}
+.profilePicture {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+}
+
+#userInfo {
+    height: 38px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: flex-start;
+    margin-bottom: 2%;
+}
+
+#userInfo p {
+    color: black;
+    margin-left: 10px;
+}
+
+.profilePhoto {
+    border-radius: 50%;
+    height: 100%;
+}
+
+.container {
+    background: rgba(48, 48, 48, 0.473);
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    visibility: hidden;
+}
+
+.showContainer {
+    visibility: visible;
+}
+
+.modal {
+    background-color: white;
+    width: 500px;
+    height: 200px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border-radius: 10px;
+    position: relative;
+}
+
+i.fa.fa-remove {
+    align-self: flex-end;
+    right: 15px;
+    position: absolute;
+    top: 5%;
+}
+
+.choose {
+    border-radius: 10px;
+}
+
+#EditPhoto {
+    top: 70%;
+    left: 60%;
+    font-weight: bolder;
+    color: #fff;
+    position: absolute;
+    background: coral;
+    width: 37px;
+    height: 35px;
+    padding: 5px;
+    border-radius: 15px;
+}
+
+.chooseImage {
+    padding: 8px;
+    background: #f55d3e;
+    color: #fff;
+    border: 0px solid #fff;
+    margin-top: 10px;
+}
+
+.chooseImage:hover {
+    color: #fff;
+    background: #f7cb15;
+}
+
+#uploadImage,
+#uploadImagePost,
+#changeImagePost {
+    margin-top: 10px;
+    color: black;
+    border-color: orange;
+}
+
+#saveProfileChanges,
+#deleteAccount {
+    margin-top: 10px;
+    color: #fff;
+    background-color: coral;
+    width: 45%;
+    height: 50px;
+}
+
+#editProfileButtons,
+#addPhotoDiv {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+label[id="editDisplayName"] {
+    font-size: 20px;
+}
+
+#newDisplayName {
+    width: 80%;
+    border: 1px solid rgb(0, 0, 0);
+    height: 30px;
+    border-radius: 5px;
+}
+
+#uploadPostImages {
+    width: 80%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    flex-direction: column;
+    align-self: center;
+    margin-bottom: 5%;
+    height: 270px;
+}
+
+#uploadPostImages img {
+    width: 100%;
+}
+
+#FoodLogoHead {
+    width: 100%;
+    margin-top: 10px;
+}
+
+#logoContainer {
+    width: 40%;
+}
+
+@media only screen and (min-width: 768px) {
+    body {
+        background-image: url(Images/BgDesktop.jpg);
+        background-position: center center;
+        background-size: cover;
+    }
+
+    #containerPageOne>div {
+        margin: 2%;
+        font-size: 1.1rem;
+    }
+
+    figure {
+        margin-top: 3%;
+    }
+
+    .containerLogo {
+        margin-top: 2%;
+    }
+
+    .foodBookIcon {
+        width: 12%;
+        height: 12%;
+    }
+
+    input {
+        margin-bottom: 0.5%;
+    }
+
+    #user,
+    #newUser,
+    #emailReset,
+    #newUserDisplayName {
+        width: 30%;
+    }
+
+    #passwordContainer,
+    [id^="newPasswordContainer"] {
+        width: 30%;
+        margin-bottom: 1%;
+    }
+
+    button {
+        width: 25%;
+        height: 35px;
+        font-size: 16px;
+    }
+
+    #registerIcons {
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        width: 10%;
+        height: 40px;
+        margin: 2%;
+    }
+
+    #mainContainer {
+        display: grid;
+        grid-template-columns: 1fr 2fr;
+        margin: 2%;
+        align-items: start;
+        width: 90%;
+    }
+
+    #profileInfo {
+        grid-column: 1 / 2;
+        background-image: url(Images/BgProfileDesktop.jpg);
+        grid-row: 1;
+        height: 500px;
+        width: 90% !important;
+        flex-direction: column;
+        align-content: center;
+        justify-content: space-evenly;
+        position: sticky;
+        top: 80px;
+        bottom: 0px;
+        justify-self: center;
+    }
+
+    .postDiv {
+        width: 85%;
+    }
+
+    #editProfileButton {
+        margin-top: 20px;
+        font-size: 15px;
+        width: 40%;
+        height: 35px;
+    }
+    #profilePhotoDiv {
+        height: 35%;
+        width: 50%;
+        margin-top: 60px;
+        margin-left: 0px;
+    }
+  /*   .profilePicture {
+        
+    } */
+
+    #post {
+        margin-top: 4px;
+    }
+
+    .gridContainer {
+        display: grid !important;
+        grid-template-columns: 1fr 1fr 1fr;
+        grid-gap: 5px;
+        margin: 2% !important;
+        justify-items: center;
+        width: 95% !important;
+        row-gap: 15px;
+    }
+
+    #createPost {
+        width: 60%;
+        padding: 3%;
+    }
+
+    #SearchByLevelContainer {
+        width: 70% !important;
+    }
+
+    header {
+        justify-content: flex-end;
+    }
+
+    nav {
+        width: 40%;
+    }
+
+    ul {
+        justify-content: space-around;
+    }
+
+    #EditPhoto {
+        top: 80%;
+        left: 70%;
+    } 
+
+    #uploadPostImages {
+        display: flex;
+        flex-wrap: wrap;
+        flex-direction: row;
+    }
+
+    #uploadPostImages img {
+        width: 50%
+    }
+
+    #level, #type{
+        width: 40%;
+    }
+    
+    #selectsContainer {
+        display: flex;
+        justify-content: space-around;
+    }
+    #logoContainer {
+        width: 100%;
+    }
+
+    #FoodLogoHead {
+        width: 20%;
+        margin-top: 0px;
+    }
+}
