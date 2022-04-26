@@ -2,7 +2,7 @@
 export const Posts = () => {
   const containerPosts = `<header>
                            <div id="logoContainer">
-                           <img id="FoodLogoHead" src="Images/FoodBookHead.jpg">
+                           <img id="FoodLogoHead">
                            </div>
                            <nav>
                             <ul>

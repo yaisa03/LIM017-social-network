@@ -2,7 +2,7 @@
 export const LogIn = () => {
   const errorMessage = '<p id="message"></p>';
   const containerLogo = `<figure class="containerLogo">
-                          <img src="Images/Icon.png" class="foodBookIcon">
+                          <div id="FoodIcon" class="foodBookIcon"></div>
                           <figcaption>FoodBook</figcaption>
                         </figure>`;
   const containerLogIn = `<div id="containerLogIn">
@@ -17,12 +17,10 @@ export const LogIn = () => {
   const logInButton = '<button id="logIn">Iniciar Sesion</button>';
   const containerRegister = `<div id="containerRegister">
                               <p>Continuar con:</p>
-                              <div id="registerIcons">
-                                <img src="Images/google.png" class="googleLogo">
+                              <div id="registerIcons" class="googleLogo">
                               </div>
                               <a id="register">¿No tienes cuenta? Registrate</a>
                               </div>`;
   const LogInDivs = errorMessage + containerLogo + containerLogIn + logInButton + containerRegister;
   return LogInDivs;
 };
-/* <img src="Images/facebook.png" class="facebookLogo"> */
