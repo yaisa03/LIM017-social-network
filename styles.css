@@ -222,6 +222,7 @@ header {
     flex-direction: row;
     position: sticky;
     top: 0;
+    z-index: 2;
 }
 
 nav {
@@ -271,12 +272,18 @@ li {
 }
 #levelButton1{
     background-color: #fcb18b;
+    color: black;
+    font-weight: bold;
 }
 #levelButton2{
     background-color: #F98866;
+    color: black;
+    font-weight: bold;
 }
 #levelButton3{
     background-color: #FF420E;
+    color: black;
+    font-weight: bold;
 }
 
 #searchPost {
@@ -469,12 +476,13 @@ span {
     position: relative;
     height: 90%;
     width: 30%;
-    margin-left: 50px;
+    margin-left: 30px;
     margin-bottom: 27px;
+    z-index: 1;
 }
 .profilePicture {
     position: absolute;
-    width: 100%;
+    width: 100px;
     height: 100%;
     border-radius: 50%;
 }
@@ -496,6 +504,7 @@ span {
 .profilePhoto {
     border-radius: 50%;
     height: 100%;
+    width: 50px;
 }
 
 .container {
@@ -715,14 +724,16 @@ label[id="editDisplayName"] {
     }
     #profilePhotoDiv {
         height: 35%;
-        width: 50%;
+        width: 150px;
         margin-top: 60px;
         margin-left: 0px;
+        display: flex;
+        justify-content: center;
     }
-  /*   .profilePicture {
-        
-    } */
-
+    .profilePicture {
+        width: 150px;
+        height: 100%;
+    }
     #post {
         margin-top: 4px;
     }
