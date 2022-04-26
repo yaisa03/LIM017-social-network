@@ -46,8 +46,9 @@ p {
 .inputError {
     border-color: red;
 }
-
-/*pagina 1*/
+#IconLogin{
+    background-image: url(Images/Icon.png);
+}
 [id^="container"] {
     display: flex;
     flex-direction: column;

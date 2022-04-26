@@ -2,7 +2,7 @@
 export const LogIn = () => {
   const errorMessage = '<p id="message"></p>';
   const containerLogo = `<figure class="containerLogo">
-                          <img src="Images/Icon.png" class="foodBookIcon">
+                          <img id= "IconLogin" class="foodBookIcon">
                           <figcaption>FoodBook</figcaption>
                         </figure>`;
   const containerLogIn = `<div id="containerLogIn">
@@ -25,4 +25,3 @@ export const LogIn = () => {
   const LogInDivs = errorMessage + containerLogo + containerLogIn + logInButton + containerRegister;
   return LogInDivs;
 };
-/* <img src="Images/facebook.png" class="facebookLogo"> */
