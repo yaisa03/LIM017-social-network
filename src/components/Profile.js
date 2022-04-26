@@ -13,7 +13,7 @@ export const Profile = () => {
   const errorMessage = '<p id="message"></p>';
   const containerProfile = `<header>
                              <div id="logoContainer">
-                               <img id="FoodLogoHead" src="Images/FoodBookHead.jpg">
+                               <img id="FoodLogoHead">
                              </div>
                              <nav>
                               <ul>
