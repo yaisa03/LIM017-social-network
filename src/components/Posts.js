@@ -56,5 +56,3 @@ export const Posts = () => {
   const postsDivs = containerPosts;
   return postsDivs;
 };
-/* <input id="searchPost" type="text" placeholder="Buscar">
-                          <i class="fa fa-search-minus"></i> */
