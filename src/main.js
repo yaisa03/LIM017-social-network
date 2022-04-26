@@ -184,7 +184,7 @@ export function createNewPost() {
       // }
       createPost.reset();
       const namePostImage = document.getElementById('namePostImage');
-      namePostImage.innerText = '';
+      namePostImage.src = '';
       filechoosen = '';
       errorMessage.classList.remove('showMessageError');
       errorMessage.innerHTML = '';
@@ -211,15 +211,16 @@ export function addPostPicture() {
       e.preventDefault();
       const namePostImage = document.getElementById('namePostImage');
       filechoosen = document.getElementById('chooseFilePost').files[0];
-      namePostImage.innerText = filechoosen.name;
+      const objectURL = URL.createObjectURL(filechoosen);
+      namePostImage.src = objectURL;
       console.log(filechoosen);
       modal.classList.remove('showContainer');
       return filechoosen;
     });
   });
 }
-// Funcion que permite editar los posts
-export function editPosts() {
+// funcion para activar la edicion de los post
+function editButtonFunction() {
   const editButton = document.querySelectorAll('.editButton');
   editButton.forEach((button) => {
     button.addEventListener('click', () => {
@@ -233,7 +234,9 @@ export function editPosts() {
       document.querySelector(`.editPostPhoto.${button.id}`).classList.remove('hide');
     });
   });
-  let newFileChoseen = '';
+}
+// funcion para editar las imagenes de los posts
+function editPhotoFunction() {
   const editPostPhoto = document.querySelectorAll('.editPostPhoto');
   editPostPhoto.forEach((button) => {
     const modal = document.getElementById('cont4');
@@ -248,13 +251,19 @@ export function editPosts() {
         e.preventDefault();
         const namePostImage = document.getElementById('uploadPostImages');
         newFileChoseen = document.getElementById('chooseFilePost1').files[0];
-        namePostImage.src = '';
+        console.log(newFileChoseen);
+        const objectURL = URL.createObjectURL(newFileChoseen);
+        namePostImage.src = objectURL;
         namePostImage.alt = newFileChoseen.name;
         modal.classList.remove('showContainer');
         return newFileChoseen;
       });
     });
   });
+  return newFileChoseen;
+}
+// funcion para enviar los cambios a los posts
+function publishChangesFunction() {
   const publishButton = document.querySelectorAll('.publishButton');
   publishButton.forEach((button) => {
     button.addEventListener('click', () => {
@@ -280,6 +289,14 @@ export function editPosts() {
     });
   });
 }
+// Funcion que permite editar los posts
+let newFileChoseen = '';
+export function editPosts() {
+  editButtonFunction();
+  editPhotoFunction();
+  publishChangesFunction();
+}
+
 // Damos funcionalidad a boton para eliminar posts
 export function deletePosts() {
   const deleteButton = document.querySelectorAll('.deleteButton');

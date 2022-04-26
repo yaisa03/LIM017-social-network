@@ -77,7 +77,7 @@ export const Profile = () => {
                                   </select>
                                   </p>
                                   </div>
-                                  <p id="namePostImage" style="color: black;font-size: 13px;margin: 3px;"></p>
+                                  <img id="namePostImage" src=""></img>
                                   <div id="addPhotoDiv">
                                   <i class="fa fa-photo" id="addPhotoIcon"></i>
                                   <div class="container" id="cont3">
