@@ -60,12 +60,10 @@ describe('createUser', () => {
       // eslint-disable-next-line quote-props
       expect(updateProfile.mock.calls[0][1]).toEqual({ 'displayName': 'username' });
     }));
-  /* it('DEBERIA FALLAR', () => {
+  it('DEBERIA FALLAR', () => {
     expect.assertions(0);
-    return (updateProfile().catch((e) => expect(e).toEqual({
-      error: 'usuario no fue actualizado',
-    })));
-  }); */
+    return (updateProfile().catch((e) => expect(e).toEqual('usuario no fue actualizado')));
+  });
   /*   beforeEach(() => {
     getAuth.mockImplementationOnce({ currentUser: null });
   }); */
