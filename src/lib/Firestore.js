@@ -14,7 +14,7 @@ import {
 } from './FirebaseImport.js';
 import { app } from './FirebaseInit.js';
 import {
-  showUserPostsById, showPostsByType, showPostsHome,
+  showUserPostsById, showPostsByType, showPostsHome, messageErrorCases,
 } from './index.js';
 
 const db = getFirestore(app);
@@ -35,7 +35,11 @@ export function createUser(email, password, displayname) {
 export function signIn(email, password) {
   return signInWithEmailAndPassword(auth, email, password)
     .then((userCredential) => userCredential)
-    .catch((error) => error);
+    .catch((error) => {
+      const errorMessage = error.message;
+      console.log(errorMessage);
+      messageErrorCases(errorMessage);
+    });
 }
 // Funcion que permite a un usuario loggearse con su cuenta de Gmail
 export function signInGoogle() {
