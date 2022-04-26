@@ -41,7 +41,6 @@ const onNavigate = (pathname) => {
   );
   pageOne.innerHTML = routes[pathname]();
 };
-
 // Funcion que permite mostrar contraseña al presionar el icono
 export function show_password(id1, id2, id3) {
   const eye = document.getElementById(id1);
@@ -72,6 +71,7 @@ export function resetPassword() {
     emailResetPassword(emailReset);
   });
 }
+// Funcion que permite regresar al Login
 export function BackToLogIn() {
   const backToLogIn = document.querySelector('.backToLogIn');
   backToLogIn.addEventListener('click', () => {
@@ -177,20 +177,13 @@ export function createNewPost() {
       errorMessage.classList.add('showMessageError');
       errorMessage.innerHTML = 'Debes ingresar una imagen al post';
     } else if (title.value !== '' && post.value !== '') {
-      /*  if (filechoosen === '') {
-         uploadPost(title.value, post.value, level.value, type.value);
-       } else { */
       getURLPostPhoto(title.value, post.value, level.value, type.value);
-      // }
       createPost.reset();
       const namePostImage = document.getElementById('namePostImage');
       namePostImage.src = '';
       filechoosen = '';
       errorMessage.classList.remove('showMessageError');
       errorMessage.innerHTML = '';
-      /*  if (window.location.hash === '#/profile') {
-        return findPostById();
-      } */
     }
   });
   addPostPicture();
@@ -296,7 +289,6 @@ export function editPosts() {
   editPhotoFunction();
   publishChangesFunction();
 }
-
 // Damos funcionalidad a boton para eliminar posts
 export function deletePosts() {
   const deleteButton = document.querySelectorAll('.deleteButton');

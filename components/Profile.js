@@ -98,5 +98,3 @@ export const Profile = () => {
   const profileDivs = errorMessage + containerProfile;
   return profileDivs;
 };
-/* onerror="this.src='Images/userImage.jpg';" */
-/* <button id="EditPhoto"> Editar Foto </button> */

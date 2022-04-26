@@ -52,7 +52,6 @@ p {
     justify-content: center;
     align-items: center;
     width: 100%;
-    /*height: 100%;*/
 }
 
 #containerPageOne>div {
@@ -210,7 +209,6 @@ a:hover {
 
 .hideBackground {
     background-image: url(Images/back3.jpg);
-    /* background-color: #fff; */
 }
 
 header {
@@ -630,7 +628,7 @@ label[id="editDisplayName"] {
     background-image: url(Images/FoodBookHead.jpg);
     background-size: contain;
     background-repeat: no-repeat;
-    background-position: center;
+    background-position-y: center;
     height: 100%;
     margin-left: 7px;
 }
