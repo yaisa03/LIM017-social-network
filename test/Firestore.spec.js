@@ -14,7 +14,6 @@ const {
   urlPhoto, postDeleted, findPostByType, postLike, updatePost, getArrayLikes,
   findPostById, updatePhotoPosts, updateNamePosts, deleteUserPosts, updatePostImage,
   deleteAccount,
-  /*  getURLProfilePhoto,  */
 } = require('../src/lib/Firestore.js');
 const { getAuth } = require('../src/lib/FirebaseImport.js');
 
@@ -64,13 +63,6 @@ describe('createUser', () => {
     expect.assertions(0);
     return (updateProfile().catch((e) => expect(e).toEqual('usuario no fue actualizado')));
   });
-  /*   beforeEach(() => {
-    getAuth.mockImplementationOnce({ currentUser: null });
-  }); */
-  /* it('should throw an error, when user is invalid', () => {
-    updateProfile().mockImplementation(() => Promise.reject('usuario no fue actualizado'));
-    expect(updateProfile().mockRejectedValue()).toEqual('usuario no fue actualizado');
-  }); */
 });
 
 describe('signIn', () => {
@@ -91,7 +83,6 @@ describe('signIn', () => {
       });
   });
 });
-// googleInicioSesion
 describe('signInGoogle', () => {
   it('debería retornar una funcion', () => {
     expect(signInGoogle()).toEqual(signInWithPopup());
@@ -103,7 +94,6 @@ describe('signInGoogle', () => {
       expect(signInWithPopup.mock.calls[0][1]).toEqual(new GoogleAuthProvider());
     }));
 });
-// envioCorreoRecuperacionContrasena
 describe('passwordReset', () => {
   it('debería retornar una funcion', () => {
     expect(passwordReset('some@mail.com')).toEqual(sendPasswordResetEmail());
@@ -210,22 +200,6 @@ describe('SignOut', () => {
   it('Deberia cerrar sesion', () => {
     expect(SignOut()).toEqual(signOut());
   });
-  /* beforeEach(() => {
-    getAuth.mockImplementationOnce({ currentUser: null });
-  });
-  it('No deberia cerrar sesion', () => {
-    SignOut()
-      .catch(() => {
-        console.log(SignOut);
-        expect(SignOut).toEqual('no se cerro sesion');
-      });
-  });
-  it('mock', () => {
-    signOut()
-      .catch(() => {
-        expect(signOut).toEqual('no se cerro sesion');
-      });
-  }); */
 });
 
 describe('deleteAccount', () => {
